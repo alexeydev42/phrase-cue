@@ -1,4 +1,3 @@
 export const App = () => {
-
-  return <p>Hello!</p>
+  return <p>PhraseCue</p>
 }
