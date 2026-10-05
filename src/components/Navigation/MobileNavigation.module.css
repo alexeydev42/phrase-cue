@@ -1,0 +1,17 @@
+.navigation {
+  display: flex;
+}
+
+@media (width >= 1024px) {
+  .navigation {
+    display: none;
+  }
+}
+
+.link {
+  /* обычное состояние */
+}
+
+.linkActive {
+  /* активное состояние */
+}
