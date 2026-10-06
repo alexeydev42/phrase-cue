@@ -7,7 +7,7 @@ export const DesktopNavigation = () => {
   return (
     <nav className={styles.navigation}>
       <NavLink
-        to="/"
+        to='/'
         end
         className={({ isActive }) =>
           clsx(styles.link, isActive && styles.linkActive)
@@ -16,7 +16,7 @@ export const DesktopNavigation = () => {
         Episode
       </NavLink>
       <NavLink
-        to="/library"
+        to='/library'
         className={({ isActive }) =>
           clsx(styles.link, isActive && styles.linkActive)
         }
@@ -24,7 +24,7 @@ export const DesktopNavigation = () => {
         Library
       </NavLink>
       <NavLink
-        to="/study"
+        to='/study'
         className={({ isActive }) =>
           clsx(styles.link, isActive && styles.linkActive)
         }
@@ -32,7 +32,7 @@ export const DesktopNavigation = () => {
         Study
       </NavLink>
       <NavLink
-        to="/settings"
+        to='/settings'
         className={({ isActive }) =>
           clsx(styles.link, isActive && styles.linkActive)
         }

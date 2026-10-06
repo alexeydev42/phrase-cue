@@ -7,7 +7,7 @@ import styles from './Header.module.css'
 export const Header = () => {
   return (
     <header className={styles.header}>
-      <Link className={styles.brand} to="/">
+      <Link className={styles.brand} to='/'>
         <Logo className={styles.logo} />
         <span className={styles.brandName}>PhraseCue</span>
       </Link>
