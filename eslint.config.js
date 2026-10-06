@@ -16,6 +16,7 @@ export default defineConfig([
     rules: {
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/jsx-quotes': ['error', 'prefer-single'],
     },
   },
   {

@@ -1,0 +1,90 @@
+:root {
+  /* Colors */
+  --color-bg-base: #f5f7fa;
+  --color-bg-surface: #ffffff;
+  --color-bg-surface-secondary: #edf3f8;
+
+  --color-text-primary: #17212b;
+  --color-text-secondary: #6b7785;
+
+  --color-border-default: #dde5ec;
+
+  --color-accent-primary: #3390ec;
+  --color-accent-soft: #e8f3fd;
+  --color-accent-on: #ffffff;
+
+  --color-danger-primary: #d94a4a;
+
+  /* Typography */
+  --font-family-base: 'Inter', sans-serif;
+
+  --font-size-screen-title: 1.5rem;
+  --font-size-section-title: 1.0625rem;
+  --font-size-body: 0.875rem;
+  --font-size-supporting: 0.75rem;
+  --font-size-button: 0.9375rem;
+  --font-size-input: 1rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-screen-title: 2rem;
+  --line-height-section-title: 1.5rem;
+  --line-height-body: 1.25rem;
+  --line-height-supporting: 1rem;
+  --line-height-button: 1.25rem;
+  --line-height-input: 1.25rem;
+
+  /* Spacing */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border radius */
+  --radius-small: 10px;
+  --radius-default: 14px;
+  --radius-modal: 18px;
+  --radius-screen: 22px;
+}
+
+[data-theme='dark'] {
+  --color-bg-base: #17212b;
+  --color-bg-surface: #202b36;
+  --color-bg-surface-secondary: #263442;
+
+  --color-text-primary: #f5f7fa;
+  --color-text-secondary: #9aa8b4;
+
+  --color-border-default: #31404d;
+
+  --color-accent-primary: #5aa9f6;
+  --color-accent-soft: #253d54;
+  --color-accent-on: #ffffff;
+
+  --color-danger-primary: #ff6b6b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]),
+  :root[data-theme='system'] {
+    --color-bg-base: #17212b;
+    --color-bg-surface: #202b36;
+    --color-bg-surface-secondary: #263442;
+
+    --color-text-primary: #f5f7fa;
+    --color-text-secondary: #9aa8b4;
+
+    --color-border-default: #31404d;
+
+    --color-accent-primary: #5aa9f6;
+    --color-accent-soft: #253d54;
+    --color-accent-on: #ffffff;
+
+    --color-danger-primary: #ff6b6b;
+  }
+}
