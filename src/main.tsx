@@ -4,7 +4,7 @@ import { HashRouter } from 'react-router'
 import { Provider } from 'react-redux'
 import { store } from './app/store'
 import { App } from './App'
-import '../src/styles/global.css'
+import './styles/global.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
