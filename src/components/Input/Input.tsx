@@ -4,7 +4,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 import styles from './Input.module.css'
 
 type InputProps = {
-  variant?: 'default' | 'time';
+  variant?: 'default' | 'time'
 } & Omit<ComponentPropsWithoutRef<'input'>, 'className'>
 
 export const Input = ({ variant = 'default', ...inputProps }: InputProps) => {

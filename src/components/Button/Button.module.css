@@ -2,24 +2,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   height: 54px;
   padding: 0 var(--space-16);
   gap: var(--space-8);
-  
   font-family: var(--font-family-base);
   font-size: var(--font-size-button);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-button);
-
   border-radius: var(--radius-default);
-
   cursor: pointer;
-
   transition:
     background-color 0.15s ease,
     border-color 0.15s ease,
     color 0.15s ease;
+}
+
+.fullWidth {
+  width: 100%;
 }
 
 .primary {
@@ -83,11 +82,9 @@
 .spinner {
   width: 14px;
   height: 14px;
-
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
-
   animation: spin 0.7s linear infinite;
 }
 

@@ -1,18 +1,21 @@
 import clsx from 'clsx'
-import type { ComponentPropsWithoutRef, ReactNode } from 'react'
+import type { ComponentPropsWithRef, ReactNode } from 'react'
 
 import styles from './Button.module.css'
 
 type ButtonProps = {
   variant: 'primary' | 'secondary' | 'danger'
-  loading?: boolean;
-  loadingLabel?: ReactNode;
-  children: ReactNode;
-} & Omit<ComponentPropsWithoutRef<'button'>, 'children' | 'className'>
+  fullWidth?: boolean
+  loading?: boolean
+  loadingLabel?: ReactNode
+  children: ReactNode
+} & Omit<ComponentPropsWithRef<'button'>, 'children'>
 
 export const Button = ({
   variant,
+  fullWidth,
   children,
+  ref,
   type = 'button',
   loading = false,
   loadingLabel,
@@ -21,11 +24,13 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
+      ref={ref}
       type={type}
       disabled={disabled || loading}
       className={clsx(
         styles.button,
         styles[variant],
+        fullWidth && styles.fullWidth,
         loading && styles.loading,
       )}
       {...buttonProps}

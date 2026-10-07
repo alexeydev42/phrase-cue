@@ -1,7 +1,31 @@
 {
   "js/ts.format.semicolons": "remove",
   "js/ts.preferences.quoteStyle": "single",
+
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "js/ts.format.semicolons": "remove"
+  },
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "js/ts.format.semicolons": "remove"
+  },
+
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "js/ts.format.semicolons": "remove"
+  },
+
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "js/ts.format.semicolons": "remove"
+  },
+
+  "stylelint.validate": ["css"],
+
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
   }
 }
