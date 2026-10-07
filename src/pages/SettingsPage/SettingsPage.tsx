@@ -1,23 +1,32 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { selectTheme, setTheme } from '../../features/settings/settingsSlice'
+import { selectTheme, setTheme, setLanguage } from '../../features/settings/settingsSlice'
+import { useTranslation } from '../../i18n/useTranslation'
 
 export const SettingsPage = () => {
   const dispatch = useAppDispatch()
   const theme = useAppSelector(selectTheme)
+  const t = useTranslation()
   return (
     <>
       <button type='button' onClick={() => dispatch(setTheme('system'))}>
-        System
+        {t.settings.themeSystem}
       </button>
 
       <button type='button' onClick={() => dispatch(setTheme('light'))}>
-        Light
+        {t.settings.themeLight}
       </button>
 
       <button type='button' onClick={() => dispatch(setTheme('dark'))}>
-        Dark
+        {t.settings.themeDark}
       </button>
 
+      <button type='button' onClick={() => dispatch(setLanguage('en'))}>
+        {t.settings.languageEnglish}
+      </button>
+
+      <button type='button' onClick={() => dispatch(setLanguage('ru'))}>
+        {t.settings.languageRussian}
+      </button>
       <p>Current theme: {theme}</p>
     </>
   )
