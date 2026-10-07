@@ -143,6 +143,7 @@ const en = {
     addShow: 'Add show',
 
     showTitle: 'Show title',
+    showTitlePlaceholder: 'Enter show title',
     saveShow: 'Save show',
 
     seasons: 'Seasons',
@@ -166,6 +167,7 @@ const en = {
 
     episodeNumberNotDetected: 'Episode number not detected',
     episodeNumber: 'Episode number',
+    episodeNumberPlaceholder: 'Enter episode number',
     enterEpisodeNumber: 'Enter the episode number to continue.',
 
     cannotImportFile: 'Cannot import this file',
@@ -188,6 +190,7 @@ const en = {
       'The episode and its imported subtitles will be removed. Saved phrases keep their saved source metadata.',
 
     seasonNumber: 'Season number',
+    seasonNumberPlaceholder: 'Enter season number',
     saveSeason: 'Save season',
 
     deleteShowTitle: 'Delete show?',
@@ -364,6 +367,7 @@ const ru: typeof en = {
     addShow: 'Добавить сериал',
 
     showTitle: 'Название сериала',
+    showTitlePlaceholder: 'Введите название сериала',
     saveShow: 'Сохранить сериал',
 
     seasons: 'Сезоны',
@@ -387,6 +391,7 @@ const ru: typeof en = {
 
     episodeNumberNotDetected: 'Номер эпизода не определён',
     episodeNumber: 'Номер эпизода',
+    episodeNumberPlaceholder: 'Введите номер эпизода',
     enterEpisodeNumber: 'Введите номер эпизода, чтобы продолжить.',
 
     cannotImportFile: 'Не удалось импортировать файл',
@@ -411,6 +416,7 @@ const ru: typeof en = {
       'Эпизод и его импортированные субтитры будут удалены. Сохранённые фразы сохранят данные об источнике.',
 
     seasonNumber: 'Номер сезона',
+    seasonNumberPlaceholder: 'Введите номер сезона',
     saveSeason: 'Сохранить сезон',
 
     deleteShowTitle: 'Удалить сериал?',

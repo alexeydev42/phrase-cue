@@ -6,23 +6,25 @@
 
   --color-text-primary: #17212b;
   --color-text-secondary: #6b7785;
+  --color-text-placeholder: #6b7785;
 
   --color-border-default: #dde5ec;
+  --color-border-interactive-hover: #a9b7c4;
 
   --color-accent-primary: #3390ec;
+  --color-accent-hover: #2582de;
+  --color-accent-pressed: #176fc4;
   --color-accent-soft: #e8f3fd;
+  --color-accent-soft-hover: #d9ecfc;
+  --color-accent-soft-pressed: #c8e3fa;
   --color-accent-on: #ffffff;
 
   --color-danger-primary: #d94a4a;
-
-  --color-accent-hover: #2582de;
-  --color-accent-pressed: #176fc4;
+  --color-danger-soft: #fff3f3;
+  --color-danger-soft-pressed: #ffe6e6;
 
   --color-bg-interactive-hover: #f5f7fa;
   --color-bg-interactive-pressed: #edf3f8;
-
-  --color-danger-soft: #fff3f3;
-  --color-danger-soft-pressed: #ffe6e6;
 
   --color-focus-ring: #0b6fd3;
 
@@ -70,23 +72,25 @@
 
   --color-text-primary: #f5f7fa;
   --color-text-secondary: #9aa8b4;
+  --color-text-placeholder: #9aa8b4;
 
   --color-border-default: #31404d;
+  --color-border-interactive-hover: #526577;
 
   --color-accent-primary: #5aa9f6;
-  --color-accent-soft: #253d54;
-  --color-accent-on: #ffffff;
-
-  --color-danger-primary: #ff6b6b;
-
   --color-accent-hover: #449af0;
   --color-accent-pressed: #2f82d5;
+  --color-accent-soft: #253d54;
+  --color-accent-soft-hover: #2c4964;
+  --color-accent-soft-pressed: #335675;
+  --color-accent-on: #17212b;
+
+  --color-danger-primary: #ff6b6b;
+  --color-danger-soft: #3a272c;
+  --color-danger-soft-pressed: #472d33;
 
   --color-bg-interactive-hover: #263442;
   --color-bg-interactive-pressed: #31404d;
-
-  --color-danger-soft: #3a272c;
-  --color-danger-soft-pressed: #472d33;
 
   --color-focus-ring: #8cc8ff;
 }
@@ -100,23 +104,25 @@
 
     --color-text-primary: #f5f7fa;
     --color-text-secondary: #9aa8b4;
+    --color-text-placeholder: #9aa8b4;
 
     --color-border-default: #31404d;
+    --color-border-interactive-hover: #526577;
 
     --color-accent-primary: #5aa9f6;
-    --color-accent-soft: #253d54;
-    --color-accent-on: #ffffff;
-
-    --color-danger-primary: #ff6b6b;
-
     --color-accent-hover: #449af0;
     --color-accent-pressed: #2f82d5;
+    --color-accent-soft: #253d54;
+    --color-accent-soft-hover: #2c4964;
+    --color-accent-soft-pressed: #335675;
+    --color-accent-on: #17212b;
+
+    --color-danger-primary: #ff6b6b;
+    --color-danger-soft: #3a272c;
+    --color-danger-soft-pressed: #472d33;
 
     --color-bg-interactive-hover: #263442;
     --color-bg-interactive-pressed: #31404d;
-
-    --color-danger-soft: #3a272c;
-    --color-danger-soft-pressed: #472d33;
 
     --color-focus-ring: #8cc8ff;
   }
