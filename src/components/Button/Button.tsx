@@ -16,6 +16,7 @@ export const Button = ({
   fullWidth,
   children,
   ref,
+  className,
   type = 'button',
   loading = false,
   loadingLabel,
@@ -24,16 +25,18 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
+      {...buttonProps}
       ref={ref}
       type={type}
       disabled={disabled || loading}
+      aria-busy={loading}
       className={clsx(
         styles.button,
         styles[variant],
         fullWidth && styles.fullWidth,
         loading && styles.loading,
+        className,
       )}
-      {...buttonProps}
     >
       {loading ? (
         <>

@@ -13,7 +13,7 @@
   outline: none;
 }
 
-.input:hover:not(:disabled) {
+.input:hover:not(:disabled):not([aria-invalid='true']) {
   border-color: var(--color-border-interactive-hover);
 }
 
