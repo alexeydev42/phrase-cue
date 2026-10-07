@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectTheme, setTheme, setLanguage } from '../../features/settings/settingsSlice'
 import { useTranslation } from '../../i18n/useTranslation'
+import { Button } from '../../components/Button/Button'
 
 export const SettingsPage = () => {
   const dispatch = useAppDispatch()
@@ -8,26 +9,30 @@ export const SettingsPage = () => {
   const t = useTranslation()
   return (
     <>
-      <button type='button' onClick={() => dispatch(setTheme('system'))}>
+      <Button variant='primary'onClick={() => dispatch(setTheme('system'))}>
         {t.settings.themeSystem}
-      </button>
+      </Button>
 
-      <button type='button' onClick={() => dispatch(setTheme('light'))}>
+      <Button variant='secondary'onClick={() => dispatch(setTheme('light'))}>
         {t.settings.themeLight}
-      </button>
+      </Button>
 
-      <button type='button' onClick={() => dispatch(setTheme('dark'))}>
+      <Button variant='secondary'onClick={() => dispatch(setTheme('dark'))}>
         {t.settings.themeDark}
-      </button>
+      </Button>
 
-      <button type='button' onClick={() => dispatch(setLanguage('en'))}>
+      <Button variant='primary' onClick={() => dispatch(setLanguage('en'))}>
         {t.settings.languageEnglish}
-      </button>
+      </Button>
 
-      <button type='button' onClick={() => dispatch(setLanguage('ru'))}>
+      <Button variant='primary'onClick={() => dispatch(setLanguage('ru'))}>
         {t.settings.languageRussian}
-      </button>
+      </Button>
       <p>Current theme: {theme}</p>
+      
+      <Button variant='primary' loading>
+        {t.selectPhrase.translating}
+      </Button>
     </>
   )
 }
