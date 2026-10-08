@@ -79,6 +79,10 @@
   cursor: default;
 }
 
+.loading {
+  opacity: 1;
+}
+
 .spinner {
   width: 14px;
   height: 14px;
