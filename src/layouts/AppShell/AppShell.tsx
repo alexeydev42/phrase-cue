@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router';
-import { MobileNavigation } from '../../components/Navigation/MobileNavigation';
-import { Header } from '../../components/Header/Header';
+import { Outlet } from 'react-router'
+import { MobileNavigation } from '../../components/Navigation/MobileNavigation'
+import { Header } from '../../components/Header/Header'
 
 import styles from './AppShell.module.css'
 
@@ -13,5 +13,5 @@ export const AppShell = () => {
       </main>
       <MobileNavigation />
     </>
-  );
-};
+  )
+}

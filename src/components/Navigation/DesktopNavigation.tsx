@@ -1,7 +1,7 @@
-import { NavLink } from 'react-router';
-import clsx from 'clsx';
+import { NavLink } from 'react-router'
+import clsx from 'clsx'
 
-import styles from './DesktopNavigation.module.css';
+import styles from './DesktopNavigation.module.css'
 
 export const DesktopNavigation = () => {
   return (
@@ -40,5 +40,5 @@ export const DesktopNavigation = () => {
         Settings
       </NavLink>
     </nav>
-  );
-};
+  )
+}

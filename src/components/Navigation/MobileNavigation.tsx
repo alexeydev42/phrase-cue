@@ -1,7 +1,7 @@
-import { NavLink } from 'react-router';
-import clsx from 'clsx';
+import { NavLink } from 'react-router'
+import clsx from 'clsx'
 
-import styles from './MobileNavigation.module.css';
+import styles from './MobileNavigation.module.css'
 
 export const MobileNavigation = () => {
   return (
@@ -40,5 +40,5 @@ export const MobileNavigation = () => {
         Settings
       </NavLink>
     </nav>
-  );
-};
+  )
+}
