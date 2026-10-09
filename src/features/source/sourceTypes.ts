@@ -28,3 +28,10 @@ export interface SourceState {
   shows: Show[]
   activeEpisodeId: string | null
 }
+
+export interface PhraseSourceSnapshot {
+  showTitle: string
+  seasonNumber: number
+  episodeNumber: number
+  timecodeMs: number
+}

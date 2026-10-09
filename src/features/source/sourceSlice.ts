@@ -100,6 +100,9 @@ const sourceSlice = createSlice({
         state.activeEpisodeId = null
       }
     },
+    hydrateShows(state, action: PayloadAction<Show[]>) {
+      state.shows = action.payload
+    }
   },
 })
 
@@ -110,7 +113,8 @@ export const {
   setActiveEpisodeId,
   removeEpisode,
   removeSeason,
-  removeShow
+  removeShow,
+  hydrateShows
 } = sourceSlice.actions
 
 export const sourceReducer = sourceSlice.reducer
