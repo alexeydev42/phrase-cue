@@ -30,6 +30,10 @@
   --font-size-supporting: 0.75rem;
   --font-size-button: 0.9375rem;
   --font-size-input: 1rem;
+  --font-size-page-title: clamp(22px, calc(20.77px + 0.315vw), 24px);
+  --font-size-breadcrumb: 0.8125rem;
+  --font-size-card-title: 1rem;
+  --font-size-brand: 1.125rem;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -40,11 +44,14 @@
   --line-height-supporting: 1rem;
   --line-height-button: 1.25rem;
   --line-height-input: 1.25rem;
+  --line-height-page-title: 1.2;
+  --line-height-card-title: 1.2;
 
   /* Spacing */
   --space-4: 4px;
   --space-8: 8px;
   --space-12: 12px;
+  --space-14: 14px;
   --space-16: 16px;
   --space-24: 24px;
   --space-32: 32px;
@@ -54,6 +61,22 @@
   --radius-default: 14px;
   --radius-modal: 18px;
   --radius-screen: 22px;
+  --radius-navigation: 16px;
+
+  /* Layout */
+  --layout-content-max-width: 1240px;
+  --layout-header-min-height: 64px;
+  --layout-nav-item-min-height: 40px;
+  --layout-nav-item-width: clamp(90px, calc(21.077px + 6.731vw), 118px);
+
+
+  /* Fluid layout */
+  --layout-page-inline: clamp(16px, 6.15vw, 32px);
+  --layout-section-gap: clamp(14px, calc(10.286px + 0.952vw), 24px);
+  --layout-panel-padding: clamp(20px, calc(10.154px + 0.962vw), 24px);
+  --layout-card-padding-inline: clamp(16px, calc(15.257px + 0.19vw), 18px);
+  --layout-card-padding-block: clamp(14px, calc(12.514px + 0.381vw), 18px);
+  --layout-card-min-height: clamp(80px, calc(87.771px + 0.571vw), 96px);
 }
 
 [data-theme='dark'] {
@@ -104,5 +127,12 @@
     --color-bg-interactive-hover: #263442;
     --color-bg-interactive-pressed: #31404d;
     --color-focus-ring: #8cc8ff;
+  }
+}
+
+@media (width >= 1024px) {
+  :root {
+    --font-size-page-title: clamp(24px, calc(9.231px + 1.442vw), 30px);
+    --layout-page-inline: clamp(32px, calc(12.308px + 1.923vw), 40px);
   }
 }

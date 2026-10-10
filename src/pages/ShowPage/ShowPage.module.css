@@ -1,0 +1,132 @@
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-section-gap);
+  width: 100%;
+  max-width: calc(
+    var(--layout-content-max-width) +
+    var(--layout-page-inline) * 2
+  );
+  margin-inline: auto;
+  padding: var(--space-24) var(--layout-page-inline);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-block-end: var(--space-24);
+}
+
+.title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-page-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-page-title);
+  overflow-wrap: anywhere;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--layout-section-gap);
+  min-width: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-14);
+  min-width: 0;
+}
+
+.listPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-14);
+  min-width: 0;
+}
+
+.listLabel {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-supporting);
+}
+
+.seasonList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-14);
+  min-width: 0;
+  list-style: none;
+}
+
+.seasonItem {
+  min-width: 0;
+}
+
+.seasonCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  min-width: 0;
+  min-height: var(--layout-card-min-height);
+  padding:
+    var(--layout-card-padding-block)
+    var(--layout-card-padding-inline);
+}
+
+.seasonTitle {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-card-title);
+  overflow-wrap: anywhere;
+}
+
+.seasonMeta {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-supporting);
+}
+
+@media (width >= 1024px) {
+  .head {
+    padding-block-end: 0;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .actions,
+  .listPanel {
+    padding: var(--layout-panel-padding);
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-modal);
+  }
+
+  .actions {
+    flex: 0 1 29.032%;
+  }
+
+  .listPanel {
+    flex: 1 1 0;
+  }
+
+  .listLabel {
+    display: none;
+  }
+
+  .seasonCard {
+    border-radius: var(--radius-modal);
+  }
+}

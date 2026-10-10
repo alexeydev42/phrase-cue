@@ -1,0 +1,38 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-accent-primary);
+  font-size: var(--font-size-breadcrumb);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-supporting);
+  transition: color 0.2s ease;
+}
+
+.backArrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.backLink:focus-visible {
+  border-radius: var(--space-4);
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: var(--space-4);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .backLink:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .backLink:hover .backArrow {
+    transform: translateX(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backLink,
+  .backArrow {
+    transition: none;
+  }
+}
