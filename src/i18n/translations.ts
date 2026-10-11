@@ -15,6 +15,9 @@ const en = {
   },
 
   episode: {
+    underDevelopment: 'Under development',
+    underDevelopmentHint:
+      'An app for saving and learning English phrases from TV series subtitles. More features are coming soon.',
     findPhrase: 'Find a phrase',
     approximateTimecodeHint: 'Enter an approximate timecode from the episode.',
     activeEpisode: 'Active episode',
@@ -239,6 +242,9 @@ const ru: typeof en = {
   },
 
   episode: {
+    underDevelopment: 'В разработке',
+    underDevelopmentHint:
+      'Приложение для сохранения и изучения английских фраз из субтитров сериалов. Новые возможности появятся позже.',
     findPhrase: 'Найти фразу',
     approximateTimecodeHint: 'Введите примерный таймкод из эпизода.',
     activeEpisode: 'Активный эпизод',
