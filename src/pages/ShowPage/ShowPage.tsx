@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router'
+import { useParams, useNavigate, Link } from 'react-router'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { selectShows, removeShow } from '../../features/source/sourceSlice'
 import { useTranslation } from '../../i18n/useTranslation'
@@ -46,17 +46,22 @@ export const ShowPage = () => {
             {show.seasons.map((season) => {
               return (
                 <li key={season.id} className={styles.seasonItem}>
-                  <Surface className={styles.seasonCard}>
-                    <h2 className={styles.seasonTitle}>
-                      {t.source.season.replace('{number}', String(season.number))}
-                    </h2>
-                    <p className={styles.seasonMeta}>
-                      {t.source.episodesImported.replace(
-                        '{count}',
-                        String(season.episodes.length),
-                      )}
-                    </p>
-                  </Surface>
+                  <Link
+                    to={`/episode/shows/${show.id}/seasons/${season.id}`}
+                    className={styles.seasonLink}
+                  >
+                    <Surface className={styles.seasonCard}>
+                      <h2 className={styles.seasonTitle}>
+                        {t.source.season.replace('{number}', String(season.number))}
+                      </h2>
+                      <p className={styles.seasonMeta}>
+                        {t.source.episodesImported.replace(
+                          '{count}',
+                          String(season.episodes.length),
+                        )}
+                      </p>
+                    </Surface>
+                  </Link>
                 </li>
               )
             })}

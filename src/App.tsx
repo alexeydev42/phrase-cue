@@ -11,6 +11,8 @@ import { ShowsPage } from './pages/ShowsPage/ShowsPage'
 import { AddShowPage } from './pages/AddShowPage/AddShowPage'
 import { ShowPage } from './pages/ShowPage/ShowPage'
 import { AddSeasonPage } from './pages/AddSeasonPage/AddSeasonPage'
+import { SeasonPage } from './pages/SeasonPage/SeasonPage'
+import { ImportSrtPage } from './pages/ImportSrtPage/ImportSrtPage'
 
 export const App = () => {
   return (
@@ -32,6 +34,14 @@ export const App = () => {
             <Route
               path='episode/shows/:showId/seasons/new'
               element={<AddSeasonPage />}
+            />
+            <Route
+              path='episode/shows/:showId/seasons/:seasonId'
+              element={<SeasonPage />}
+            />
+            <Route
+              path='episode/shows/:showId/seasons/:seasonId/import'
+              element={<ImportSrtPage />}
             />
           </Route>
         </Route>
