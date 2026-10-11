@@ -1,16 +1,22 @@
-import { NavLink } from 'react-router'
+import { NavLink, useLocation } from 'react-router'
 import clsx from 'clsx'
 
 import styles from './DesktopNavigation.module.css'
 
 export const DesktopNavigation = () => {
+  const { pathname } = useLocation()
+
   return (
     <nav className={styles.navigation}>
       <NavLink
         to='/'
         end
         className={({ isActive }) =>
-          clsx(styles.link, isActive && styles.linkActive)
+          clsx(
+            styles.link,
+            (isActive || pathname.startsWith('/episode/')) &&
+            styles.linkActive,
+          )
         }
       >
         Episode
