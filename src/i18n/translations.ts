@@ -149,6 +149,7 @@ const en = {
     showTitlePlaceholder: 'Enter show title',
     saveShow: 'Save show',
     showNotFound: 'Show not found',
+    seasonNotFound: 'Season not found',
 
     seasons: 'Seasons',
     addSeason: 'Add season',
@@ -377,6 +378,7 @@ const ru: typeof en = {
     showTitlePlaceholder: 'Введите название сериала',
     saveShow: 'Сохранить сериал',
     showNotFound: 'Сериал не найден',
+    seasonNotFound: 'Сезон не найден',
 
     seasons: 'Сезоны',
     addSeason: 'Добавить сезон',

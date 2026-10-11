@@ -96,6 +96,23 @@
   line-height: var(--line-height-supporting);
 }
 
+.seasonLink {
+  display: block;
+  border-radius: var(--radius-default);
+}
+
+.seasonLink:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .seasonLink:hover .seasonCard {
+    background-color: var(--color-bg-interactive-hover);
+    border-color: var(--color-border-interactive-hover);
+  }
+}
+
 @media (width >= 1024px) {
   .head {
     padding-block-end: 0;
