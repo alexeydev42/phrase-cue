@@ -1,12 +1,7 @@
-
 import { useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import {
-  removeEpisode,
-  selectShows,
-  setActiveEpisodeId,
-} from '../../features/source/sourceSlice'
+import { removeEpisode, selectShows, setActiveEpisodeId } from '../../features/source/sourceSlice'
 import { useTranslation } from '../../i18n/useTranslation'
 import { BackLink } from '../../components/BackLink/BackLink'
 import { Button } from '../../components/Button/Button'
@@ -26,9 +21,7 @@ export const EpisodeDetailsPage = () => {
 
   const show = shows.find((show) => show.id === showId)
   const season = show?.seasons.find((season) => season.id === seasonId)
-  const episode = season?.episodes.find(
-    (episode) => episode.id === episodeId
-  )
+  const episode = season?.episodes.find((episode) => episode.id === episodeId)
 
   if (!show) {
     return <p>{t.source.showNotFound}</p>
@@ -38,22 +31,15 @@ export const EpisodeDetailsPage = () => {
     return <p>{t.source.seasonNotFound}</p>
   }
 
-  const seasonPath =
-    `/episode/shows/${show.id}/seasons/${season.id}`
+  const seasonPath = `/episode/shows/${show.id}/seasons/${season.id}`
 
   if (!episode) {
     return <Navigate to={seasonPath} replace />
   }
 
-  const seasonTitle = t.source.season.replace(
-    '{number}',
-    String(season.number)
-  )
+  const seasonTitle = t.source.season.replace('{number}', String(season.number))
 
-  const episodeTitle = t.source.episode.replace(
-    '{number}',
-    String(episode.number)
-  )
+  const episodeTitle = t.source.episode.replace('{number}', String(episode.number))
 
   const handleOpenEpisode = () => {
     dispatch(setActiveEpisodeId(episode.id))
@@ -66,7 +52,7 @@ export const EpisodeDetailsPage = () => {
         showId: show.id,
         seasonId: season.id,
         episodeId: episode.id,
-      })
+      }),
     )
 
     navigate(seasonPath, { replace: true })
@@ -78,7 +64,8 @@ export const EpisodeDetailsPage = () => {
         <BackLink to={seasonPath}>
           {seasonTitle}
           <span className={styles.backShow}>
-            {' · '}{show.title}
+            {' · '}
+            {show.title}
           </span>
         </BackLink>
 
@@ -91,33 +78,19 @@ export const EpisodeDetailsPage = () => {
 
       <div className={styles.content}>
         <Surface className={styles.episodeCard}>
-          <h2 className={styles.episodeTitle}>
-            {episodeTitle}
-          </h2>
+          <h2 className={styles.episodeTitle}>{episodeTitle}</h2>
 
-          <p className={styles.episodeMeta}>
-            {t.source.subtitlesImported}
-          </p>
+          <p className={styles.episodeMeta}>{t.source.subtitlesImported}</p>
 
-          <p className={styles.episodeHint}>
-            {t.source.openingSetsActive}
-          </p>
+          <p className={styles.episodeHint}>{t.source.openingSetsActive}</p>
         </Surface>
 
         <div className={styles.actions}>
-          <Button
-            variant='primary'
-            fullWidth
-            onClick={handleOpenEpisode}
-          >
+          <Button variant='primary' fullWidth onClick={handleOpenEpisode}>
             {t.source.openEpisode}
           </Button>
 
-          <Button
-            variant='secondary'
-            fullWidth
-            onClick={() => setIsDeleteDialogOpen(true)}
-          >
+          <Button variant='secondary' fullWidth onClick={() => setIsDeleteDialogOpen(true)}>
             {t.source.deleteEpisode}
           </Button>
         </div>

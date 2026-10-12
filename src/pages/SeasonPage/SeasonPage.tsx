@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { useTranslation } from '../../i18n/useTranslation'
@@ -39,9 +38,7 @@ export const SeasonPage = () => {
   return (
     <section className={styles.page}>
       <div className={styles.head}>
-        <BackLink to={`/episode/shows/${show.id}`}>
-          {show.title}
-        </BackLink>
+        <BackLink to={`/episode/shows/${show.id}`}>{show.title}</BackLink>
         <h1 className={styles.title}>
           {t.source.season.replace('{number}', String(season.number))}
         </h1>
@@ -53,18 +50,12 @@ export const SeasonPage = () => {
           <Button
             variant='primary'
             fullWidth
-            onClick={() =>
-              navigate(`/episode/shows/${show.id}/seasons/${season.id}/import`)
-            }
+            onClick={() => navigate(`/episode/shows/${show.id}/seasons/${season.id}/import`)}
           >
             {t.source.importSrt}
           </Button>
 
-          <Button
-            variant='secondary'
-            fullWidth
-            onClick={() => setIsDeleteDialogOpen(true)}
-          >
+          <Button variant='secondary' fullWidth onClick={() => setIsDeleteDialogOpen(true)}>
             {t.source.deleteSeason}
           </Button>
         </div>
@@ -81,14 +72,9 @@ export const SeasonPage = () => {
                 >
                   <Surface className={styles.episodeCard}>
                     <h2 className={styles.episodeTitle}>
-                      {t.source.episode.replace(
-                        '{number}',
-                        String(episode.number),
-                      )}
+                      {t.source.episode.replace('{number}', String(episode.number))}
                     </h2>
-                    <p className={styles.episodeMeta}>
-                      {t.source.importedSubtitles}
-                    </p>
+                    <p className={styles.episodeMeta}>{t.source.importedSubtitles}</p>
                   </Surface>
                 </Link>
               </li>

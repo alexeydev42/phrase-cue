@@ -1,4 +1,3 @@
-
 import { NavLink } from 'react-router'
 import clsx from 'clsx'
 import { useTranslation } from '../../i18n/useTranslation'
@@ -22,9 +21,7 @@ export const MobileNavigation = () => {
           key={to}
           to={to}
           end={end}
-          className={({ isActive }) =>
-            clsx(styles.link, isActive && styles.linkActive)
-          }
+          className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
         >
           <span className={styles.indicator} aria-hidden='true' />
           <span className={styles.label}>{label}</span>

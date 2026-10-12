@@ -6,19 +6,17 @@ export interface ParsedCue {
 
 export type SrtParseResult =
   | {
-    ok: true
-    cues: ParsedCue[]
-    skippedCount: number
-  }
+      ok: true
+      cues: ParsedCue[]
+      skippedCount: number
+    }
   | {
-    ok: false
-    error: 'invalid-srt'
-  }
+      ok: false
+      error: 'invalid-srt'
+    }
 
 const parseTimestamp = (timestamp: string): number | null => {
-  const match = timestamp
-    .trim()
-    .match(/^(\d+):([0-5]\d):([0-5]\d),(\d{3})$/)
+  const match = timestamp.trim().match(/^(\d+):([0-5]\d):([0-5]\d),(\d{3})$/)
 
   if (!match) {
     return null
@@ -26,12 +24,7 @@ const parseTimestamp = (timestamp: string): number | null => {
 
   const [, hours, minutes, seconds, milliseconds] = match.map(Number)
 
-  return (
-    hours * 60 * 60 * 1000 +
-    minutes * 60 * 1000 +
-    seconds * 1000 +
-    milliseconds
-  )
+  return hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000 + milliseconds
 }
 
 interface ParsedTimeRange {

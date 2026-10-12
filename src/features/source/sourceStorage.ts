@@ -13,7 +13,7 @@ interface PhraseCueDB extends DBSchema {
 const dbPromise = openDB<PhraseCueDB>('phrase-cue', 1, {
   upgrade(db) {
     db.createObjectStore('source')
-  }
+  },
 })
 
 export const saveShows = async (shows: Show[]) => {

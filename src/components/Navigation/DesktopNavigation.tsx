@@ -12,36 +12,26 @@ export const DesktopNavigation = () => {
         to='/'
         end
         className={({ isActive }) =>
-          clsx(
-            styles.link,
-            (isActive || pathname.startsWith('/episode/')) &&
-            styles.linkActive,
-          )
+          clsx(styles.link, (isActive || pathname.startsWith('/episode/')) && styles.linkActive)
         }
       >
         Episode
       </NavLink>
       <NavLink
         to='/library'
-        className={({ isActive }) =>
-          clsx(styles.link, isActive && styles.linkActive)
-        }
+        className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
       >
         Library
       </NavLink>
       <NavLink
         to='/study'
-        className={({ isActive }) =>
-          clsx(styles.link, isActive && styles.linkActive)
-        }
+        className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
       >
         Study
       </NavLink>
       <NavLink
         to='/settings'
-        className={({ isActive }) =>
-          clsx(styles.link, isActive && styles.linkActive)
-        }
+        className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
       >
         Settings
       </NavLink>

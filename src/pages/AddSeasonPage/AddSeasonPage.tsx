@@ -9,7 +9,6 @@ import { BackLink } from '../../components/BackLink/BackLink'
 
 import styles from './AddSeasonPage.module.css'
 
-
 export const AddSeasonPage = () => {
   const [seasonNumber, setSeasonNumber] = useState('')
   const t = useTranslation()
@@ -19,7 +18,6 @@ export const AddSeasonPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
-
   const handleSave: SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
     if (!show) return
@@ -27,14 +25,16 @@ export const AddSeasonPage = () => {
     if (!Number.isInteger(parsedSeasonNumber) || parsedSeasonNumber < 1) return
     const seasonId = crypto.randomUUID()
 
-    dispatch(addSeason({
-      showId: show.id,
-      season: {
-        id: seasonId,
-        number: parsedSeasonNumber,
-        episodes: []
-      }
-    }))
+    dispatch(
+      addSeason({
+        showId: show.id,
+        season: {
+          id: seasonId,
+          number: parsedSeasonNumber,
+          episodes: [],
+        },
+      }),
+    )
     navigate(`/episode/shows/${show.id}`, { replace: true })
   }
   if (!show) {
@@ -43,14 +43,14 @@ export const AddSeasonPage = () => {
   return (
     <section className={styles.page}>
       <div className={styles.head}>
-        <BackLink to={`/episode/shows/${show.id}`}>
-          {show.title}
-        </BackLink>
+        <BackLink to={`/episode/shows/${show.id}`}>{show.title}</BackLink>
         <h1 className={styles.title}>{t.source.addSeason}</h1>
       </div>
       <form className={styles.form} onSubmit={handleSave}>
         <div className={styles.field}>
-          <label className={styles.fieldLabel} htmlFor='season-number'>{t.source.seasonNumber}</label>
+          <label className={styles.fieldLabel} htmlFor='season-number'>
+            {t.source.seasonNumber}
+          </label>
           <Input
             type='number'
             id='season-number'
@@ -62,7 +62,9 @@ export const AddSeasonPage = () => {
             onChange={(event) => setSeasonNumber(event.target.value)}
           />
         </div>
-        <Button type='submit' variant='primary' fullWidth>{t.source.saveSeason}</Button>
+        <Button type='submit' variant='primary' fullWidth>
+          {t.source.saveSeason}
+        </Button>
         <Button
           type='button'
           variant='secondary'

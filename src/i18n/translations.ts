@@ -26,14 +26,12 @@ const en = {
     enterApproximateTimecode: 'Enter approximate timecode',
 
     searchResults: 'Search results',
-    searchResultsHint:
-      'Search to see subtitle cues around the selected timecode.',
+    searchResultsHint: 'Search to see subtitle cues around the selected timecode.',
     noSubtitleList: 'No subtitle list yet',
     noSubtitleListHint: 'Enter a timecode and press Search.',
 
     nearbyCues: 'Nearby subtitle cues',
-    nearbyCuesHint:
-      'Three cues before the specified time, the nearest cue, and three after.',
+    nearbyCuesHint: 'Three cues before the specified time, the nearest cue, and three after.',
 
     noActiveEpisode: 'No active episode',
     noActiveEpisodeHint: 'Choose an episode to start finding phrases.',
@@ -52,8 +50,7 @@ const en = {
     selectionHint: 'Choose up to three consecutive cues.',
 
     draftLabel: 'Phrase draft',
-    draftHint:
-      'Edit the draft if you want to remove unnecessary subtitle text.',
+    draftHint: 'Edit the draft if you want to remove unnecessary subtitle text.',
 
     translate: 'Translate',
     saveWithoutTranslation: 'Save without translation',
@@ -94,8 +91,7 @@ const en = {
       'Learning limit reached. Increase the limit in Settings to add more phrases.',
 
     deletePhraseTitle: 'Delete phrase?',
-    deletePhraseBody:
-      'This phrase will be permanently removed from the Library.',
+    deletePhraseBody: 'This phrase will be permanently removed from the Library.',
   },
 
   study: {
@@ -130,8 +126,7 @@ const en = {
     learningLimitHint: '1–50 · current Learning: {count}',
 
     localData: 'Local data',
-    localDataDescription:
-      'Create or restore a JSON backup of saved phrases and Learning limit.',
+    localDataDescription: 'Create or restore a JSON backup of saved phrases and Learning limit.',
 
     storedLocally: 'Stored locally',
     storedLocallyHint:
@@ -255,14 +250,12 @@ const ru: typeof en = {
     enterApproximateTimecode: 'Введите примерный таймкод',
 
     searchResults: 'Результаты поиска',
-    searchResultsHint:
-      'Выполните поиск, чтобы увидеть реплики рядом с выбранным таймкодом.',
+    searchResultsHint: 'Выполните поиск, чтобы увидеть реплики рядом с выбранным таймкодом.',
     noSubtitleList: 'Реплики пока не показаны',
     noSubtitleListHint: 'Введите таймкод и нажмите «Найти».',
 
     nearbyCues: 'Реплики рядом с таймкодом',
-    nearbyCuesHint:
-      'Три реплики до указанного времени, ближайшая к нему и три после.',
+    nearbyCuesHint: 'Три реплики до указанного времени, ближайшая к нему и три после.',
 
     noActiveEpisode: 'Нет активного эпизода',
     noActiveEpisodeHint: 'Выберите эпизод, чтобы искать фразы.',
@@ -333,8 +326,7 @@ const ru: typeof en = {
     learned: 'Выучено',
 
     noPhrases: 'Нет фраз для изучения',
-    noPhrasesHint:
-      'Перенесите фразы из «Новые» в «Изучаемые», чтобы начать цикл.',
+    noPhrasesHint: 'Перенесите фразы из «Новые» в «Изучаемые», чтобы начать цикл.',
     goToNew: 'Перейти в «Новые»',
   },
 
@@ -405,16 +397,14 @@ const ru: typeof en = {
     enterEpisodeNumber: 'Введите номер эпизода, чтобы продолжить.',
 
     cannotImportFile: 'Не удалось импортировать файл',
-    invalidSrt:
-      'Некорректный или нечитаемый SRT. Остальные файлы не затронуты.',
+    invalidSrt: 'Некорректный или нечитаемый SRT. Остальные файлы не затронуты.',
 
     importValidFiles: 'Импортировать корректные файлы',
     importComplete: 'Импорт завершён',
     filesSkipped: 'Пропущено файлов: {count}',
 
     openEpisode: 'Открыть эпизод',
-    importedWithWarning:
-      'Импортировано с предупреждением · пропущено реплик: {count}',
+    importedWithWarning: 'Импортировано с предупреждением · пропущено реплик: {count}',
     importMoreSrt: 'Импортировать ещё SRT',
 
     subtitlesImported: 'Субтитры импортированы',

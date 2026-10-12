@@ -9,7 +9,6 @@ import { BackLink } from '../../components/BackLink/BackLink'
 
 import styles from './AddShowPage.module.css'
 
-
 export const AddShowPage = () => {
   const [title, setTitle] = useState('')
   const t = useTranslation()
@@ -22,11 +21,13 @@ export const AddShowPage = () => {
     if (!trimmedTitle) return
     const showId = crypto.randomUUID()
 
-    dispatch(addShow({
-      id: showId,
-      title: trimmedTitle,
-      seasons: []
-    }))
+    dispatch(
+      addShow({
+        id: showId,
+        title: trimmedTitle,
+        seasons: [],
+      }),
+    )
     navigate(`/episode/shows/${showId}`, { replace: true })
   }
 

@@ -1,9 +1,5 @@
 import { useEffect, useId, useRef } from 'react'
-import type {
-  KeyboardEvent,
-  MouseEvent,
-  SyntheticEvent,
-} from 'react'
+import type { KeyboardEvent, MouseEvent, SyntheticEvent } from 'react'
 
 import { Button } from '../Button/Button'
 import styles from './ConfirmationDialog.module.css'
