@@ -32,14 +32,8 @@ export const App = () => {
             <Route path='episode/shows' element={<ShowsPage />} />
             <Route path='episode/shows/new' element={<AddShowPage />} />
             <Route path='episode/shows/:showId' element={<ShowPage />} />
-            <Route
-              path='episode/shows/:showId/seasons/new'
-              element={<AddSeasonPage />}
-            />
-            <Route
-              path='episode/shows/:showId/seasons/:seasonId'
-              element={<SeasonPage />}
-            />
+            <Route path='episode/shows/:showId/seasons/new' element={<AddSeasonPage />} />
+            <Route path='episode/shows/:showId/seasons/:seasonId' element={<SeasonPage />} />
             <Route
               path='episode/shows/:showId/seasons/:seasonId/import'
               element={<ImportSrtPage />}

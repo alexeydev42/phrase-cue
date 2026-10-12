@@ -1,4 +1,3 @@
-
 import { useRef, useState, type ChangeEvent } from 'react'
 import { useParams, Link } from 'react-router'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
@@ -33,9 +32,7 @@ export const ImportSrtPage = () => {
   const dispatch = useAppDispatch()
   const selectionIdRef = useRef(0)
   const [files, setFiles] = useState<ImportFileItem[]>([])
-  const [importedEpisodes, setImportedEpisodes] = useState<
-    ImportedEpisode[] | null
-  >(null)
+  const [importedEpisodes, setImportedEpisodes] = useState<ImportedEpisode[] | null>(null)
   const { showId, seasonId } = useParams()
   const shows = useAppSelector(selectShows)
   const show = shows.find((show) => show.id === showId)
@@ -91,19 +88,15 @@ export const ImportSrtPage = () => {
     const number = value === '' ? null : Number(value)
 
     const episodeNumber =
-      number !== null && Number.isSafeInteger(number) && number > 0
-        ? number
-        : null
+      number !== null && Number.isSafeInteger(number) && number > 0 ? number : null
 
     setFiles((currentFiles) =>
-      currentFiles.map((file) =>
-        file.id === id ? { ...file, episodeNumber } : file
-      )
+      currentFiles.map((file) => (file.id === id ? { ...file, episodeNumber } : file)),
     )
   }
 
   const readyFiles = files.filter(
-    (file) => file.parseResult?.ok === true && file.episodeNumber !== null
+    (file) => file.parseResult?.ok === true && file.episodeNumber !== null,
   )
 
   const handleImport = () => {
@@ -125,11 +118,13 @@ export const ImportSrtPage = () => {
         cues,
       }
 
-      dispatch(addEpisode({
-        showId: show.id,
-        seasonId: season.id,
-        episode,
-      }))
+      dispatch(
+        addEpisode({
+          showId: show.id,
+          seasonId: season.id,
+          episode,
+        }),
+      )
 
       imported.push({
         id: episode.id,
@@ -147,9 +142,7 @@ export const ImportSrtPage = () => {
     return (
       <section className={styles.page}>
         <div className={styles.head}>
-          <BackLink to={`/episode/shows/${show.id}`}>
-            {show.title}
-          </BackLink>
+          <BackLink to={`/episode/shows/${show.id}`}>{show.title}</BackLink>
 
           <h1 className={styles.title}>
             {t.source.season.replace('{number}', String(season.number))}
@@ -163,18 +156,12 @@ export const ImportSrtPage = () => {
             <li>
               <Surface className={styles.fileCard}>
                 <p className={styles.fileName}>
-                  {t.source.episodesImported.replace(
-                    '{count}',
-                    String(importedEpisodes.length)
-                  )}
+                  {t.source.episodesImported.replace('{count}', String(importedEpisodes.length))}
                 </p>
 
                 {skippedFiles > 0 && (
                   <p className={styles.fileMeta}>
-                    {t.source.filesSkipped.replace(
-                      '{count}',
-                      String(skippedFiles)
-                    )}
+                    {t.source.filesSkipped.replace('{count}', String(skippedFiles))}
                   </p>
                 )}
               </Surface>
@@ -184,18 +171,15 @@ export const ImportSrtPage = () => {
               <li key={episode.id}>
                 <Surface className={styles.fileCard}>
                   <p className={styles.fileName}>
-                    {t.source.episode.replace(
-                      '{number}',
-                      String(episode.number)
-                    )}
+                    {t.source.episode.replace('{number}', String(episode.number))}
                   </p>
 
                   <p className={styles.fileMeta}>
                     {episode.skippedCount > 0
                       ? t.source.importedWithWarning.replace(
-                        '{count}',
-                        String(episode.skippedCount)
-                      )
+                          '{count}',
+                          String(episode.skippedCount),
+                        )
                       : t.source.importedSubtitles}
                   </p>
 
@@ -278,36 +262,21 @@ export const ImportSrtPage = () => {
 
                     {file.readError || file.parseResult?.ok === false ? (
                       <>
-                        <p className={styles.fileMeta}>
-                          {t.source.cannotImportFile}
-                        </p>
-                        <p className={styles.errorMessage}>
-                          {t.source.invalidSrt}
-                        </p>
+                        <p className={styles.fileMeta}>{t.source.cannotImportFile}</p>
+                        <p className={styles.errorMessage}>{t.source.invalidSrt}</p>
                       </>
                     ) : file.needsManualNumber ? (
                       <>
-                        <p className={styles.fileMeta}>
-                          {t.source.episodeNumberNotDetected}
-                        </p>
+                        <p className={styles.fileMeta}>{t.source.episodeNumberNotDetected}</p>
 
-                        <p
-                          className={
-                            file.episodeNumber !== null
-                              ? styles.ready
-                              : styles.fileMeta
-                          }
-                        >
+                        <p className={file.episodeNumber !== null ? styles.ready : styles.fileMeta}>
                           {file.episodeNumber !== null
                             ? t.source.readyToImport
                             : t.source.enterEpisodeNumber}
                         </p>
 
                         <div className={styles.field}>
-                          <label
-                            className={styles.fieldLabel}
-                            htmlFor={`episode-${file.id}`}
-                          >
+                          <label className={styles.fieldLabel} htmlFor={`episode-${file.id}`}>
                             {t.source.episodeNumber}
                           </label>
 
@@ -319,10 +288,7 @@ export const ImportSrtPage = () => {
                             value={file.episodeNumber ?? ''}
                             placeholder={t.source.episodeNumberPlaceholder}
                             onChange={(event) =>
-                              handleEpisodeNumberChange(
-                                file.id,
-                                event.currentTarget.value
-                              )
+                              handleEpisodeNumberChange(file.id, event.currentTarget.value)
                             }
                           />
                         </div>
@@ -330,15 +296,10 @@ export const ImportSrtPage = () => {
                     ) : (
                       <>
                         <p className={styles.fileMeta}>
-                          {t.source.episodeDetected.replace(
-                            '{number}',
-                            String(file.episodeNumber)
-                          )}
+                          {t.source.episodeDetected.replace('{number}', String(file.episodeNumber))}
                         </p>
 
-                        <p className={styles.ready}>
-                          {t.source.readyToImport}
-                        </p>
+                        <p className={styles.ready}>{t.source.readyToImport}</p>
                       </>
                     )}
                   </Surface>

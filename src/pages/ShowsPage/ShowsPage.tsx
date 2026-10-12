@@ -16,19 +16,13 @@ export const ShowsPage = () => {
   return (
     <section className={styles.page}>
       <div className={styles.head}>
-        <BackLink to='/'>
-          {t.navigation.episode}
-        </BackLink>
+        <BackLink to='/'>{t.navigation.episode}</BackLink>
         <h1 className={styles.title}>{t.source.shows}</h1>
       </div>
 
       <div className={styles.content}>
         <div className={styles.actions}>
-          <Button
-            variant='primary'
-            fullWidth
-            onClick={() => navigate('/episode/shows/new')}
-          >
+          <Button variant='primary' fullWidth onClick={() => navigate('/episode/shows/new')}>
             {t.source.addShow}
           </Button>
         </div>
@@ -40,17 +34,11 @@ export const ShowsPage = () => {
             {shows.map((show) => {
               return (
                 <li key={show.id} className={styles.showItem}>
-                  <Link
-                    to={`/episode/shows/${show.id}`}
-                    className={styles.showLink}
-                  >
+                  <Link to={`/episode/shows/${show.id}`} className={styles.showLink}>
                     <Surface className={styles.showCard}>
                       <h2 className={styles.showTitle}>{show.title}</h2>
                       <p className={styles.showMeta}>
-                        {t.source.seasonsCount.replace(
-                          '{count}',
-                          String(show.seasons.length),
-                        )}
+                        {t.source.seasonsCount.replace('{count}', String(show.seasons.length))}
                       </p>
                     </Surface>
                   </Link>

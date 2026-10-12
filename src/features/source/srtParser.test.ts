@@ -24,7 +24,7 @@ I'm fine.`
         {
           startMs: 4000,
           endMs: 6100,
-          text: 'How are you?\nI\'m fine.',
+          text: "How are you?\nI'm fine.",
         },
       ],
       skippedCount: 0,

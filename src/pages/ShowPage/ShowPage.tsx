@@ -30,15 +30,21 @@ export const ShowPage = () => {
   return (
     <section className={styles.page}>
       <div className={styles.head}>
-        <BackLink to='/episode/shows'>
-          {t.source.shows}
-        </BackLink>
+        <BackLink to='/episode/shows'>{t.source.shows}</BackLink>
         <h1 className={styles.title}>{show.title}</h1>
       </div>
       <div className={styles.content}>
         <div className={styles.actions}>
-          <Button variant='primary' fullWidth onClick={() => navigate(`/episode/shows/${show.id}/seasons/new`)}>{t.source.addSeason}</Button>
-          <Button variant='secondary' fullWidth onClick={() => setIsDeleteDialogOpen(true)}>{t.source.deleteShow}</Button>
+          <Button
+            variant='primary'
+            fullWidth
+            onClick={() => navigate(`/episode/shows/${show.id}/seasons/new`)}
+          >
+            {t.source.addSeason}
+          </Button>
+          <Button variant='secondary' fullWidth onClick={() => setIsDeleteDialogOpen(true)}>
+            {t.source.deleteShow}
+          </Button>
         </div>
         <div className={styles.listPanel}>
           <p className={styles.listLabel}>{t.source.seasons}</p>

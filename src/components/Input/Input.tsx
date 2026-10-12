@@ -8,10 +8,5 @@ type InputProps = {
 } & Omit<ComponentPropsWithoutRef<'input'>, 'className'>
 
 export const Input = ({ variant = 'default', ...inputProps }: InputProps) => {
-  return (
-    <input
-      {...inputProps}
-      className={clsx(styles.input, variant === 'time' && styles.time)}
-    />
-  )
+  return <input {...inputProps} className={clsx(styles.input, variant === 'time' && styles.time)} />
 }

@@ -7,4 +7,3 @@ export const useTranslation = () => {
 
   return translations[language]
 }
-

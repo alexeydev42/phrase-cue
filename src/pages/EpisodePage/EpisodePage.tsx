@@ -14,11 +14,11 @@ export const EpisodePage = () => {
 
   const show = shows.find((show) =>
     show.seasons.some((season) =>
-      season.episodes.some((episode) => episode.id === activeEpisode?.id)
-    )
+      season.episodes.some((episode) => episode.id === activeEpisode?.id),
+    ),
   )
   const season = show?.seasons.find((season) =>
-    season.episodes.some((episode) => episode.id === activeEpisode?.id)
+    season.episodes.some((episode) => episode.id === activeEpisode?.id),
   )
 
   if (activeEpisode && show && season) {
@@ -36,17 +36,11 @@ export const EpisodePage = () => {
         <div className={styles.controls}>
           <div className={styles.placeholder}>
             <p className={styles.status}>{t.episode.underDevelopment}</p>
-            <p className={styles.description}>
-              {t.episode.underDevelopmentHint}
-            </p>
+            <p className={styles.description}>{t.episode.underDevelopmentHint}</p>
           </div>
 
           <div className={styles.actions}>
-            <Button
-              variant='secondary'
-              fullWidth
-              onClick={() => navigate('/episode/shows')}
-            >
+            <Button variant='secondary' fullWidth onClick={() => navigate('/episode/shows')}>
               {t.episode.changeEpisode}
             </Button>
           </div>
@@ -73,9 +67,7 @@ export const EpisodePage = () => {
         <Button
           variant='primary'
           fullWidth
-          onClick={() =>
-            navigate(hasShows ? '/episode/shows' : '/episode/shows/new')
-          }
+          onClick={() => navigate(hasShows ? '/episode/shows' : '/episode/shows/new')}
         >
           {hasShows ? t.episode.chooseEpisode : t.episode.addShow}
         </Button>

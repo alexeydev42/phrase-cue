@@ -1,11 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
-import type {
-  Episode,
-  Season,
-  Show,
-  SourceState,
-} from './sourceTypes'
+import type { Episode, Season, Show, SourceState } from './sourceTypes'
 
 const initialState: SourceState = {
   shows: [],
@@ -19,21 +14,27 @@ const sourceSlice = createSlice({
     addShow(state, action: PayloadAction<Show>) {
       state.shows.push(action.payload)
     },
-    addSeason(state, action: PayloadAction<{
-      showId: string
-      season: Season
-    }>) {
+    addSeason(
+      state,
+      action: PayloadAction<{
+        showId: string
+        season: Season
+      }>,
+    ) {
       const show = state.shows.find((show) => show.id === action.payload.showId)
       if (!show) {
         return
       }
       show.seasons.push(action.payload.season)
     },
-    addEpisode(state, action: PayloadAction<{
-      showId: string
-      seasonId: string
-      episode: Episode
-    }>) {
+    addEpisode(
+      state,
+      action: PayloadAction<{
+        showId: string
+        seasonId: string
+        episode: Episode
+      }>,
+    ) {
       const show = state.shows.find((show) => show.id === action.payload.showId)
       if (!show) {
         return
@@ -47,11 +48,14 @@ const sourceSlice = createSlice({
     setActiveEpisodeId(state, action: PayloadAction<string | null>) {
       state.activeEpisodeId = action.payload
     },
-    removeEpisode(state, action: PayloadAction<{
-      showId: string
-      seasonId: string
-      episodeId: string
-    }>) {
+    removeEpisode(
+      state,
+      action: PayloadAction<{
+        showId: string
+        seasonId: string
+        episodeId: string
+      }>,
+    ) {
       const show = state.shows.find((show) => show.id === action.payload.showId)
       if (!show) {
         return
@@ -65,10 +69,13 @@ const sourceSlice = createSlice({
         state.activeEpisodeId = null
       }
     },
-    removeSeason(state, action: PayloadAction<{
-      showId: string
-      seasonId: string
-    }>) {
+    removeSeason(
+      state,
+      action: PayloadAction<{
+        showId: string
+        seasonId: string
+      }>,
+    ) {
       const show = state.shows.find((show) => show.id === action.payload.showId)
       if (!show) {
         return
@@ -78,22 +85,25 @@ const sourceSlice = createSlice({
         return
       }
       const hasActiveEpisode = season.episodes.some(
-        (episode) => episode.id === state.activeEpisodeId
+        (episode) => episode.id === state.activeEpisodeId,
       )
       show.seasons = show.seasons.filter((season) => season.id !== action.payload.seasonId)
       if (hasActiveEpisode) {
         state.activeEpisodeId = null
       }
     },
-    removeShow(state, action: PayloadAction<{
-      showId: string
-    }>) {
+    removeShow(
+      state,
+      action: PayloadAction<{
+        showId: string
+      }>,
+    ) {
       const show = state.shows.find((show) => show.id === action.payload.showId)
       if (!show) {
         return
       }
-      const hasActiveEpisode = show.seasons.some((season) => season.episodes.some(
-        (episode) => episode.id === state.activeEpisodeId)
+      const hasActiveEpisode = show.seasons.some((season) =>
+        season.episodes.some((episode) => episode.id === state.activeEpisodeId),
       )
       state.shows = state.shows.filter((show) => show.id !== action.payload.showId)
       if (hasActiveEpisode) {
@@ -102,7 +112,7 @@ const sourceSlice = createSlice({
     },
     hydrateShows(state, action: PayloadAction<Show[]>) {
       state.shows = action.payload
-    }
+    },
   },
 })
 
@@ -114,7 +124,7 @@ export const {
   removeEpisode,
   removeSeason,
   removeShow,
-  hydrateShows
+  hydrateShows,
 } = sourceSlice.actions
 
 export const sourceReducer = sourceSlice.reducer
@@ -122,6 +132,8 @@ export const sourceReducer = sourceSlice.reducer
 export const selectShows = (state: RootState) => state.source.shows
 export const selectActiveEpisodeId = (state: RootState) => state.source.activeEpisodeId
 export const selectActiveEpisode = (state: RootState) => {
-  const episodes = state.source.shows.flatMap((show) => show.seasons.flatMap((season) => season.episodes))
+  const episodes = state.source.shows.flatMap((show) =>
+    show.seasons.flatMap((season) => season.episodes),
+  )
   return episodes.find((episode) => episode.id === state.source.activeEpisodeId)
 }
