@@ -1,3 +1,14 @@
 .main {
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (width >= 1024px) {
+  .main {
+    display: block;
+    min-height: 0;
+    padding-bottom: 0;
+  }
 }

@@ -74,6 +74,16 @@
   min-width: 0;
 }
 
+.episodeLink {
+  display: block;
+  border-radius: var(--radius-default);
+}
+
+.episodeLink:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
 .episodeCard {
   display: flex;
   flex-direction: column;
@@ -82,6 +92,9 @@
   min-width: 0;
   min-height: var(--layout-card-min-height);
   padding: var(--layout-card-padding-block) var(--layout-card-padding-inline);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .episodeTitle {
@@ -97,6 +110,13 @@
   font-size: var(--font-size-supporting);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-supporting);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .episodeLink:hover .episodeCard {
+    background-color: var(--color-bg-interactive-hover);
+    border-color: var(--color-border-interactive-hover);
+  }
 }
 
 @media (width >= 1024px) {
@@ -130,6 +150,10 @@
   }
 
   .episodeCard {
+    border-radius: var(--radius-modal);
+  }
+
+  .episodeLink {
     border-radius: var(--radius-modal);
   }
 }
