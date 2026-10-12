@@ -13,6 +13,7 @@ import { ShowPage } from './pages/ShowPage/ShowPage'
 import { AddSeasonPage } from './pages/AddSeasonPage/AddSeasonPage'
 import { SeasonPage } from './pages/SeasonPage/SeasonPage'
 import { ImportSrtPage } from './pages/ImportSrtPage/ImportSrtPage'
+import { EpisodeDetailsPage } from './pages/EpisodeDetailsPage/EpisodeDetailsPage'
 
 export const App = () => {
   return (
@@ -42,6 +43,10 @@ export const App = () => {
             <Route
               path='episode/shows/:showId/seasons/:seasonId/import'
               element={<ImportSrtPage />}
+            />
+            <Route
+              path='episode/shows/:showId/seasons/:seasonId/episodes/:episodeId'
+              element={<EpisodeDetailsPage />}
             />
           </Route>
         </Route>

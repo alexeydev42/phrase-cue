@@ -1,7 +1,8 @@
+
 import { useRef, useState, type ChangeEvent } from 'react'
 import { useParams, Link } from 'react-router'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { selectShows, addEpisode, setActiveEpisodeId } from '../../features/source/sourceSlice'
+import { selectShows, addEpisode } from '../../features/source/sourceSlice'
 import { BackLink } from '../../components/BackLink/BackLink'
 import { useTranslation } from '../../i18n/useTranslation'
 import { parseSrt, type SrtParseResult } from '../../features/source/srtParser'
@@ -53,8 +54,10 @@ export const ImportSrtPage = () => {
     const selectionId = ++selectionIdRef.current
     setFiles([])
     const processedFiles: ImportFileItem[] = []
+
     for (const file of selectedFiles) {
       const detectedNumber = detectEpisodeNumber(file.name)
+
       try {
         const srtText = await file.text()
         const result = parseSrt(srtText)
@@ -78,6 +81,7 @@ export const ImportSrtPage = () => {
         })
       }
     }
+
     if (selectionId === selectionIdRef.current) {
       setFiles(processedFiles)
     }
@@ -104,6 +108,7 @@ export const ImportSrtPage = () => {
 
   const handleImport = () => {
     const imported: ImportedEpisode[] = []
+
     for (const file of readyFiles) {
       if (!file.parseResult?.ok || file.episodeNumber === null) {
         continue
@@ -132,6 +137,7 @@ export const ImportSrtPage = () => {
         skippedCount: file.parseResult.skippedCount,
       })
     }
+
     setImportedEpisodes(imported)
   }
 
@@ -192,10 +198,10 @@ export const ImportSrtPage = () => {
                       )
                       : t.source.importedSubtitles}
                   </p>
+
                   <Link
-                    to='/'
+                    to={`/episode/shows/${show.id}/seasons/${season.id}/episodes/${episode.id}`}
                     className={styles.openEpisode}
-                    onClick={() => dispatch(setActiveEpisodeId(episode.id))}
                   >
                     {t.source.openEpisode}
                     <span className={styles.forwardArrow} aria-hidden='true'>
@@ -287,7 +293,9 @@ export const ImportSrtPage = () => {
 
                         <p
                           className={
-                            file.episodeNumber !== null ? styles.ready : styles.fileMeta
+                            file.episodeNumber !== null
+                              ? styles.ready
+                              : styles.fileMeta
                           }
                         >
                           {file.episodeNumber !== null
