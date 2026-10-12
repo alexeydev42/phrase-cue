@@ -1,29 +1,23 @@
 {
-  "js/ts.format.semicolons": "remove",
-  "js/ts.preferences.quoteStyle": "single",
-
   "[typescript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
-    "js/ts.format.semicolons": "remove"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
-
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
-    "js/ts.format.semicolons": "remove"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
-
   "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
-    "js/ts.format.semicolons": "remove"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
-
   "[javascriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
-    "js/ts.format.semicolons": "remove"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
   },
-
-  "stylelint.validate": ["css"],
-
+  "stylelint.validate": [
+    "css"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
