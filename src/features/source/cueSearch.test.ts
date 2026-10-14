@@ -120,4 +120,22 @@ describe('getCueWindow', () => {
 
     expect(cues.map((cue) => cue.id)).toEqual(originalIds)
   })
+
+  it('treats negative counts as zero', () => {
+    const result = getCueWindow(cues, 5, -2, 1)
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-5', 'cue-6'])
+  })
+
+  it('rounds fractional counts down to integers', () => {
+    const result = getCueWindow(cues, 5, 2.7, 1.9)
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-3', 'cue-4', 'cue-5', 'cue-6'])
+  })
+
+  it('treats non-finite counts as zero', () => {
+    const result = getCueWindow(cues, 5, NaN, Infinity)
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-5'])
+  })
 })
