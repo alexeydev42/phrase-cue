@@ -1,13 +1,9 @@
-
 .page {
   display: flex;
   flex-direction: column;
   gap: var(--layout-section-gap);
   width: 100%;
-  max-width: calc(
-    var(--layout-content-max-width) +
-    var(--layout-page-inline) * 2
-  );
+  max-width: calc(var(--layout-content-max-width) + var(--layout-page-inline) * 2);
   margin-inline: auto;
   padding: var(--space-24) var(--layout-page-inline);
 }
@@ -76,9 +72,7 @@
   gap: var(--space-4);
   min-width: 0;
   min-height: var(--layout-card-min-height);
-  padding:
-    var(--layout-card-padding-block)
-    var(--layout-card-padding-inline);
+  padding: var(--layout-card-padding-block) var(--layout-card-padding-inline);
 }
 
 .seasonTitle {

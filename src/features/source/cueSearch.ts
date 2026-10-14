@@ -19,6 +19,14 @@ export const findNearestCueIndex = (cues: Cue[], targetMs: number): number | nul
   return nearestIndex
 }
 
+const normalizeCount = (value: number): number => {
+  if (!Number.isFinite(value)) {
+    return 0
+  }
+
+  return Math.max(0, Math.floor(value))
+}
+
 export const getCueWindow = (
   cues: Cue[],
   centerIndex: number | null,
@@ -28,7 +36,7 @@ export const getCueWindow = (
   if (centerIndex === null) {
     return []
   }
-  const start = Math.max(0, centerIndex - beforeCount)
-  const end = Math.min(cues.length, centerIndex + afterCount + 1)
+  const start = Math.max(0, centerIndex - normalizeCount(beforeCount))
+  const end = Math.min(cues.length, centerIndex + normalizeCount(afterCount) + 1)
   return cues.slice(start, end)
 }

@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . && stylelint \"src/**/*.css\" && npm run format:check",
     "lint:fix": "eslint . --fix && stylelint \"src/**/*.css\" --fix && npm run format",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"*.{js,ts}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"*.{js,ts}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"*.{js,ts}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"*.{js,ts}\"",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"

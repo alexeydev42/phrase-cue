@@ -69,7 +69,6 @@
   --layout-nav-item-min-height: 40px;
   --layout-nav-item-width: clamp(90px, calc(21.077px + 6.731vw), 118px);
 
-
   /* Fluid layout */
   --layout-page-inline: clamp(16px, 6.15vw, 32px);
   --layout-section-gap: clamp(14px, calc(10.286px + 0.952vw), 24px);
