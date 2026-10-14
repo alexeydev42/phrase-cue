@@ -40,6 +40,9 @@ const en = {
     noShowsYet: 'No shows yet',
     noShowsYetHint: 'Add a show and import subtitles to get started.',
     addShow: 'Add show',
+
+    loadEarlier: 'Show earlier cues',
+    loadLater: 'Show later cues',
   },
 
   selectPhrase: {
@@ -62,6 +65,8 @@ const en = {
 
     phraseSaved: 'Phrase saved',
     savedWithoutTranslation: 'Saved without translation',
+
+    cueNotFound: 'Selected subtitle cue not found.',
   },
 
   library: {
@@ -264,6 +269,9 @@ const ru: typeof en = {
     noShowsYet: 'Сериалов пока нет',
     noShowsYetHint: 'Добавьте сериал и импортируйте субтитры, чтобы начать.',
     addShow: 'Добавить сериал',
+
+    loadEarlier: 'Показать предыдущие реплики',
+    loadLater: 'Показать следующие реплики',
   },
 
   selectPhrase: {
@@ -286,6 +294,8 @@ const ru: typeof en = {
 
     phraseSaved: 'Фраза сохранена',
     savedWithoutTranslation: 'Сохранено без перевода',
+
+    cueNotFound: 'Выбранная реплика не найдена.',
   },
 
   library: {

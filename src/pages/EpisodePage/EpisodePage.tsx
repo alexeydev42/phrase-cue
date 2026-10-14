@@ -1,48 +1,266 @@
+import { useLayoutEffect, useRef, useState, type UIEvent } from 'react'
 import { useNavigate } from 'react-router'
+import clsx from 'clsx'
+
 import { useTranslation } from '../../i18n/useTranslation'
 import { useAppSelector } from '../../app/hooks'
 import { selectActiveEpisode, selectShows } from '../../features/source/sourceSlice'
+import { selectCueWindow } from '../../features/source/cueSelectors'
+import { findNearestCueIndex } from '../../features/source/cueSearch'
+import { parseTimecode, formatTimecode } from '../../features/source/timecode'
+import { useEpisodeReturn } from '../../features/source/episodeReturnContext'
 import { Button } from '../../components/Button/Button'
+import { Input } from '../../components/Input/Input'
 
 import styles from './EpisodePage.module.css'
+
+const LOAD_STEP = 10
 
 export const EpisodePage = () => {
   const t = useTranslation()
   const navigate = useNavigate()
+
   const activeEpisode = useAppSelector(selectActiveEpisode)
   const shows = useAppSelector(selectShows)
+
+  const { snapshot, remember, clear } = useEpisodeReturn()
+
+  // Read the saved view once, when the page mounts.
+  // Never restore a snapshot belonging to another episode.
+  const [returnState] = useState(() =>
+    snapshot?.episodeId === activeEpisode?.id ? snapshot : null,
+  )
+
+  const listRef = useRef<HTMLUListElement>(null)
+  const previousListHeight = useRef<number | null>(null)
+
+  const [timecodeInput, setTimecodeInput] = useState(returnState?.timecodeInput ?? '00:00')
+  const [targetMs, setTargetMs] = useState<number | null>(returnState?.targetMs ?? null)
+  const [beforeCount, setBeforeCount] = useState(returnState?.beforeCount ?? 3)
+  const [afterCount, setAfterCount] = useState(returnState?.afterCount ?? 3)
 
   const show = shows.find((show) =>
     show.seasons.some((season) =>
       season.episodes.some((episode) => episode.id === activeEpisode?.id),
     ),
   )
+
   const season = show?.seasons.find((season) =>
     season.episodes.some((episode) => episode.id === activeEpisode?.id),
   )
 
+  const cueWindow = useAppSelector((state) =>
+    selectCueWindow(state, targetMs, beforeCount, afterCount),
+  )
+
+  const nearestCueIndex = targetMs !== null ? findNearestCueIndex(cueWindow, targetMs) : null
+
+  const nearestEpisodeIndex =
+    targetMs !== null ? findNearestCueIndex(activeEpisode?.cues ?? [], targetMs) : null
+
+  const hasSearch = targetMs !== null
+
+  const hasEarlier = nearestEpisodeIndex !== null && nearestEpisodeIndex > beforeCount
+
+  const hasLater =
+    nearestEpisodeIndex !== null &&
+    activeEpisode !== undefined &&
+    nearestEpisodeIndex + afterCount < activeEpisode.cues.length - 1
+
+  // Restore the list and document positions after returning from Select phrase.
+  useLayoutEffect(() => {
+    if (returnState) {
+      if (listRef.current) {
+        listRef.current.scrollTop = returnState.listScrollTop
+      }
+
+      window.scrollTo(0, returnState.pageScrollY)
+    }
+
+    clear()
+  }, [returnState, clear])
+
+  // When earlier cues are prepended, keep the previously visible cue in place.
+  useLayoutEffect(() => {
+    const list = listRef.current
+
+    if (list && previousListHeight.current !== null) {
+      list.scrollTop += list.scrollHeight - previousListHeight.current
+    }
+
+    previousListHeight.current = null
+  }, [beforeCount])
+
+  const handleSearch = () => {
+    const parsedTime = parseTimecode(timecodeInput)
+
+    if (parsedTime === null) {
+      return
+    }
+
+    setTargetMs(parsedTime)
+    setBeforeCount(3)
+    setAfterCount(3)
+
+    if (listRef.current) {
+      listRef.current.scrollTop = 0
+    }
+  }
+
+  const loadEarlier = () => {
+    previousListHeight.current = listRef.current?.scrollHeight ?? null
+    setBeforeCount((count) => count + LOAD_STEP)
+  }
+
+  const loadLater = () => {
+    setAfterCount((count) => count + LOAD_STEP)
+  }
+
+  // On mobile, automatically extend the cue list near its scroll edges.
+  const handleListScroll = (event: UIEvent<HTMLUListElement>) => {
+    const list = event.currentTarget
+
+    if (list.scrollHeight <= list.clientHeight) {
+      return
+    }
+
+    if (list.scrollTop <= 32 && hasEarlier) {
+      loadEarlier()
+    } else if (list.scrollHeight - list.scrollTop - list.clientHeight <= 32 && hasLater) {
+      loadLater()
+    }
+  }
+
+  const handleSelectCue = (cueId: string) => {
+    if (!activeEpisode) {
+      return
+    }
+
+    // This is a temporary navigation snapshot, not persisted episode data.
+    remember({
+      episodeId: activeEpisode.id,
+      timecodeInput,
+      targetMs,
+      beforeCount,
+      afterCount,
+      listScrollTop: listRef.current?.scrollTop ?? 0,
+      pageScrollY: window.scrollY,
+    })
+
+    navigate(`/episode/select/${cueId}`)
+  }
+
   if (activeEpisode && show && season) {
+    const episodeLabel = t.metadata.seasonEpisode
+      .replace('{season}', String(season.number))
+      .replace('{episode}', String(activeEpisode.number))
+
     return (
       <section className={styles.page}>
         <div className={styles.head}>
           <h1 className={styles.title}>{show.title}</h1>
-          <p className={styles.subtitle}>
-            {t.source.season.replace('{number}', String(season.number))}
-            {' · '}
-            {t.source.episode.replace('{number}', String(activeEpisode.number))}
-          </p>
+          <p className={styles.subtitle}>{episodeLabel}</p>
         </div>
 
-        <div className={styles.controls}>
-          <div className={styles.placeholder}>
-            <p className={styles.status}>{t.episode.underDevelopment}</p>
-            <p className={styles.description}>{t.episode.underDevelopmentHint}</p>
+        <div className={styles.episodeBody}>
+          <div className={styles.controls}>
+            <div className={styles.searchIntro}>
+              <h2 className={styles.panelTitle}>{t.episode.findPhrase}</h2>
+              <p className={styles.panelDescription}>{t.episode.approximateTimecodeHint}</p>
+            </div>
+
+            <div className={styles.searchRow}>
+              <Input
+                id='timecode'
+                variant='time'
+                type='text'
+                inputMode='text'
+                aria-label={t.episode.enterApproximateTimecode}
+                value={timecodeInput}
+                onChange={(event) => setTimecodeInput(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault()
+                    handleSearch()
+                  }
+                }}
+              />
+
+              <Button variant='primary' fullWidth onClick={handleSearch}>
+                {t.common.search}
+              </Button>
+            </div>
+
+            {!hasSearch && (
+              <p className={styles.mobileHint}>{t.episode.enterApproximateTimecode}</p>
+            )}
+
+            <div className={styles.episodeContext}>
+              <p className={styles.contextLabel}>{t.episode.currentEpisode}</p>
+              <p className={styles.contextShow}>{show.title}</p>
+              <p className={styles.contextEpisode}>{episodeLabel}</p>
+              <p className={styles.contextStatus}>{t.episode.activeEpisode}</p>
+            </div>
+
+            <div className={styles.actions}>
+              <Button variant='secondary' fullWidth onClick={() => navigate('/episode/shows')}>
+                {t.episode.changeEpisode}
+              </Button>
+            </div>
           </div>
 
-          <div className={styles.actions}>
-            <Button variant='secondary' fullWidth onClick={() => navigate('/episode/shows')}>
-              {t.episode.changeEpisode}
-            </Button>
+          <div className={clsx(styles.results, !hasSearch && styles.resultsIdle)}>
+            <div className={styles.resultsHeader}>
+              <h2 className={styles.panelTitle}>
+                {hasSearch ? t.episode.nearbyCues : t.episode.searchResults}
+              </h2>
+
+              <p className={styles.panelDescription}>
+                {hasSearch ? t.episode.nearbyCuesHint : t.episode.searchResultsHint}
+              </p>
+            </div>
+
+            {hasSearch ? (
+              <>
+                {hasEarlier && (
+                  <button type='button' className={styles.loadMore} onClick={loadEarlier}>
+                    {t.episode.loadEarlier}
+                  </button>
+                )}
+
+                <ul ref={listRef} className={styles.cueList} onScroll={handleListScroll}>
+                  {cueWindow.map((cue, index) => (
+                    <li
+                      className={clsx(
+                        styles.cueCard,
+                        index === nearestCueIndex && styles.cueNearest,
+                      )}
+                      key={cue.id}
+                    >
+                      <button
+                        type='button'
+                        className={styles.cueButton}
+                        onClick={() => handleSelectCue(cue.id)}
+                      >
+                        <span className={styles.cueTime}>{formatTimecode(cue.startMs)}</span>
+                        <span className={styles.cueText}>{cue.text}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+
+                {hasLater && (
+                  <button type='button' className={styles.loadMore} onClick={loadLater}>
+                    {t.episode.loadLater}
+                  </button>
+                )}
+              </>
+            ) : (
+              <div className={styles.emptyResults}>
+                <p className={styles.emptyResultsTitle}>{t.episode.noSubtitleList}</p>
+                <p className={styles.emptyResultsDescription}>{t.episode.noSubtitleListHint}</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -64,6 +282,7 @@ export const EpisodePage = () => {
         <p className={styles.emptyText}>
           {hasShows ? t.episode.noActiveEpisodeHint : t.episode.noShowsYetHint}
         </p>
+
         <Button
           variant='primary'
           fullWidth

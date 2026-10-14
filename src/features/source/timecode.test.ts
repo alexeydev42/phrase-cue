@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseTimecode } from './timecode'
+import { formatTimecode, parseTimecode } from './timecode'
 
 describe('parseTimecode', () => {
   it('parses MM:SS timecode', () => {
@@ -51,5 +51,26 @@ describe('parseTimecode', () => {
   it('rejects results outside the safe integer range', () => {
     expect(parseTimecode('999999999999:00')).toBeNull()
     expect(parseTimecode('999999999999:00:00')).toBeNull()
+  })
+})
+
+describe('formatTimecode', () => {
+  it('formats timecodes shorter than one hour as MM:SS', () => {
+    expect(formatTimecode(0)).toBe('00:00')
+    expect(formatTimecode(62000)).toBe('01:02')
+    expect(formatTimecode(1122000)).toBe('18:42')
+    expect(formatTimecode(3599000)).toBe('59:59')
+  })
+
+  it('formats timecodes of one hour or longer as HH:MM:SS', () => {
+    expect(formatTimecode(3600000)).toBe('01:00:00')
+    expect(formatTimecode(3723000)).toBe('01:02:03')
+    expect(formatTimecode(4530000)).toBe('01:15:30')
+  })
+
+  it('discards milliseconds without rounding seconds up', () => {
+    expect(formatTimecode(999)).toBe('00:00')
+    expect(formatTimecode(62500)).toBe('01:02')
+    expect(formatTimecode(59999)).toBe('00:59')
   })
 })

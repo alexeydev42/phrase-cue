@@ -14,37 +14,40 @@ import { AddSeasonPage } from './pages/AddSeasonPage/AddSeasonPage'
 import { SeasonPage } from './pages/SeasonPage/SeasonPage'
 import { ImportSrtPage } from './pages/ImportSrtPage/ImportSrtPage'
 import { EpisodeDetailsPage } from './pages/EpisodeDetailsPage/EpisodeDetailsPage'
+import { EpisodeReturnProvider } from './features/source/EpisodeReturnProvider'
 
 export const App = () => {
   return (
     <>
-      <ThemeSync />
-      <Routes>
-        <Route path='/'>
-          <Route element={<AppShell />}>
-            <Route index element={<EpisodePage />} />
-            <Route path='library' element={<LibraryPage />} />
-            <Route path='study' element={<StudyPage />} />
-            <Route path='settings' element={<SettingsPage />} />
+      <EpisodeReturnProvider>
+        <ThemeSync />
+        <Routes>
+          <Route path='/'>
+            <Route element={<AppShell />}>
+              <Route index element={<EpisodePage />} />
+              <Route path='library' element={<LibraryPage />} />
+              <Route path='study' element={<StudyPage />} />
+              <Route path='settings' element={<SettingsPage />} />
+            </Route>
+            <Route path='episode/select/:cueId' element={<SelectPhrasePage />} />
+            <Route element={<SourceShell />}>
+              <Route path='episode/shows' element={<ShowsPage />} />
+              <Route path='episode/shows/new' element={<AddShowPage />} />
+              <Route path='episode/shows/:showId' element={<ShowPage />} />
+              <Route path='episode/shows/:showId/seasons/new' element={<AddSeasonPage />} />
+              <Route path='episode/shows/:showId/seasons/:seasonId' element={<SeasonPage />} />
+              <Route
+                path='episode/shows/:showId/seasons/:seasonId/import'
+                element={<ImportSrtPage />}
+              />
+              <Route
+                path='episode/shows/:showId/seasons/:seasonId/episodes/:episodeId'
+                element={<EpisodeDetailsPage />}
+              />
+            </Route>
           </Route>
-          <Route path='episode/select/:cueId' element={<SelectPhrasePage />} />
-          <Route element={<SourceShell />}>
-            <Route path='episode/shows' element={<ShowsPage />} />
-            <Route path='episode/shows/new' element={<AddShowPage />} />
-            <Route path='episode/shows/:showId' element={<ShowPage />} />
-            <Route path='episode/shows/:showId/seasons/new' element={<AddSeasonPage />} />
-            <Route path='episode/shows/:showId/seasons/:seasonId' element={<SeasonPage />} />
-            <Route
-              path='episode/shows/:showId/seasons/:seasonId/import'
-              element={<ImportSrtPage />}
-            />
-            <Route
-              path='episode/shows/:showId/seasons/:seasonId/episodes/:episodeId'
-              element={<EpisodeDetailsPage />}
-            />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </EpisodeReturnProvider>
     </>
   )
 }
