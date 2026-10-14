@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, type UIEvent } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import clsx from 'clsx'
 
@@ -14,7 +14,7 @@ import { Input } from '../../components/Input/Input'
 
 import styles from './EpisodePage.module.css'
 
-const LOAD_STEP = 10
+const LOAD_STEP = 5
 
 export const EpisodePage = () => {
   const t = useTranslation()
@@ -25,14 +25,12 @@ export const EpisodePage = () => {
 
   const { snapshot, remember, clear } = useEpisodeReturn()
 
-  // Read the saved view once, when the page mounts.
-  // Never restore a snapshot belonging to another episode.
   const [returnState] = useState(() =>
     snapshot?.episodeId === activeEpisode?.id ? snapshot : null,
   )
 
   const listRef = useRef<HTMLUListElement>(null)
-  const previousListHeight = useRef<number | null>(null)
+  const previousFirstCue = useRef<{ element: Element; top: number } | null>(null)
 
   const [timecodeInput, setTimecodeInput] = useState(returnState?.timecodeInput ?? '00:00')
   const [targetMs, setTargetMs] = useState<number | null>(returnState?.targetMs ?? null)
@@ -67,28 +65,25 @@ export const EpisodePage = () => {
     activeEpisode !== undefined &&
     nearestEpisodeIndex + afterCount < activeEpisode.cues.length - 1
 
-  // Restore the list and document positions after returning from Select phrase.
   useLayoutEffect(() => {
     if (returnState) {
-      if (listRef.current) {
-        listRef.current.scrollTop = returnState.listScrollTop
-      }
-
       window.scrollTo(0, returnState.pageScrollY)
     }
 
     clear()
   }, [returnState, clear])
 
-  // When earlier cues are prepended, keep the previously visible cue in place.
   useLayoutEffect(() => {
-    const list = listRef.current
+    const anchor = previousFirstCue.current
 
-    if (list && previousListHeight.current !== null) {
-      list.scrollTop += list.scrollHeight - previousListHeight.current
+    if (anchor) {
+      const shift = anchor.element.getBoundingClientRect().top - anchor.top
+      if (shift !== 0) {
+        window.scrollBy(0, shift)
+      }
     }
 
-    previousListHeight.current = null
+    previousFirstCue.current = null
   }, [beforeCount])
 
   const handleSearch = () => {
@@ -98,17 +93,21 @@ export const EpisodePage = () => {
       return
     }
 
+    previousFirstCue.current = null
     setTargetMs(parsedTime)
     setBeforeCount(3)
     setAfterCount(3)
-
-    if (listRef.current) {
-      listRef.current.scrollTop = 0
-    }
   }
 
   const loadEarlier = () => {
-    previousListHeight.current = listRef.current?.scrollHeight ?? null
+    const firstCue = listRef.current?.firstElementChild
+    if (firstCue) {
+      previousFirstCue.current = {
+        element: firstCue,
+        top: firstCue.getBoundingClientRect().top,
+      }
+    }
+
     setBeforeCount((count) => count + LOAD_STEP)
   }
 
@@ -116,34 +115,17 @@ export const EpisodePage = () => {
     setAfterCount((count) => count + LOAD_STEP)
   }
 
-  // On mobile, automatically extend the cue list near its scroll edges.
-  const handleListScroll = (event: UIEvent<HTMLUListElement>) => {
-    const list = event.currentTarget
-
-    if (list.scrollHeight <= list.clientHeight) {
-      return
-    }
-
-    if (list.scrollTop <= 32 && hasEarlier) {
-      loadEarlier()
-    } else if (list.scrollHeight - list.scrollTop - list.clientHeight <= 32 && hasLater) {
-      loadLater()
-    }
-  }
-
   const handleSelectCue = (cueId: string) => {
     if (!activeEpisode) {
       return
     }
 
-    // This is a temporary navigation snapshot, not persisted episode data.
     remember({
       episodeId: activeEpisode.id,
       timecodeInput,
       targetMs,
       beforeCount,
       afterCount,
-      listScrollTop: listRef.current?.scrollTop ?? 0,
       pageScrollY: window.scrollY,
     })
 
@@ -228,7 +210,7 @@ export const EpisodePage = () => {
                   </button>
                 )}
 
-                <ul ref={listRef} className={styles.cueList} onScroll={handleListScroll}>
+                <ul ref={listRef} className={styles.cueList}>
                   {cueWindow.map((cue, index) => (
                     <li
                       className={clsx(

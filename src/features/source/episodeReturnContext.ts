@@ -6,7 +6,6 @@ export interface EpisodeReturnState {
   targetMs: number | null
   beforeCount: number
   afterCount: number
-  listScrollTop: number
   pageScrollY: number
 }
 
