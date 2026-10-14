@@ -120,10 +120,8 @@
   flex-direction: column;
   gap: var(--space-8);
   min-height: 0;
-  max-height: 552px;
   margin: 0;
   padding: 0;
-  overflow-y: auto;
   list-style: none;
 }
 
@@ -344,8 +342,6 @@
 
   .cueList {
     gap: var(--space-12);
-    max-height: none;
-    overflow-y: visible;
   }
 
   .emptyResults {
