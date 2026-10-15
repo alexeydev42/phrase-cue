@@ -48,8 +48,9 @@ const en = {
   selectPhrase: {
     title: 'Select phrase',
     selectedCues: 'Selected cues · {count} of 3',
-    previous: 'Previous',
-    next: 'Next',
+    previous: '+ Previous',
+    next: '+ Next',
+    resetSelection: 'Reset selection',
     selectionHint: 'Choose up to three consecutive cues.',
 
     draftLabel: 'Phrase draft',
@@ -277,8 +278,9 @@ const ru: typeof en = {
   selectPhrase: {
     title: 'Выбрать фразу',
     selectedCues: 'Выбрано реплик: {count} из 3',
-    previous: 'Предыдущая',
-    next: 'Следующая',
+    previous: '+ Предыдущая',
+    next: '+ Следующая',
+    resetSelection: 'Сбросить выбор',
     selectionHint: 'Выберите до трёх последовательных реплик.',
 
     draftLabel: 'Черновик фразы',

@@ -73,6 +73,9 @@
   min-width: 0;
   min-height: var(--layout-card-min-height);
   padding: var(--layout-card-padding-block) var(--layout-card-padding-inline);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .seasonTitle {
@@ -114,7 +117,7 @@
 
   .content {
     flex-direction: row;
-    align-items: stretch;
+    align-items: flex-start;
   }
 
   .actions,
@@ -137,6 +140,7 @@
     display: none;
   }
 
+  .seasonLink,
   .seasonCard {
     border-radius: var(--radius-modal);
   }
