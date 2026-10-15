@@ -56,6 +56,9 @@ const parseTimeRange = (line: string): ParsedTimeRange | null => {
   }
 }
 
+const stripSrtFormatting = (text: string): string =>
+  text.replace(/<\/?(?:i|b|u|font)(?:\s+[^<>]*?)?\s*>/gi, '').replace(/\{\\an[1-9]\}/gi, '')
+
 const parseCueBlock = (block: string): ParsedCue | null => {
   const lines = block.trim().split(/\r?\n/)
 
@@ -69,7 +72,7 @@ const parseCueBlock = (block: string): ParsedCue | null => {
     return null
   }
 
-  const text = lines.slice(2).join('\n').trim()
+  const text = stripSrtFormatting(lines.slice(2).join('\n')).trim()
 
   if (!text) {
     return null

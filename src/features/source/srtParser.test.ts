@@ -230,4 +230,58 @@ Another valid cue.`
       skippedCount: 1,
     })
   })
+
+  it('removes formatting tags from subtitle text', () => {
+    const srt = `1
+00:00:01,000 --> 00:00:03,000
+<i>Hello,</i>
+<b>how <u>are</u> you?</b>
+
+2
+00:00:04,000 --> 00:00:06,000
+{\\an8}<font color="#ffff00">I'm fine.</font>`
+
+    const result = parseSrt(srt)
+
+    expect(result).toEqual({
+      ok: true,
+      cues: [
+        {
+          startMs: 1000,
+          endMs: 3000,
+          text: 'Hello,\nhow are you?',
+        },
+        {
+          startMs: 4000,
+          endMs: 6000,
+          text: "I'm fine.",
+        },
+      ],
+      skippedCount: 0,
+    })
+  })
+
+  it('skips cues containing only formatting tags', () => {
+    const srt = `1
+00:00:01,000 --> 00:00:03,000
+<i></i>
+
+2
+00:00:04,000 --> 00:00:06,000
+Hello.`
+
+    const result = parseSrt(srt)
+
+    expect(result).toEqual({
+      ok: true,
+      cues: [
+        {
+          startMs: 4000,
+          endMs: 6000,
+          text: 'Hello.',
+        },
+      ],
+      skippedCount: 1,
+    })
+  })
 })
