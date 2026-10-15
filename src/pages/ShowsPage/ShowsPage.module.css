@@ -84,9 +84,11 @@
     border-color 0.15s ease;
 }
 
-.showLink:hover .showCard {
-  background-color: var(--color-bg-interactive-hover);
-  border-color: var(--color-border-interactive-hover);
+@media (hover: hover) and (pointer: fine) {
+  .showLink:hover .showCard {
+    background-color: var(--color-bg-interactive-hover);
+    border-color: var(--color-border-interactive-hover);
+  }
 }
 
 .showTitle {
@@ -111,7 +113,7 @@
 
   .content {
     flex-direction: row;
-    align-items: stretch;
+    align-items: flex-start;
   }
 
   .actions,
