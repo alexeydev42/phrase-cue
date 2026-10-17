@@ -68,6 +68,7 @@ const en = {
     savedWithoutTranslation: 'Saved without translation',
 
     cueNotFound: 'Selected subtitle cue not found.',
+    characterLimitExceeded: 'Shorten the phrase to 300 characters to translate it.',
   },
 
   library: {
@@ -298,6 +299,7 @@ const ru: typeof en = {
     savedWithoutTranslation: 'Сохранено без перевода',
 
     cueNotFound: 'Выбранная реплика не найдена.',
+    characterLimitExceeded: 'Сократите фразу до 300 символов, чтобы перевести её.',
   },
 
   library: {
