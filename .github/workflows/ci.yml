@@ -39,6 +39,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_TRANSLATION_API_URL: https://phrase-cue-api.vercel.app/api/translate
 
       - name: Configure GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'

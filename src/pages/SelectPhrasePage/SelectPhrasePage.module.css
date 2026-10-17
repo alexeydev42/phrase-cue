@@ -30,9 +30,9 @@
 }
 
 .content {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   gap: var(--space-14);
   min-width: 0;
 }
@@ -49,7 +49,12 @@
 }
 
 .draftSide {
+  flex: 1;
   gap: var(--space-8);
+}
+
+.contentReview .selectionSide {
+  display: none;
 }
 
 .selectedPanel {
@@ -157,6 +162,82 @@
   margin-top: var(--space-8);
 }
 
+.characterCounter {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+}
+
+.characterCountExceeded,
+.characterLimitMessage {
+  color: var(--color-danger-primary);
+}
+
+.characterLimitMessage {
+  font-size: var(--font-size-supporting);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-14);
+  margin-top: auto;
+  padding-top: var(--space-16);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.reviewSide {
+  gap: var(--space-14);
+}
+
+.phrasePanel,
+.translationPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-16);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+}
+
+.phrasePanel {
+  min-height: 100px;
+}
+
+.translationPanel {
+  min-height: 128px;
+}
+
+.translationLoading {
+  background-color: var(--color-bg-surface-secondary);
+}
+
+.reviewLabel {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.phraseText,
+.translationText {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  overflow-wrap: anywhere;
+}
+
+.translatingText {
+  color: var(--color-accent-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+}
+
+.translationError {
+  color: var(--color-danger-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
 @media (width >= 1024px) {
   .page {
     gap: var(--space-24);
@@ -169,12 +250,20 @@
   }
 
   .content {
+    display: grid;
+    flex: initial;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
     gap: 28px;
+  }
+
+  .contentReview .selectionSide {
+    display: flex;
   }
 
   .selectionSide,
   .draftSide {
+    flex: initial;
     min-height: 320px;
     padding: var(--layout-panel-padding);
     background-color: var(--color-bg-surface);
@@ -206,5 +295,42 @@
     font-size: var(--font-size-section-title);
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-section-title);
+  }
+
+  .actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-12);
+    margin-top: var(--space-16);
+    padding: 0;
+  }
+
+  .actionsSingle {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .phrasePanel {
+    min-height: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .phrasePanel .reviewLabel {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-section-title);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-section-title);
+  }
+
+  .phraseText {
+    font-size: var(--font-size-page-title);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-page-title);
+  }
+
+  .translationPanel {
+    min-height: 180px;
+    padding: var(--space-16);
   }
 }
