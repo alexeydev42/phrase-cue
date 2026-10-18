@@ -46,6 +46,16 @@ export default {
       })
     }
 
+    if (!isAllowedOrigin) {
+      return jsonResponse({ error: 'Forbidden origin' }, 403)
+    }
+
+    const contentType = request.headers.get('content-type')
+
+    if (!/^application\/json(?:\s*;|$)/i.test(contentType ?? '')) {
+      return jsonResponse({ error: 'Unsupported Media Type' }, 415)
+    }
+
     let body: unknown
 
     try {
