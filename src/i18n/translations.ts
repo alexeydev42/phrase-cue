@@ -63,6 +63,8 @@ const en = {
     translationLabel: 'Translation',
     translating: 'Translating…',
     translationFailed: 'Translation failed',
+    saveFailed: 'Could not save the phrase. Please try again.',
+    saving: 'Saving…',
 
     phraseSaved: 'Phrase saved',
     savedWithoutTranslation: 'Saved without translation',
@@ -294,6 +296,8 @@ const ru: typeof en = {
     translationLabel: 'Перевод',
     translating: 'Переводим…',
     translationFailed: 'Не удалось перевести',
+    saveFailed: 'Не удалось сохранить фразу. Попробуйте ещё раз.',
+    saving: 'Сохраняем…',
 
     phraseSaved: 'Фраза сохранена',
     savedWithoutTranslation: 'Сохранено без перевода',

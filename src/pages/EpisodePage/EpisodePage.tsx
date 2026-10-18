@@ -1,5 +1,5 @@
-import { useLayoutEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import clsx from 'clsx'
 
 import { useTranslation } from '../../i18n/useTranslation'
@@ -19,6 +19,13 @@ const LOAD_STEP = 5
 export const EpisodePage = () => {
   const t = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const [saveNotice, setSaveNotice] = useState<'translated' | 'withoutTranslation' | null>(() => {
+    const notice: unknown = location.state?.phraseSaveNotice
+
+    return notice === 'translated' || notice === 'withoutTranslation' ? notice : null
+  })
 
   const activeEpisode = useAppSelector(selectActiveEpisode)
   const shows = useAppSelector(selectShows)
@@ -64,6 +71,20 @@ export const EpisodePage = () => {
     nearestEpisodeIndex !== null &&
     activeEpisode !== undefined &&
     nearestEpisodeIndex + afterCount < activeEpisode.cues.length - 1
+
+  useEffect(() => {
+    if (saveNotice === null) {
+      return
+    }
+
+    navigate('/', { replace: true, state: null })
+
+    const timeoutId = window.setTimeout(() => {
+      setSaveNotice(null)
+    }, 3000)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [saveNotice, navigate])
 
   useLayoutEffect(() => {
     if (returnState) {
@@ -139,6 +160,13 @@ export const EpisodePage = () => {
 
     return (
       <section className={styles.page}>
+        {saveNotice !== null && (
+          <div className={styles.saveToast} role='status'>
+            {saveNotice === 'translated'
+              ? t.selectPhrase.phraseSaved
+              : t.selectPhrase.savedWithoutTranslation}
+          </div>
+        )}
         <div className={styles.head}>
           <h1 className={styles.title}>{show.title}</h1>
           <p className={styles.subtitle}>{episodeLabel}</p>

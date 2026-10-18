@@ -11,12 +11,16 @@ import {
   subscribeToActiveEpisodePersistence,
   subscribeToShowsPersistence,
 } from './features/source/sourceStorage'
+import { loadPhrases } from './features/phrase/phraseStorage'
 import { hydrateShows, setActiveEpisodeId } from './features/source/sourceSlice'
+import { hydratePhrases } from './features/phrase/phraseSlice'
 import './styles/global.css'
 
 const startApp = async () => {
   const shows = await loadShows()
   store.dispatch(hydrateShows(shows))
+  const phrases = await loadPhrases()
+  store.dispatch(hydratePhrases(phrases))
 
   const activeEpisodeId = loadActiveEpisodeId()
   const activeEpisodeIdExists = shows.some((show) =>
