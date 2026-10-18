@@ -7,7 +7,7 @@ const initialState: SourceState = {
   activeEpisodeId: null,
 }
 
-const sourceSlice = createSlice({
+export const sourceSlice = createSlice({
   name: 'source',
   initialState,
   reducers: {

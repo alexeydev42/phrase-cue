@@ -239,6 +239,29 @@
   border-radius: var(--radius-small);
 }
 
+.saveToast {
+  position: fixed;
+  z-index: 21;
+  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(250px, calc(100% - 48px));
+  min-height: 48px;
+  padding: var(--space-12);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-supporting);
+  text-align: center;
+  background-color: var(--color-bg-surface-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+  pointer-events: none;
+}
+
 @media (width >= 1024px) {
   .page {
     flex: none;
@@ -375,5 +398,10 @@
     width: min(100%, 480px);
     padding: var(--space-32);
     border-radius: var(--radius-modal);
+  }
+
+  .saveToast {
+    bottom: 56px;
+    width: 280px;
   }
 }

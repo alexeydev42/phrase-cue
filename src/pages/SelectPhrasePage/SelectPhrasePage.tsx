@@ -1,18 +1,21 @@
 import clsx from 'clsx'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { BackLink } from '../../components/BackLink/BackLink'
 import { Button } from '../../components/Button/Button'
 import { normalizePhraseDraft } from '../../features/phrase/normalizePhraseDraft'
 import { translatePhrase } from '../../features/phrase/translatePhrase'
 import { selectActiveEpisode, selectShows } from '../../features/source/sourceSlice'
+import { savePhrase } from '../../features/phrase/phraseThunks'
 import { formatTimecode } from '../../features/source/timecode'
 import { useTranslation } from '../../i18n/useTranslation'
+import type { Phrase } from '../../features/phrase/phraseTypes'
 
 import styles from './SelectPhrasePage.module.css'
 
 export const SelectPhrasePage = () => {
+  const dispatch = useAppDispatch()
   const t = useTranslation()
   const navigate = useNavigate()
   const { cueId } = useParams()
@@ -28,6 +31,8 @@ export const SelectPhrasePage = () => {
   const [translation, setTranslation] = useState<string | null>(null)
   const [isTranslating, setIsTranslating] = useState(false)
   const [translationError, setTranslationError] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState(false)
 
   const draft = draftOverride ?? cue?.text ?? ''
   const normalizedDraft = normalizePhraseDraft(draft).trim()
@@ -98,6 +103,45 @@ export const SelectPhrasePage = () => {
       setTranslationError(true)
     } finally {
       setIsTranslating(false)
+    }
+  }
+
+  const handleSave = async (russianText?: string) => {
+    if (!cue || !activeEpisode || !show || !season || !canTranslate || isSaving) {
+      return
+    }
+
+    const now = new Date().toISOString()
+
+    const newPhrase: Phrase = {
+      id: crypto.randomUUID(),
+      englishText: normalizedDraft,
+      ...(russianText !== undefined && { russianText }),
+      status: 'new' as const,
+      createdAt: now,
+      statusChangedAt: now,
+      source: {
+        showTitle: show.title,
+        seasonNumber: season.number,
+        episodeNumber: activeEpisode.number,
+        timecodeMs: selectedCues[0]?.startMs ?? cue.startMs,
+      },
+    }
+
+    setIsSaving(true)
+    setSaveError(false)
+    try {
+      await dispatch(savePhrase(newPhrase))
+
+      navigate('/', {
+        state: {
+          phraseSaveNotice: russianText === undefined ? 'withoutTranslation' : 'translated',
+        },
+      })
+    } catch {
+      setSaveError(true)
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -185,12 +229,24 @@ export const SelectPhrasePage = () => {
 
                 <div className={clsx(styles.actions, isTranslating && styles.actionsSingle)}>
                   {translation !== null && (
-                    <Button variant='primary' fullWidth disabled>
+                    <Button
+                      variant='primary'
+                      fullWidth
+                      onClick={() => handleSave(translation)}
+                      loading={isSaving}
+                      loadingLabel={t.selectPhrase.saving}
+                    >
                       {t.common.save}
                     </Button>
                   )}
                   {translationError && (
-                    <Button variant='primary' fullWidth disabled>
+                    <Button
+                      variant='primary'
+                      fullWidth
+                      onClick={() => handleSave()}
+                      loading={isSaving}
+                      loadingLabel={t.selectPhrase.saving}
+                    >
                       {t.selectPhrase.saveWithoutTranslation}
                     </Button>
                   )}
@@ -198,7 +254,7 @@ export const SelectPhrasePage = () => {
                     variant='secondary'
                     fullWidth
                     onClick={handleCancel}
-                    disabled={isTranslating}
+                    disabled={isTranslating || isSaving}
                   >
                     {t.common.cancel}
                   </Button>
@@ -214,6 +270,7 @@ export const SelectPhrasePage = () => {
                   id='phrase-draft'
                   value={draft}
                   onChange={(event) => setDraftOverride(event.target.value)}
+                  disabled={isSaving}
                 />
                 <p className={styles.characterCounter}>
                   <span className={isOverLimit ? styles.characterCountExceeded : undefined}>
@@ -242,11 +299,18 @@ export const SelectPhrasePage = () => {
                     variant='primary'
                     fullWidth
                     onClick={handleTranslate}
-                    disabled={!canTranslate}
+                    disabled={!canTranslate || isSaving}
                   >
                     {t.selectPhrase.translate}
                   </Button>
-                  <Button variant='secondary' fullWidth disabled>
+                  <Button
+                    variant='secondary'
+                    fullWidth
+                    onClick={() => handleSave()}
+                    disabled={!canTranslate}
+                    loading={isSaving}
+                    loadingLabel={t.selectPhrase.saving}
+                  >
                     {t.selectPhrase.saveWithoutTranslation}
                   </Button>
                 </div>
@@ -256,6 +320,11 @@ export const SelectPhrasePage = () => {
         </>
       ) : (
         <p className={styles.metadata}>{t.selectPhrase.cueNotFound}</p>
+      )}
+      {saveError && (
+        <p className={styles.saveError} role='alert'>
+          {t.selectPhrase.saveFailed}
+        </p>
       )}
     </section>
   )

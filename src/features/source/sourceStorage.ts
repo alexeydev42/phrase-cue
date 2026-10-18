@@ -1,20 +1,7 @@
-import { openDB, type DBSchema } from 'idb'
+import { dbPromise } from '../../app/db'
 import type { Show } from './sourceTypes'
 import type { AppStore } from '../../app/store'
 import { selectActiveEpisodeId, selectShows } from './sourceSlice'
-
-interface PhraseCueDB extends DBSchema {
-  source: {
-    key: 'shows'
-    value: Show[]
-  }
-}
-
-const dbPromise = openDB<PhraseCueDB>('phrase-cue', 1, {
-  upgrade(db) {
-    db.createObjectStore('source')
-  },
-})
 
 export const saveShows = async (shows: Show[]) => {
   const db = await dbPromise
