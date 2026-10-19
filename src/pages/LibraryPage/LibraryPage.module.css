@@ -1,0 +1,29 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  width: 100%;
+  max-width: var(--layout-content-max-width);
+  margin-inline: auto;
+  padding: var(--space-24) var(--layout-page-inline);
+}
+
+.title {
+  font-size: var(--font-size-page-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-page-title);
+}
+
+.phraseGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-16);
+}
+
+@media (width >= 1024px) {
+  .phraseGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 44px;
+  }
+}
