@@ -1,5 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { Phrase } from './phraseTypes'
+import { createSlice, createSelector, type PayloadAction } from '@reduxjs/toolkit'
+import type { Phrase, PhraseStatus } from './phraseTypes'
 import type { RootState } from '../../app/store'
 
 interface PhraseState {
@@ -27,3 +27,13 @@ export const { addPhrase, hydratePhrases } = phraseSlice.actions
 export const phraseReducer = phraseSlice.reducer
 
 export const selectPhrases = (state: RootState) => state.phrase.phrases
+const selectStatus = (_state: RootState, status: PhraseStatus) => status
+
+export const selectPhrasesByStatus = createSelector(
+  [selectPhrases, selectStatus],
+  (phrases, status) => {
+    return phrases
+      .filter((phrase) => phrase.status === status)
+      .sort((a, b) => b.statusChangedAt.localeCompare(a.statusChangedAt))
+  },
+)

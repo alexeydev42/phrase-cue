@@ -82,6 +82,21 @@ const en = {
       learned: 'Learned',
     },
 
+    emptyStates: {
+      new: {
+        title: 'No new phrases yet',
+        hint: 'Find and save a phrase from an episode to see it here.',
+      },
+      learning: {
+        title: 'No phrases in Learning',
+        hint: 'Move phrases from New to start learning them.',
+      },
+      learned: {
+        title: 'No learned phrases yet',
+        hint: 'Phrases you mark as learned will appear here.',
+      },
+    },
+
     newestFirst: 'Newest first',
     newPhrases: 'New phrases',
     learningPhrases: 'Learning phrases',
@@ -313,6 +328,21 @@ const ru: typeof en = {
       new: 'Новые',
       learning: 'Изучаемые',
       learned: 'Выученные',
+    },
+
+    emptyStates: {
+      new: {
+        title: 'Новых фраз пока нет',
+        hint: 'Найдите и сохраните фразу из эпизода, чтобы она появилась здесь.',
+      },
+      learning: {
+        title: 'Нет изучаемых фраз',
+        hint: 'Перенесите фразы из «Новые», чтобы начать их изучать.',
+      },
+      learned: {
+        title: 'Выученных фраз пока нет',
+        hint: 'Здесь появятся фразы, которые вы отметите как выученные.',
+      },
     },
 
     newestFirst: 'Сначала новые',
