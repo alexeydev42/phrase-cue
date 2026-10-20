@@ -14,6 +14,7 @@ import {
 import { loadPhrases } from './features/phrase/phraseStorage'
 import { hydrateShows, setActiveEpisodeId } from './features/source/sourceSlice'
 import { hydratePhrases } from './features/phrase/phraseSlice'
+import { hydrateLearningLimit } from './features/settings/settingsThunks'
 import './styles/global.css'
 
 const startApp = async () => {
@@ -21,6 +22,8 @@ const startApp = async () => {
   store.dispatch(hydrateShows(shows))
   const phrases = await loadPhrases()
   store.dispatch(hydratePhrases(phrases))
+
+  await store.dispatch(hydrateLearningLimit())
 
   const activeEpisodeId = loadActiveEpisodeId()
   const activeEpisodeIdExists = shows.some((show) =>

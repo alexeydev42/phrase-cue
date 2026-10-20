@@ -11,9 +11,13 @@ export interface PhraseCueDB extends DBSchema {
     key: 'items'
     value: Phrase[]
   }
+  settings: {
+    key: 'learningLimit'
+    value: number
+  }
 }
 
-export const dbPromise = openDB<PhraseCueDB>('phrase-cue', 2, {
+export const dbPromise = openDB<PhraseCueDB>('phrase-cue', 3, {
   upgrade(db) {
     if (!db.objectStoreNames.contains('source')) {
       db.createObjectStore('source')
@@ -21,6 +25,10 @@ export const dbPromise = openDB<PhraseCueDB>('phrase-cue', 2, {
 
     if (!db.objectStoreNames.contains('phrases')) {
       db.createObjectStore('phrases')
+    }
+
+    if (!db.objectStoreNames.contains('settings')) {
+      db.createObjectStore('settings')
     }
   },
 })
