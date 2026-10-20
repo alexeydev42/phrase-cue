@@ -9,21 +9,149 @@
 }
 
 .title {
+  color: var(--color-text-primary);
   font-size: var(--font-size-page-title);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-page-title);
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  min-width: 0;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-4);
+  background-color: var(--color-bg-surface-secondary);
+  border-radius: var(--radius-default);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 34px;
+  padding: var(--space-8);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body);
+  text-align: center;
+  border-radius: var(--radius-small);
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.tabActive {
+  color: var(--color-accent-primary);
+  background-color: var(--color-bg-surface);
+  font-weight: var(--font-weight-semibold);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.tab:active:not(.tabActive) {
+  background-color: var(--color-bg-interactive-pressed);
+}
+
+.sortLabel {
+  display: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+  white-space: nowrap;
 }
 
 .phraseGrid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: var(--space-16);
+  gap: var(--space-14);
+  min-width: 0;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: 180px;
+  padding: var(--space-24);
+  text-align: center;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+}
+
+.emptyStateTitle {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-section-title);
+}
+
+.emptyStateHint {
+  max-width: 360px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tab:hover:not(.tabActive) {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-interactive-hover);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: none;
+  }
 }
 
 @media (width >= 1024px) {
+  .toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .tabs {
+    flex: 0 1 500px;
+    min-width: 0;
+  }
+
+  .tab {
+    min-height: 38px;
+  }
+
+  .sortLabel {
+    display: block;
+  }
+
   .phraseGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 44px;
+    row-gap: var(--space-16);
+  }
+
+  .emptyState {
+    min-height: 240px;
+    border-radius: var(--radius-modal);
   }
 }
