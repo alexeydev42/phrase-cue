@@ -17,7 +17,7 @@ export interface PhraseCueDB extends DBSchema {
   }
 }
 
-export const dbPromise = openDB<PhraseCueDB>('phrase-cue', 3, {
+export const dbPromise = openDB<PhraseCueDB>('phrase-cue', 4, {
   upgrade(db) {
     if (!db.objectStoreNames.contains('source')) {
       db.createObjectStore('source')
