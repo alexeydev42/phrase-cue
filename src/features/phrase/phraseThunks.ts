@@ -9,14 +9,17 @@ import {
 } from './phraseSlice'
 import { savePhrases } from './phraseStorage'
 import { selectLearningLimit } from '../settings/settingsSlice'
+import { enqueueDataOperation } from '../../app/dataOperationQueue'
 
 export const savePhrase = (phrase: Phrase) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const existingPhrases = selectPhrases(getState())
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    return enqueueDataOperation(async () => {
+      const existingPhrases = selectPhrases(getState())
 
-    await savePhrases([...existingPhrases, phrase])
+      await savePhrases([...existingPhrases, phrase])
 
-    dispatch(addPhrase(phrase))
+      dispatch(addPhrase(phrase))
+    })
   }
 }
 
@@ -32,84 +35,90 @@ const canTransitionPhraseStatus = (
 }
 
 export const transitionPhraseStatus = (phraseId: string, nextStatus: PhraseStatus) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const phrases = selectPhrases(getState())
-    const phrase = phrases.find((phrase) => phrase.id === phraseId)
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    return enqueueDataOperation(async () => {
+      const phrases = selectPhrases(getState())
+      const phrase = phrases.find((phrase) => phrase.id === phraseId)
 
-    if (!phrase || !canTransitionPhraseStatus(phrase.status, nextStatus)) {
-      return
-    }
-    if (phrase.status === 'new' && nextStatus === 'learning' && !phrase.russianText?.trim()) {
-      return
-    }
-    if (nextStatus === 'learning') {
-      const learningLimit = selectLearningLimit(getState())
-      const learningCount = phrases.filter((phrase) => phrase.status === 'learning').length
-
-      if (learningCount >= learningLimit) {
+      if (!phrase || !canTransitionPhraseStatus(phrase.status, nextStatus)) {
         return
       }
-    }
+      if (phrase.status === 'new' && nextStatus === 'learning' && !phrase.russianText?.trim()) {
+        return
+      }
+      if (nextStatus === 'learning') {
+        const learningLimit = selectLearningLimit(getState())
+        const learningCount = phrases.filter((phrase) => phrase.status === 'learning').length
 
-    const statusChangedAt = new Date().toISOString()
+        if (learningCount >= learningLimit) {
+          return
+        }
+      }
 
-    const updatedPhrases = phrases.map((phrase) =>
-      phrase.id === phraseId ? { ...phrase, status: nextStatus, statusChangedAt } : phrase,
-    )
+      const statusChangedAt = new Date().toISOString()
 
-    await savePhrases(updatedPhrases)
+      const updatedPhrases = phrases.map((phrase) =>
+        phrase.id === phraseId ? { ...phrase, status: nextStatus, statusChangedAt } : phrase,
+      )
 
-    dispatch(
-      changePhraseStatus({
-        phraseId,
-        status: nextStatus,
-        statusChangedAt,
-      }),
-    )
+      await savePhrases(updatedPhrases)
+
+      dispatch(
+        changePhraseStatus({
+          phraseId,
+          status: nextStatus,
+          statusChangedAt,
+        }),
+      )
+    })
   }
 }
 
 export const removePhrase = (phraseId: string) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const phrases = selectPhrases(getState())
-    const updatedPhrases = phrases.filter((phrase) => phrase.id !== phraseId)
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    return enqueueDataOperation(async () => {
+      const phrases = selectPhrases(getState())
+      const updatedPhrases = phrases.filter((phrase) => phrase.id !== phraseId)
 
-    if (updatedPhrases.length === phrases.length) {
-      return
-    }
+      if (updatedPhrases.length === phrases.length) {
+        return
+      }
 
-    await savePhrases(updatedPhrases)
+      await savePhrases(updatedPhrases)
 
-    dispatch(deletePhrase(phraseId))
+      dispatch(deletePhrase(phraseId))
+    })
   }
 }
 
 export const savePhraseTranslation = (phraseId: string, russianText: string) => {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const phrases = selectPhrases(getState())
-    const phraseExists = phrases.some((phrase) => phrase.id === phraseId)
+  return (dispatch: AppDispatch, getState: () => RootState) => {
+    return enqueueDataOperation(async () => {
+      const phrases = selectPhrases(getState())
+      const phraseExists = phrases.some((phrase) => phrase.id === phraseId)
 
-    if (!phraseExists) {
-      return
-    }
+      if (!phraseExists) {
+        return
+      }
 
-    const trimmedTranslation = russianText.trim()
+      const trimmedTranslation = russianText.trim()
 
-    if (!trimmedTranslation) {
-      return
-    }
+      if (!trimmedTranslation) {
+        return
+      }
 
-    const updatedPhrases = phrases.map((phrase) =>
-      phrase.id === phraseId ? { ...phrase, russianText: trimmedTranslation } : phrase,
-    )
+      const updatedPhrases = phrases.map((phrase) =>
+        phrase.id === phraseId ? { ...phrase, russianText: trimmedTranslation } : phrase,
+      )
 
-    await savePhrases(updatedPhrases)
+      await savePhrases(updatedPhrases)
 
-    dispatch(
-      updatePhraseTranslation({
-        phraseId,
-        russianText: trimmedTranslation,
-      }),
-    )
+      dispatch(
+        updatePhraseTranslation({
+          phraseId,
+          russianText: trimmedTranslation,
+        }),
+      )
+    })
   }
 }

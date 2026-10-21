@@ -47,6 +47,12 @@
   color: var(--color-text-secondary);
 }
 
+.error {
+  color: var(--color-text-danger);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
 .dialogActions {
   display: flex;
   flex-direction: column;

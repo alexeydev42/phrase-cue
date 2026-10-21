@@ -13,6 +13,8 @@ type ConfirmationDialogProps = {
   cancelLabel: string
   onConfirm: () => void
   onCancel: () => void
+  loading?: boolean
+  error?: string | null
 }
 
 export const ConfirmationDialog = ({
@@ -24,6 +26,8 @@ export const ConfirmationDialog = ({
   cancelLabel,
   onConfirm,
   onCancel,
+  loading = false,
+  error = null,
 }: ConfirmationDialogProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const confirmButtonRef = useRef<HTMLButtonElement>(null)
@@ -50,14 +54,14 @@ export const ConfirmationDialog = ({
   }, [isOpen])
 
   const handleDialogClick = (event: MouseEvent<HTMLDialogElement>) => {
-    if (event.target === event.currentTarget) {
+    if (event.target === event.currentTarget && !loading) {
       onCancel()
     }
   }
 
   const handleDialogCancel = (event: SyntheticEvent<HTMLDialogElement>) => {
     event.preventDefault()
-    onCancel()
+    if (!loading) onCancel()
   }
 
   const handleDialogKeyDown = (event: KeyboardEvent<HTMLDialogElement>) => {
@@ -99,13 +103,30 @@ export const ConfirmationDialog = ({
             {body}
           </p>
         </div>
-
+        {error && (
+          <p className={styles.error} role='alert'>
+            {error}
+          </p>
+        )}
         <div className={styles.dialogActions}>
-          <Button ref={confirmButtonRef} onClick={onConfirm} variant={confirmVariant} fullWidth>
+          <Button
+            ref={confirmButtonRef}
+            onClick={onConfirm}
+            variant={confirmVariant}
+            fullWidth
+            loading={loading}
+            disabled={loading}
+          >
             {confirmLabel}
           </Button>
 
-          <Button ref={cancelButtonRef} variant='secondary' fullWidth onClick={onCancel}>
+          <Button
+            ref={cancelButtonRef}
+            variant='secondary'
+            fullWidth
+            onClick={onCancel}
+            disabled={loading}
+          >
             {cancelLabel}
           </Button>
         </div>
