@@ -14,6 +14,10 @@ import {
 import { loadPhrases } from './features/phrase/phraseStorage'
 import { hydrateShows, setActiveEpisodeId } from './features/source/sourceSlice'
 import { hydratePhrases } from './features/phrase/phraseSlice'
+import { hydrateLearningLimit } from './features/settings/settingsThunks'
+import { setLanguage, setTheme } from './features/settings/settingsSlice'
+import { loadLanguage, loadTheme } from './features/settings/settingsPreferencesStorage'
+
 import './styles/global.css'
 
 const startApp = async () => {
@@ -21,6 +25,11 @@ const startApp = async () => {
   store.dispatch(hydrateShows(shows))
   const phrases = await loadPhrases()
   store.dispatch(hydratePhrases(phrases))
+
+  await store.dispatch(hydrateLearningLimit())
+
+  store.dispatch(setLanguage(loadLanguage()))
+  store.dispatch(setTheme(loadTheme()))
 
   const activeEpisodeId = loadActiveEpisodeId()
   const activeEpisodeIdExists = shows.some((show) =>

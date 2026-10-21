@@ -20,9 +20,47 @@ const phraseSlice = createSlice({
     hydratePhrases(state, action: PayloadAction<Phrase[]>) {
       state.phrases = action.payload
     },
+    changePhraseStatus(
+      state,
+      action: PayloadAction<{
+        phraseId: string
+        status: PhraseStatus
+        statusChangedAt: string
+      }>,
+    ) {
+      const phrase = state.phrases.find((phrase) => phrase.id === action.payload.phraseId)
+      if (!phrase) {
+        return
+      }
+      phrase.status = action.payload.status
+      phrase.statusChangedAt = action.payload.statusChangedAt
+    },
+    deletePhrase(state, action: PayloadAction<string>) {
+      state.phrases = state.phrases.filter((phrase) => phrase.id !== action.payload)
+    },
+    updatePhraseTranslation(
+      state,
+      action: PayloadAction<{
+        phraseId: string
+        russianText: string
+      }>,
+    ) {
+      const phrase = state.phrases.find((phrase) => phrase.id === action.payload.phraseId)
+      if (!phrase) {
+        return
+      }
+      phrase.russianText = action.payload.russianText
+    },
   },
 })
-export const { addPhrase, hydratePhrases } = phraseSlice.actions
+
+export const {
+  addPhrase,
+  hydratePhrases,
+  changePhraseStatus,
+  deletePhrase,
+  updatePhraseTranslation,
+} = phraseSlice.actions
 
 export const phraseReducer = phraseSlice.reducer
 

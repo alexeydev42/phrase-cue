@@ -116,6 +116,7 @@ const en = {
 
     deletePhraseTitle: 'Delete phrase?',
     deletePhraseBody: 'This phrase will be permanently removed from the Library.',
+    deleteFailed: 'Could not delete the phrase. Please try again.',
   },
 
   study: {
@@ -148,6 +149,8 @@ const en = {
     learningSection: 'Learning',
     learningLimit: 'Learning limit',
     learningLimitHint: '1–50 · current Learning: {count}',
+    learningLimitInvalid: 'Enter a whole number from 1 to 50.',
+    saveFailed: 'Could not save the settings. Please try again.',
 
     localData: 'Local data',
     localDataDescription: 'Create or restore a JSON backup of saved phrases and Learning limit.',
@@ -364,6 +367,7 @@ const ru: typeof en = {
 
     deletePhraseTitle: 'Удалить фразу?',
     deletePhraseBody: 'Фраза будет безвозвратно удалена из библиотеки.',
+    deleteFailed: 'Не удалось удалить фразу. Попробуйте ещё раз.',
   },
 
   study: {
@@ -396,6 +400,8 @@ const ru: typeof en = {
     learningSection: 'Изучение',
     learningLimit: 'Лимит изучаемых фраз',
     learningLimitHint: '1–50 · сейчас изучается: {count}',
+    learningLimitInvalid: 'Введите целое число от 1 до 50.',
+    saveFailed: 'Не удалось сохранить настройки. Попробуйте ещё раз.',
 
     localData: 'Локальные данные',
     localDataDescription:

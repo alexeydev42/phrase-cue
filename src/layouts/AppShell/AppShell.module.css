@@ -1,3 +1,7 @@
+.shell {
+  min-height: 100svh;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -6,6 +10,10 @@
 }
 
 @media (width >= 1024px) {
+  .shell {
+    padding-top: var(--space-32);
+  }
+
   .main {
     display: block;
     min-height: 0;

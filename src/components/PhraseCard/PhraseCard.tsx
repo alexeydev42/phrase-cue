@@ -11,9 +11,23 @@ interface PhraseCardProps {
   phrase: Phrase
   isExpanded: boolean
   onToggle: () => void
+  onPrimaryAction: () => void
+  onDelete: () => void
+  isPrimaryActionDisabled: boolean
+  isTranslating: boolean
+  hasTranslationError: boolean
 }
 
-export const PhraseCard = ({ phrase, isExpanded, onToggle }: PhraseCardProps) => {
+export const PhraseCard = ({
+  phrase,
+  isExpanded,
+  onToggle,
+  onPrimaryAction,
+  onDelete,
+  isPrimaryActionDisabled,
+  isTranslating,
+  hasTranslationError,
+}: PhraseCardProps) => {
   const t = useTranslation()
   const contentId = useId()
 
@@ -30,7 +44,7 @@ export const PhraseCard = ({ phrase, isExpanded, onToggle }: PhraseCardProps) =>
   let primaryActionLabel: string
 
   if (phrase.status === 'new') {
-    primaryActionLabel = phrase.russianText ? t.library.startLearning : t.library.translate
+    primaryActionLabel = phrase.russianText?.trim() ? t.library.startLearning : t.library.translate
   } else if (phrase.status === 'learning') {
     primaryActionLabel = t.study.learned
   } else {
@@ -71,11 +85,23 @@ export const PhraseCard = ({ phrase, isExpanded, onToggle }: PhraseCardProps) =>
 
       {isExpanded && (
         <div className={styles.actions}>
-          <Button variant='primary' className={styles.actionButton} disabled>
+          <Button
+            variant='primary'
+            className={styles.actionButton}
+            onClick={onPrimaryAction}
+            disabled={isPrimaryActionDisabled || isTranslating}
+            loading={isTranslating}
+            loadingLabel={t.selectPhrase.translating}
+          >
             {primaryActionLabel}
           </Button>
+          {hasTranslationError && (
+            <p className={styles.actionError} role='alert'>
+              {t.selectPhrase.translationFailed}
+            </p>
+          )}
 
-          <Button variant='secondary' className={styles.actionButton} disabled>
+          <Button variant='secondary' className={styles.actionButton} onClick={onDelete}>
             {t.common.delete}
           </Button>
         </div>
