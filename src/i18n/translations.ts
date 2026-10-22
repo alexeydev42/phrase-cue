@@ -129,6 +129,7 @@ const en = {
     noPhrases: 'No phrases to study',
     noPhrasesHint: 'Move phrases from New to Learning to start a study cycle.',
     goToNew: 'Go to New',
+    updateFailed: 'Could not update the phrase. Please try again.',
   },
 
   settings: {
@@ -380,6 +381,7 @@ const ru: typeof en = {
     noPhrases: 'Нет фраз для изучения',
     noPhrasesHint: 'Перенесите фразы из «Новые» в «Изучаемые», чтобы начать цикл.',
     goToNew: 'Перейти в «Новые»',
+    updateFailed: 'Не удалось обновить статус фразы. Попробуйте ещё раз.',
   },
 
   settings: {
