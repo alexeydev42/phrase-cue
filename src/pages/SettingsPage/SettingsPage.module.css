@@ -197,6 +197,23 @@
   gap: var(--space-12);
 }
 
+.backupAlert {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-14);
+  background-color: var(--color-danger-soft);
+  border: 1px solid var(--color-danger-primary);
+  border-radius: var(--radius-default);
+}
+
+.backupAlertTitle {
+  color: var(--color-danger-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-body);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .optionButton[aria-pressed='false']:hover {
     color: var(--color-text-primary);

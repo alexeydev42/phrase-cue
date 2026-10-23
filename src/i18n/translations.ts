@@ -43,6 +43,7 @@ const en = {
 
     loadEarlier: 'Show earlier cues',
     loadLater: 'Show later cues',
+    timeStampPlaceholder: 'mm:ss',
   },
 
   selectPhrase: {
@@ -242,6 +243,8 @@ const en = {
 
     invalidFile: 'Invalid backup file',
     nothingChanged: 'Nothing was changed.',
+    createFailed: 'Could not create the backup. Please try again.',
+    restoreFailed: 'Could not restore the backup. Nothing was changed.',
   },
 
   metadata: {
@@ -295,6 +298,7 @@ const ru: typeof en = {
 
     loadEarlier: 'Показать предыдущие реплики',
     loadLater: 'Показать следующие реплики',
+    timeStampPlaceholder: 'мм:сс',
   },
 
   selectPhrase: {
@@ -496,6 +500,8 @@ const ru: typeof en = {
 
     invalidFile: 'Некорректный файл резервной копии',
     nothingChanged: 'Ничего не изменено.',
+    createFailed: 'Не удалось создать резервную копию. Попробуйте ещё раз.',
+    restoreFailed: 'Не удалось восстановить резервную копию. Данные не изменены.',
   },
 
   metadata: {
