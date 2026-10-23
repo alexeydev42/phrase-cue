@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ChangeEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import clsx from 'clsx'
 
@@ -36,10 +36,26 @@ export const EpisodePage = () => {
     snapshot?.episodeId === activeEpisode?.id ? snapshot : null,
   )
 
+  const [timecodeInput, setTimecodeInput] = useState(returnState?.timecodeInput ?? '')
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+
+    if (value.includes(':') && parseTimecode(value) !== null) {
+      setTimecodeInput(value)
+      return
+    }
+
+    const digits = value.replace(/\D/g, '').slice(0, 6)
+
+    const parts = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 6)].filter(Boolean)
+
+    setTimecodeInput(parts.join(':'))
+  }
+
   const listRef = useRef<HTMLUListElement>(null)
   const previousFirstCue = useRef<{ element: Element; top: number } | null>(null)
 
-  const [timecodeInput, setTimecodeInput] = useState(returnState?.timecodeInput ?? '00:00')
   const [targetMs, setTargetMs] = useState<number | null>(returnState?.targetMs ?? null)
   const [beforeCount, setBeforeCount] = useState(returnState?.beforeCount ?? 3)
   const [afterCount, setAfterCount] = useState(returnState?.afterCount ?? 3)
@@ -184,16 +200,18 @@ export const EpisodePage = () => {
                 id='timecode'
                 variant='time'
                 type='text'
-                inputMode='text'
+                inputMode='numeric'
+                placeholder={t.episode.timeStampPlaceholder}
                 aria-label={t.episode.enterApproximateTimecode}
                 value={timecodeInput}
-                onChange={(event) => setTimecodeInput(event.target.value)}
+                onChange={handleChange}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter') {
                     event.preventDefault()
                     handleSearch()
                   }
                 }}
+                maxLength={8}
               />
 
               <Button variant='primary' fullWidth onClick={handleSearch}>

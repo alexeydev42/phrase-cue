@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { ConfirmationDialog } from '../../components/ConfirmationDialog/ConfirmationDialog'
+import { parseBackupJson, type PhraseCueBackup } from '../../features/backup/backup'
+import { exportBackup, restoreBackup } from '../../features/backup/backupThunks'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { Button } from '../../components/Button/Button'
 import { selectPhrasesByStatus } from '../../features/phrase/phraseSlice'
@@ -30,11 +33,23 @@ export const SettingsPage = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState(false)
 
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const [isExporting, setIsExporting] = useState(false)
+  const [isReadingBackup, setIsReadingBackup] = useState(false)
+  const [isRestoring, setIsRestoring] = useState(false)
+
+  const [selectedBackup, setSelectedBackup] = useState<PhraseCueBackup | null>(null)
+  const [backupError, setBackupError] = useState<'invalid' | 'create' | null>(null)
+  const [restoreError, setRestoreError] = useState(false)
+
+  const isBackupBusy = isExporting || isReadingBackup || isRestoring
+
   const parsedLimit = Number(limitInput)
   const isValidLimit = limitInput.trim() !== '' && isValidLearningLimit(parsedLimit)
   const isBelowLearningCount = isValidLimit && parsedLimit < learningCount
   const hasChanges = parsedLimit !== learningLimit
-  const canSave = isValidLimit && !isBelowLearningCount && hasChanges && !isSaving
+  const canSave = isValidLimit && !isBelowLearningCount && hasChanges && !isSaving && !isRestoring
 
   const handleSave = async () => {
     if (!canSave) return
@@ -61,6 +76,81 @@ export const SettingsPage = () => {
     dispatch(setTheme(newTheme))
   }
 
+  const handleCreateBackup = async () => {
+    setIsExporting(true)
+    setBackupError(null)
+
+    try {
+      const json = await dispatch(exportBackup())
+
+      const blob = new Blob([json], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+
+      try {
+        link.href = url
+        link.download = `phrase-cue-backup-${new Date().toISOString().slice(0, 10)}.json`
+
+        document.body.appendChild(link)
+        link.click()
+      } finally {
+        link.remove()
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000)
+      }
+    } catch {
+      setBackupError('create')
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
+  const handleSelectedBackup = async (file: File) => {
+    setIsReadingBackup(true)
+    setBackupError(null)
+    setRestoreError(false)
+
+    try {
+      const content = await file.text()
+      const backup = parseBackupJson(content)
+
+      if (!backup) {
+        setBackupError('invalid')
+        return
+      }
+
+      setSelectedBackup(backup)
+    } catch {
+      setBackupError('invalid')
+    } finally {
+      setIsReadingBackup(false)
+    }
+  }
+
+  const handleConfirmRestore = async () => {
+    if (!selectedBackup || isRestoring) return
+
+    setIsRestoring(true)
+    setRestoreError(false)
+
+    try {
+      await dispatch(restoreBackup(selectedBackup))
+
+      setLimitInput(String(selectedBackup.settings.learningLimit))
+      setSelectedBackup(null)
+    } catch {
+      setRestoreError(true)
+    } finally {
+      setIsRestoring(false)
+    }
+  }
+
+  const handleCancelRestore = () => {
+    if (isRestoring) return
+
+    setSelectedBackup(null)
+    setRestoreError(false)
+  }
+
   const hasInvalidInput = limitInput !== '' && !isValidLimit
   const hasLimitError = hasInvalidInput || isBelowLearningCount
 
@@ -70,6 +160,13 @@ export const SettingsPage = () => {
         <h1 className={styles.title}>{t.settings.title}</h1>
         <p className={styles.subtitle}>{t.settings.subtitle}</p>
       </div>
+
+      {backupError === 'invalid' && (
+        <div className={styles.backupAlert} role='alert'>
+          <p className={styles.backupAlertTitle}>{t.backup.invalidFile}</p>
+          <p className={styles.hint}>{t.backup.nothingChanged}</p>
+        </div>
+      )}
 
       <div className={styles.settingsGrid}>
         <div className={styles.settingsMain}>
@@ -181,7 +278,7 @@ export const SettingsPage = () => {
                   max={50}
                   step={1}
                   value={limitInput}
-                  disabled={isSaving}
+                  disabled={isSaving || isRestoring}
                   aria-invalid={hasLimitError}
                   aria-describedby={!hasLimitError ? 'learning-limit-hint' : undefined}
                   onChange={(event) => {
@@ -216,14 +313,47 @@ export const SettingsPage = () => {
             <p className={styles.hint}>{t.settings.localDataDescription}</p>
 
             <div className={styles.backupActions}>
-              <Button variant='primary' fullWidth disabled>
+              <Button
+                variant='primary'
+                fullWidth
+                loading={isExporting}
+                disabled={isBackupBusy || isSaving}
+                onClick={() => void handleCreateBackup()}
+              >
                 {t.backup.create}
               </Button>
 
-              <Button variant='secondary' fullWidth disabled>
+              <Button
+                variant='secondary'
+                fullWidth
+                loading={isReadingBackup}
+                disabled={isBackupBusy || isSaving}
+                onClick={() => fileInputRef.current?.click()}
+              >
                 {t.backup.restore}
               </Button>
+
+              <input
+                ref={fileInputRef}
+                type='file'
+                accept='.json,application/json'
+                hidden
+                onChange={(event) => {
+                  const file = event.currentTarget.files?.[0]
+                  event.currentTarget.value = ''
+
+                  if (file) {
+                    void handleSelectedBackup(file)
+                  }
+                }}
+              />
             </div>
+
+            {backupError === 'create' && (
+              <p className={styles.error} role='alert'>
+                {t.backup.createFailed}
+              </p>
+            )}
           </section>
 
           <section className={styles.storedLocallyPanel}>
@@ -232,6 +362,19 @@ export const SettingsPage = () => {
           </section>
         </div>
       </div>
+
+      <ConfirmationDialog
+        isOpen={selectedBackup !== null}
+        title={t.backup.restoreTitle}
+        body={t.backup.restoreBody}
+        confirmLabel={t.backup.restoreAction}
+        cancelLabel={t.common.cancel}
+        confirmVariant='danger'
+        loading={isRestoring}
+        error={restoreError ? t.backup.restoreFailed : null}
+        onConfirm={() => void handleConfirmRestore()}
+        onCancel={handleCancelRestore}
+      />
     </section>
   )
 }
