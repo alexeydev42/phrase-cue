@@ -1,22 +1,27 @@
+import type { Cue, Episode, Season, Show } from '../source/sourceTypes'
 import type { Phrase } from '../phrase/phraseTypes'
 import { isValidLearningLimit } from '../settings/learningLimitValidation'
 
 export interface PhraseCueBackup {
   format: 'phrase-cue-backup'
   version: 1
+  shows: Show[]
   phrases: Phrase[]
   settings: {
     learningLimit: number
   }
 }
 
-export const createBackup = (phrases: Phrase[], learningLimit: number): PhraseCueBackup => ({
+export const createBackup = (
+  phrases: Phrase[],
+  learningLimit: number,
+  shows: Show[],
+): PhraseCueBackup => ({
   format: 'phrase-cue-backup',
   version: 1,
+  shows,
   phrases,
-  settings: {
-    learningLimit,
-  },
+  settings: { learningLimit },
 })
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -41,6 +46,52 @@ const isPositiveInteger = (value: unknown): value is number =>
 
 const isNonNegativeInteger = (value: unknown): value is number =>
   typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+
+const hasValidUniqueIds = <T extends { id: string }>(
+  value: unknown,
+  isValid: (item: unknown) => item is T,
+): value is T[] => {
+  if (!Array.isArray(value)) return false
+
+  const ids = new Set<string>()
+
+  for (const item of value) {
+    if (!isValid(item) || ids.has(item.id)) return false
+    ids.add(item.id)
+  }
+
+  return true
+}
+
+const isValidCue = (value: unknown): value is Cue =>
+  isRecord(value) &&
+  hasOnlyKeys(value, ['id', 'startMs', 'endMs', 'text']) &&
+  isNonEmptyString(value.id) &&
+  isNonNegativeInteger(value.startMs) &&
+  isNonNegativeInteger(value.endMs) &&
+  value.endMs > value.startMs &&
+  isNonEmptyString(value.text)
+
+const isValidEpisode = (value: unknown): value is Episode =>
+  isRecord(value) &&
+  hasOnlyKeys(value, ['id', 'number', 'cues']) &&
+  isNonEmptyString(value.id) &&
+  isPositiveInteger(value.number) &&
+  hasValidUniqueIds(value.cues, isValidCue)
+
+const isValidSeason = (value: unknown): value is Season =>
+  isRecord(value) &&
+  hasOnlyKeys(value, ['id', 'number', 'episodes']) &&
+  isNonEmptyString(value.id) &&
+  isPositiveInteger(value.number) &&
+  hasValidUniqueIds(value.episodes, isValidEpisode)
+
+const isValidShow = (value: unknown): value is Show =>
+  isRecord(value) &&
+  hasOnlyKeys(value, ['id', 'title', 'seasons']) &&
+  isNonEmptyString(value.id) &&
+  isNonEmptyString(value.title) &&
+  hasValidUniqueIds(value.seasons, isValidSeason)
 
 const isValidPhrase = (value: unknown): value is Phrase => {
   if (
@@ -89,7 +140,7 @@ const isValidPhrase = (value: unknown): value is Phrase => {
 export const isValidBackup = (value: unknown): value is PhraseCueBackup => {
   if (
     !isRecord(value) ||
-    !hasOnlyKeys(value, ['format', 'version', 'phrases', 'settings']) ||
+    !hasOnlyKeys(value, ['format', 'version', 'shows', 'phrases', 'settings']) ||
     value.format !== 'phrase-cue-backup' ||
     value.version !== 1 ||
     !Array.isArray(value.phrases) ||
@@ -98,6 +149,8 @@ export const isValidBackup = (value: unknown): value is PhraseCueBackup => {
   ) {
     return false
   }
+
+  if (!hasValidUniqueIds(value.shows, isValidShow)) return false
 
   const limit = value.settings.learningLimit
 

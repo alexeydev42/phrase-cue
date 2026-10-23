@@ -2,6 +2,7 @@ import { dbPromise } from '../../app/db'
 import type { Show } from './sourceTypes'
 import type { AppStore } from '../../app/store'
 import { selectActiveEpisodeId, selectShows } from './sourceSlice'
+import { enqueueDataOperation } from '../../app/dataOperationQueue'
 
 export const saveShows = async (shows: Show[]) => {
   const db = await dbPromise
@@ -18,7 +19,7 @@ export const loadShows = async (): Promise<Show[]> => {
 export const subscribeToShowsPersistence = (store: AppStore) => {
   let previousShows = selectShows(store.getState())
 
-  return store.subscribe(async () => {
+  return store.subscribe(() => {
     const currentShows = selectShows(store.getState())
 
     if (currentShows === previousShows) {
@@ -26,7 +27,10 @@ export const subscribeToShowsPersistence = (store: AppStore) => {
     }
 
     previousShows = currentShows
-    await saveShows(currentShows)
+
+    void enqueueDataOperation(() => saveShows(currentShows)).catch((error: unknown) => {
+      console.error('Failed to persist source data', error)
+    })
   })
 }
 

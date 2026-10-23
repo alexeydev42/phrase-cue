@@ -155,11 +155,12 @@ const en = {
     saveFailed: 'Could not save the settings. Please try again.',
 
     localData: 'Local data',
-    localDataDescription: 'Create or restore a JSON backup of saved phrases and Learning limit.',
+    localDataDescription:
+      'Create or restore a JSON backup of saved phrases, subtitles and Learning limit.',
 
     storedLocally: 'Stored locally',
     storedLocallyHint:
-      'Subtitles and working episode data stay on this device until you delete them.',
+      'Your data is stored on this device. Create a backup to keep a separate copy.',
 
     learningLimitError: 'Cannot be lower than current Learning count: {count}.',
   },
@@ -238,7 +239,7 @@ const en = {
 
     restoreTitle: 'Restore backup?',
     restoreBody:
-      'Current saved phrases and Learning limit will be replaced by the selected backup. Data will not be merged.',
+      'Current shows, subtitles, saved phrases and Learning limit will be replaced. Data will not be merged.',
     restoreAction: 'Restore',
 
     invalidFile: 'Invalid backup file',
@@ -410,12 +411,11 @@ const ru: typeof en = {
     saveFailed: 'Не удалось сохранить настройки. Попробуйте ещё раз.',
 
     localData: 'Локальные данные',
-    localDataDescription:
-      'Создайте JSON-резервную копию сохранённых фраз и лимита изучения или восстановите существующую.',
+    localDataDescription: 'Создание и восстановление JSON-копии фраз, субтитров и лимита изучения.',
 
     storedLocally: 'Хранится на устройстве',
     storedLocallyHint:
-      'Субтитры и рабочие данные эпизодов остаются на этом устройстве, пока вы их не удалите.',
+      'Данные хранятся на этом устройстве. Создайте резервную копию, чтобы сохранить их отдельно.',
 
     learningLimitError:
       'Значение не может быть меньше текущего количества изучаемых фраз: {count}.',
@@ -495,7 +495,7 @@ const ru: typeof en = {
 
     restoreTitle: 'Восстановить резервную копию?',
     restoreBody:
-      'Сохранённые фразы и лимит изучения будут заменены данными из выбранной резервной копии. Данные не будут объединены.',
+      'Текущие сериалы, субтитры, сохранённые фразы и лимит изучения будут заменены данными из резервной копии. Объединения данных не будет.',
     restoreAction: 'Восстановить',
 
     invalidFile: 'Некорректный файл резервной копии',
