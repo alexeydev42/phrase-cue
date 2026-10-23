@@ -15,9 +15,6 @@ const en = {
   },
 
   episode: {
-    underDevelopment: 'Under development',
-    underDevelopmentHint:
-      'An app for saving and learning English phrases from TV series subtitles. More features are coming soon.',
     findPhrase: 'Find a phrase',
     approximateTimecodeHint: 'Enter an approximate timecode from the episode.',
     activeEpisode: 'Active episode',
@@ -99,8 +96,6 @@ const en = {
     },
 
     newestFirst: 'Newest first',
-    newPhrases: 'New phrases',
-    learningPhrases: 'Learning phrases',
 
     statusNew: 'Status: New',
     statusLearning: 'Status: Learning',
@@ -110,10 +105,6 @@ const en = {
     noTranslation: 'No translation',
     translate: 'Translate',
     learnAgain: 'Learn again',
-
-    learningLimitReached: 'Learning limit reached',
-    learningLimitReachedHint:
-      'Learning limit reached. Increase the limit in Settings to add more phrases.',
 
     deletePhraseTitle: 'Delete phrase?',
     deletePhraseBody: 'This phrase will be permanently removed from the Library.',
@@ -188,7 +179,6 @@ const en = {
     episodesImported: 'Episodes imported: {count}',
 
     importSrt: 'Import SRT',
-    importSrtFiles: 'Import SRT files',
     importSubtitles: 'Import subtitles',
     chooseSrtFiles: 'Choose .srt files',
 
@@ -271,9 +261,6 @@ const ru: typeof en = {
   },
 
   episode: {
-    underDevelopment: 'В разработке',
-    underDevelopmentHint:
-      'Приложение для сохранения и изучения английских фраз из субтитров сериалов. Новые возможности появятся позже.',
     findPhrase: 'Найти фразу',
     approximateTimecodeHint: 'Введите примерный таймкод из эпизода.',
     activeEpisode: 'Активный эпизод',
@@ -355,8 +342,6 @@ const ru: typeof en = {
     },
 
     newestFirst: 'Сначала новые',
-    newPhrases: 'Новые фразы',
-    learningPhrases: 'Изучаемые фразы',
 
     statusNew: 'Статус: новая',
     statusLearning: 'Статус: изучается',
@@ -366,10 +351,6 @@ const ru: typeof en = {
     noTranslation: 'Нет перевода',
     translate: 'Перевести',
     learnAgain: 'Учить снова',
-
-    learningLimitReached: 'Лимит изучаемых фраз достигнут',
-    learningLimitReachedHint:
-      'Лимит изучаемых фраз достигнут. Увеличьте его в Настройках, чтобы добавить новые фразы.',
 
     deletePhraseTitle: 'Удалить фразу?',
     deletePhraseBody: 'Фраза будет безвозвратно удалена из библиотеки.',
@@ -444,7 +425,6 @@ const ru: typeof en = {
     episodesImported: 'Импортировано эпизодов: {count}',
 
     importSrt: 'Импортировать SRT',
-    importSrtFiles: 'Импорт SRT-файлов',
     importSubtitles: 'Импортировать субтитры',
     chooseSrtFiles: 'Выбрать .srt файлы',
 
