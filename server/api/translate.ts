@@ -1,4 +1,8 @@
-const allowedOrigins = ['https://alexeydev42.com', 'http://localhost:5173']
+const allowedOrigins = [
+  'https://alexeydev42.com',
+  'https://alexeydev42.github.io',
+  'http://localhost:5173',
+]
 
 export default {
   async fetch(request: Request) {
