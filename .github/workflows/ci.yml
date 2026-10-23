@@ -37,10 +37,24 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Test Yandex Cloud Function
+        run: node --test server/yandex/index.node.cjs
+
+      - name: Verify production translation URL
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        env:
+          TRANSLATION_API_URL: ${{ vars.PHRASECUE_YANDEX_TRANSLATION_URL }}
+        run: |
+          if [ -z "$TRANSLATION_API_URL" ]; then
+            echo "::error::Set repository Actions variable PHRASECUE_YANDEX_TRANSLATION_URL"
+            exit 1
+          fi
+
       - name: Build
         run: npm run build
         env:
-          VITE_TRANSLATION_API_URL: https://phrase-cue-api.vercel.app/api/translate
+          VITE_TRANSLATION_API_URL: ${{ vars.PHRASECUE_YANDEX_TRANSLATION_URL }}
+          VITE_TRANSLATION_FALLBACK_API_URL: https://phrase-cue-api.vercel.app/api/translate
 
       - name: Configure GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
