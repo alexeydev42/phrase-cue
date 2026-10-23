@@ -7,7 +7,7 @@
   max-width: calc(var(--layout-content-max-width) + var(--layout-page-inline) * 2);
   min-height: 0;
   margin-inline: auto;
-  padding: var(--space-24) var(--layout-page-inline) var(--space-16);
+  padding: var(--space-24) var(--layout-page-inline) 86px;
 }
 
 .head {
@@ -88,8 +88,12 @@
 }
 
 .actions {
-  display: none;
-  width: 100%;
+  position: fixed;
+  z-index: 19;
+  bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(342px, calc(100% - 48px));
 }
 
 .results {
@@ -356,7 +360,9 @@
   }
 
   .actions {
-    display: block;
+    position: static;
+    transform: none;
+    width: 100%;
   }
 
   .resultsIdle {
