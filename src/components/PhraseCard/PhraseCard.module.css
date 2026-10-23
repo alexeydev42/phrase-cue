@@ -1,0 +1,147 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-14);
+  min-width: 0;
+}
+
+.cardBody {
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+  transition: background-color 150ms ease;
+}
+
+.cardBody:has(.toggle:focus-visible) {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  width: 100%;
+  min-height: 76px;
+  padding: var(--space-16);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle:focus-visible {
+  outline: none;
+}
+
+.englishText {
+  min-width: 0;
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-card-title);
+  overflow-wrap: anywhere;
+}
+
+.chevron {
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--color-text-secondary);
+  border-bottom: 2px solid var(--color-text-secondary);
+  transform: rotate(45deg);
+  transition: transform 150ms ease;
+}
+
+.chevronExpanded {
+  transform: rotate(225deg);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: 0 var(--space-16) var(--space-16);
+}
+
+.translation {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  overflow-wrap: anywhere;
+}
+
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-8);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+  overflow-wrap: anywhere;
+}
+
+.status {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-14);
+}
+
+.actionButton {
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cardBody:has(.toggle:hover) {
+    background-color: var(--color-bg-interactive-hover);
+  }
+
+  .cardBody:has(.toggle:active) {
+    background-color: var(--color-bg-interactive-pressed);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardBody,
+  .chevron {
+    transition: none;
+  }
+}
+
+@media (width >= 1024px) {
+  .card {
+    gap: var(--space-16);
+  }
+
+  .cardBody {
+    border-radius: var(--radius-modal);
+  }
+
+  .toggle {
+    min-height: 82px;
+    padding: var(--space-24);
+  }
+
+  .content {
+    padding: 0 var(--space-24) var(--space-24);
+  }
+
+  .actions {
+    flex-direction: row;
+    gap: var(--space-16);
+  }
+
+  .actionButton {
+    flex: 1;
+    width: auto;
+  }
+}

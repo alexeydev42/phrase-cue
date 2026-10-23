@@ -1,0 +1,243 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  width: 100%;
+  max-width: calc(var(--layout-content-max-width) + var(--layout-page-inline) * 2);
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--space-24) var(--layout-page-inline) var(--space-16);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-page-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-page-title);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.settingsGrid,
+.settingsMain,
+.settingsAside,
+.section {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--space-14);
+}
+
+.section {
+  gap: var(--space-8);
+}
+
+.sectionTitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-supporting);
+}
+
+.panel,
+.learningPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+  padding: var(--space-14);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+}
+
+.panelTitle {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-body);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.label {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-supporting);
+}
+
+.options {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-bg-surface-secondary);
+  border-radius: var(--radius-small);
+}
+
+.optionButton {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 38px;
+  padding: 0 var(--space-8);
+  color: var(--color-text-secondary);
+  background-color: transparent;
+  border: 0;
+  border-radius: 6px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-supporting);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.optionButton[aria-pressed='true'] {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 7%);
+}
+
+.optionButton:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.learningForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  width: 100%;
+}
+
+.learningPanel {
+  align-items: flex-start;
+}
+
+.input {
+  width: 72px;
+  height: 54px;
+  padding: 0 var(--space-8);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-small);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-input);
+  line-height: var(--line-height-input);
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--color-danger-primary);
+}
+
+.input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hint {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.error {
+  color: var(--color-danger-primary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.localDataPanel,
+.storedLocallyPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  min-width: 0;
+  padding: var(--space-16);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+}
+
+.backupActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.backupAlert {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding: var(--space-14);
+  background-color: var(--color-danger-soft);
+  border: 1px solid var(--color-danger-primary);
+  border-radius: var(--radius-default);
+}
+
+.backupAlertTitle {
+  color: var(--color-danger-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-body);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .optionButton[aria-pressed='false']:hover {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-interactive-hover);
+  }
+}
+
+@media (width >= 1024px) {
+  .settingsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--space-24);
+  }
+
+  .settingsAside {
+    padding-top: calc(var(--line-height-supporting) + var(--space-8));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .optionButton {
+    transition:
+      background-color 150ms ease,
+      color 150ms ease;
+  }
+}

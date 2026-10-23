@@ -1,0 +1,224 @@
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-14);
+  width: 100%;
+  max-width: calc(var(--layout-content-max-width) + var(--layout-page-inline) * 2);
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--space-24) var(--layout-page-inline) var(--space-16);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.title {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-page-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-page-title);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.studyContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-14);
+  width: 100%;
+  min-width: 0;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 28px;
+}
+
+.progressValue {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-section-title);
+}
+
+.progressLabel {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.studyCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  min-width: 0;
+  min-height: 286px;
+  padding: var(--space-16);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+  overflow-wrap: anywhere;
+}
+
+.englishText {
+  color: var(--color-text-primary);
+  font-size: 20px;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+}
+
+.answer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-border-default);
+}
+
+.translation {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.metadata {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: auto;
+}
+
+.actionButton {
+  min-width: 0;
+}
+
+.error {
+  color: var(--color-danger-primary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: 190px;
+  padding: var(--space-24);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+  text-align: center;
+}
+
+.emptyStateTitle {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-section-title);
+}
+
+.emptyStateHint {
+  max-width: 320px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.emptyStateLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  margin-top: auto;
+  padding: var(--space-12) var(--space-16);
+  color: var(--color-accent-on);
+  background-color: var(--color-accent-primary);
+  border-radius: var(--radius-default);
+  font-size: var(--font-size-button);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-button);
+  text-align: center;
+}
+
+.emptyStateLink:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.emptyStateLink:active {
+  background-color: var(--color-accent-pressed);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .emptyStateLink:hover {
+    background-color: var(--color-accent-hover);
+  }
+}
+
+@media (width >= 1024px) {
+  .page {
+    flex: none;
+    gap: var(--space-24);
+  }
+
+  .studyContent {
+    flex: none;
+    max-width: 640px;
+    gap: var(--space-16);
+    margin-inline: auto;
+  }
+
+  .studyCard {
+    min-height: 360px;
+    padding: var(--space-32);
+    border-radius: var(--radius-modal);
+  }
+
+  .englishText {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .translation {
+    font-size: var(--font-size-section-title);
+    line-height: var(--line-height-section-title);
+  }
+
+  .actions {
+    flex-direction: row;
+    margin-top: 0;
+  }
+
+  .actionButton {
+    flex: 1;
+  }
+
+  .emptyState {
+    min-height: 260px;
+    border-radius: var(--radius-modal);
+  }
+
+  .emptyStateLink {
+    margin-top: 0;
+  }
+}
