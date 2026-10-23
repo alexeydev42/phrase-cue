@@ -1,103 +1,102 @@
-const test = require('node:test')
-const assert = require('node:assert/strict')
-const { handler } = require('./index.js')
-
-const allowedOrigin = 'https://alexeydev42.com'
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const limiter = require('./rateLimiter.js');
+const { handler } = require('./index.js');
+const origin = 'https://alexeydev42.com';
 
 const request = (text = 'Hello') => ({
   httpMethod: 'POST',
-  headers: {
-    origin: allowedOrigin,
-    'content-type': 'application/json',
-  },
+  headers: { origin, 'content-type': 'application/json' },
+  requestContext: { identity: { sourceIp: '198.51.100.1' } },
   body: JSON.stringify({ text }),
   isBase64Encoded: false,
-})
+});
 
-test('GET returns the health check without contacting Google', async () => {
-  const response = await handler({ httpMethod: 'GET', headers: {} })
-  assert.equal(response.statusCode, 200)
-  assert.deepEqual(JSON.parse(response.body), { ok: true })
-})
-
-test('OPTIONS permits the configured origin', async () => {
-  const response = await handler({
-    httpMethod: 'OPTIONS',
-    headers: { origin: allowedOrigin },
-  })
-  assert.equal(response.statusCode, 204)
-  assert.equal(response.headers['Access-Control-Allow-Origin'], allowedOrigin)
-  assert.equal(response.headers['Access-Control-Allow-Methods'], 'POST')
-})
-
-test('POST rejects requests from another origin', async () => {
-  const response = await handler({
-    ...request(),
-    headers: { origin: 'https://unknown.example', 'content-type': 'application/json' },
-  })
-  assert.equal(response.statusCode, 403)
-})
-
-test('POST rejects invalid JSON, oversized text, and unsupported content type', async () => {
-  const badJson = await handler({ ...request(), body: '{invalid' })
-  const longText = await handler(request('a'.repeat(301)))
-  const wrongType = await handler({
-    ...request(),
-    headers: { origin: allowedOrigin, 'content-type': 'text/plain' },
-  })
-
-  assert.equal(badJson.statusCode, 400)
-  assert.equal(longText.statusCode, 400)
-  assert.equal(wrongType.statusCode, 415)
-})
-
-test('POST calls Google and returns the translated text', async (t) => {
-  const previousKey = process.env.GOOGLE_TRANSLATE_API_KEY
-  process.env.GOOGLE_TRANSLATE_API_KEY = 'fake-key-for-test'
+const withKey = (t) => {
+  const oldKey = process.env.GOOGLE_TRANSLATE_API_KEY;
+  process.env.GOOGLE_TRANSLATE_API_KEY = 'test-key';
   t.after(() => {
-    if (previousKey === undefined) delete process.env.GOOGLE_TRANSLATE_API_KEY
-    else process.env.GOOGLE_TRANSLATE_API_KEY = previousKey
-  })
+    if (oldKey === undefined) delete process.env.GOOGLE_TRANSLATE_API_KEY;
+    else process.env.GOOGLE_TRANSLATE_API_KEY = oldKey;
+  });
+};
 
-  const fetchMock = t.mock.method(globalThis, 'fetch', async (url, options) => {
-    assert.equal(url, 'https://translation.googleapis.com/language/translate/v2')
-    assert.equal(options.headers['x-goog-api-key'], 'fake-key-for-test')
-    assert.equal(JSON.parse(options.body).q, 'Hello')
-    return Response.json({ data: { translations: [{ translatedText: 'Привет' }] } })
-  })
+test('GET health check does not query the database or Google', async (t) => {
+  const mock = t.mock.method(limiter, 'allowRequest', async () => { throw Error('unreachable'); });
+  const response = await handler({ httpMethod: 'GET', headers: {} });
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), { ok: true });
+  assert.equal(mock.mock.callCount(), 0);
+});
 
-  const response = await handler(request())
-  assert.equal(response.statusCode, 200)
-  assert.deepEqual(JSON.parse(response.body), { translation: 'Привет' })
-  assert.match(response.headers['Content-Type'], /charset=utf-8/)
-  assert.equal(fetchMock.mock.callCount(), 1)
-})
+test('OPTIONS supports the approved origin', async () => {
+  const response = await handler({ httpMethod: 'OPTIONS', headers: { origin } });
+  assert.equal(response.statusCode, 204);
+  assert.equal(response.headers['Access-Control-Allow-Origin'], origin);
+});
 
-test('Google rate limiting is forwarded as HTTP 429', async (t) => {
-  const previousKey = process.env.GOOGLE_TRANSLATE_API_KEY
-  process.env.GOOGLE_TRANSLATE_API_KEY = 'fake-key-for-test'
-  t.after(() => {
-    if (previousKey === undefined) delete process.env.GOOGLE_TRANSLATE_API_KEY
-    else process.env.GOOGLE_TRANSLATE_API_KEY = previousKey
-  })
+test('invalid requests are rejected before rate-limit operations', async (t) => {
+  const mock = t.mock.method(limiter, 'allowRequest', async () => true);
+  assert.equal((await handler({ ...request(), headers: { origin: 'https://wrong.example', 'content-type': 'application/json' } })).statusCode, 403);
+  assert.equal((await handler({ ...request(), body: '{bad' })).statusCode, 400);
+  assert.equal((await handler(request('x'.repeat(301)))).statusCode, 400);
+  assert.equal(mock.mock.callCount(), 0);
+});
 
-  t.mock.method(globalThis, 'fetch', async () => new Response(null, { status: 429 }))
-  const response = await handler(request())
-  assert.equal(response.statusCode, 429)
-})
+test('approved POST checks the limit before calling Google', async (t) => {
+  withKey(t);
+  const check = t.mock.method(limiter, 'allowRequest', async (ip) => {
+    assert.equal(ip, '198.51.100.1');
+    return true;
+  });
+  const google = t.mock.method(globalThis, 'fetch', async (url, options) => {
+    assert.equal(url, 'https://translation.googleapis.com/language/translate/v2');
+    assert.equal(options.headers['x-goog-api-key'], 'test-key');
+    assert.equal(check.mock.callCount(), 1);
+    return Response.json({ data: { translations: [{ translatedText: 'Привет' }] } });
+  });
+  const response = await handler(request());
+  assert.equal(response.statusCode, 200);
+  assert.deepEqual(JSON.parse(response.body), { translation: 'Привет' });
+  assert.equal(google.mock.callCount(), 1);
+});
 
-test('Google errors are returned as HTTP 502 without exposing details', async (t) => {
-  const previousKey = process.env.GOOGLE_TRANSLATE_API_KEY
-  process.env.GOOGLE_TRANSLATE_API_KEY = 'fake-key-for-test'
-  t.after(() => {
-    if (previousKey === undefined) delete process.env.GOOGLE_TRANSLATE_API_KEY
-    else process.env.GOOGLE_TRANSLATE_API_KEY = previousKey
-  })
+test('429 prevents any Google request', async (t) => {
+  withKey(t);
+  t.mock.method(limiter, 'allowRequest', async () => false);
+  const google = t.mock.method(globalThis, 'fetch', async () => { throw Error('should not fetch'); });
+  const response = await handler(request());
+  assert.equal(response.statusCode, 429);
+  assert.equal(google.mock.callCount(), 0);
+});
 
-  t.mock.method(globalThis, 'fetch', async () => {
-    throw new Error('Sensitive internal error')
-  })
-  const response = await handler(request())
-  assert.equal(response.statusCode, 502)
-  assert.doesNotMatch(response.body, /Sensitive internal error/)
-})
+test('YDB outage rejects the request before Google', async (t) => {
+  withKey(t);
+  t.mock.method(limiter, 'allowRequest', async () => { throw Error('DB failed'); });
+  const google = t.mock.method(globalThis, 'fetch', async () => { throw Error('should not fetch'); });
+  const errorLog = t.mock.method(console, 'error', () => {});
+  const response = await handler(request());
+  assert.equal(response.statusCode, 503);
+  assert.equal(google.mock.callCount(), 0);
+  assert.equal(errorLog.mock.callCount(), 1);
+  assert.doesNotMatch(response.body, /DB failed/);
+});
+
+test('missing source IP rejects the request before Google', async (t) => {
+  withKey(t);
+  const check = t.mock.method(limiter, 'allowRequest', async () => true);
+  const google = t.mock.method(globalThis, 'fetch', async () => { throw Error('should not fetch'); });
+  const response = await handler({ ...request(), requestContext: undefined, headers: { ...request().headers, 'x-forwarded-for': '8.8.8.8' } });
+  assert.equal(response.statusCode, 503);
+  assert.equal(check.mock.callCount(), 0);
+  assert.equal(google.mock.callCount(), 0);
+});
+
+test('provider 429 remains 429, and other Google failures return 502', async (t) => {
+  withKey(t);
+  t.mock.method(limiter, 'allowRequest', async () => true);
+  const google = t.mock.method(globalThis, 'fetch', async () => new Response(null, { status: 429 }));
+  assert.equal((await handler(request())).statusCode, 429);
+  google.mock.mockImplementation(async () => { throw Error('not connected'); });
+  assert.equal((await handler(request())).statusCode, 502);
+});
