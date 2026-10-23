@@ -8,6 +8,32 @@ The app lets me find a subtitle line by an approximate timecode, save it and ret
 
 **[Live demo](https://alexeydev42.com/phrase-cue/)**
 
+## Screenshots
+
+<p align="center">
+  <a href="docs/screenshots/episode-mobile.jpg">
+    <img
+      src="docs/screenshots/episode-mobile.jpg"
+      alt="PhraseCue — subtitle search"
+      width="28%"
+    />
+  </a>
+  <a href="docs/screenshots/study-mobile.jpg">
+    <img
+      src="docs/screenshots/study-mobile.jpg"
+      alt="PhraseCue — study cards"
+      width="28%"
+    />
+  </a>
+  <a href="docs/screenshots/settings-mobile.jpg">
+    <img
+      src="docs/screenshots/settings-mobile.jpg"
+      alt="PhraseCue — settings"
+      width="28%"
+    />
+  </a>
+</p>
+
 ## Features
 
 - Import English subtitles from `.srt` files.
