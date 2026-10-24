@@ -34,8 +34,15 @@ const en = {
     noActiveEpisodeHint: 'Choose an episode to start finding phrases.',
     chooseEpisode: 'Choose episode',
 
-    noShowsYet: 'No shows yet',
-    noShowsYetHint: 'Add a show and import subtitles to get started.',
+    onboardingSubtitle: 'Learn English with TV series subtitles',
+    onboardingTitle: 'How it works',
+    onboardingDescription:
+      'While watching a show, find a line by its timecode, translate it, and save it. Review saved phrases later with flashcards.',
+    onboardingStartHint: 'To get started, add a show and import SRT subtitles.',
+    onboardingSampleHint: "Don't have subtitles? Try a sample file.",
+    downloadSampleSrt: 'Download sample SRT',
+    onboardingStorageNotice:
+      'Your data is stored in this browser. Create a backup in Settings to keep a separate copy.',
     translationNotice:
       'Automatic translations are limited to keep running costs under control. If the limit is reached, you can save a phrase without translation and translate it later.',
     addShow: 'Add show',
@@ -294,8 +301,15 @@ const ru: typeof en = {
     noActiveEpisodeHint: 'Выберите эпизод, чтобы искать фразы.',
     chooseEpisode: 'Выбрать эпизод',
 
-    noShowsYet: 'Сериалов пока нет',
-    noShowsYetHint: 'Добавьте сериал и импортируйте субтитры, чтобы начать.',
+    onboardingSubtitle: 'Изучайте английский по субтитрам сериалов',
+    onboardingTitle: 'Как это работает',
+    onboardingDescription:
+      'Во время просмотра найдите нужную реплику по таймкоду, переведите и сохраните её. Позже повторяйте сохранённые фразы с помощью карточек.',
+    onboardingStartHint: 'Чтобы начать, добавьте сериал и импортируйте субтитры в формате SRT.',
+    onboardingSampleHint: 'Нет своих субтитров? Попробуйте пример.',
+    downloadSampleSrt: 'Скачать пример SRT',
+    onboardingStorageNotice:
+      'Ваши данные хранятся в этом браузере. Создайте резервную копию в настройках, чтобы не потерять их.',
     translationNotice:
       'Количество автоматических переводов ограничено, чтобы контролировать расходы на работу приложения. Если лимит исчерпан, вы можете сохранить фразу без перевода и перевести её позже.',
     addShow: 'Добавить сериал',
