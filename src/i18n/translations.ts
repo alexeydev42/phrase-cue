@@ -159,6 +159,13 @@ const en = {
       'Your data is stored on this device. Create a backup to keep a separate copy.',
 
     learningLimitError: 'Cannot be lower than current Learning count: {count}.',
+
+    aboutTitle: 'About PhraseCue',
+    aboutDescription:
+      'A personal project for learning English with TV series subtitles, built with React, TypeScript, and Redux Toolkit.',
+    developedBy: 'Developed by',
+    authorName: 'Alexey Surkov',
+    portfolio: 'Portfolio',
   },
 
   source: {
@@ -410,6 +417,13 @@ const ru: typeof en = {
 
     learningLimitError:
       'Значение не может быть меньше текущего количества изучаемых фраз: {count}.',
+
+    aboutTitle: 'О приложении',
+    aboutDescription:
+      'Личный проект для изучения английского по субтитрам сериалов, созданный на React, TypeScript и Redux Toolkit.',
+    developedBy: 'Разработал',
+    authorName: 'Алексей Сурков',
+    portfolio: 'Портфолио',
   },
 
   source: {
