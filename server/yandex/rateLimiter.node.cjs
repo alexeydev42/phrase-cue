@@ -37,7 +37,7 @@ test('another IP gets its own allowance, and the window resets', async () => {
 
 test('the total daily allowance is shared across IP addresses', async () => {
   const store = memoryStore();
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 100; i++) {
     assert.equal(await consumeWithStore(store, `198.51.100.${i + 1}`, time), true);
   }
   assert.equal(await consumeWithStore(store, '203.0.113.1', time), false);
@@ -49,7 +49,7 @@ test('does not write either counter for a rejected request', async () => {
   for (let i = 0; i < 5; i++) await consumeWithStore(store, '198.51.100.10', time);
   assert.equal(await consumeWithStore(store, '198.51.100.10', time), false);
   // The denied request must not consume a slot in the shared daily counter.
-  for (let i = 0; i < 35; i++) {
+  for (let i = 0; i < 95; i++) {
     assert.equal(await consumeWithStore(store, `203.0.113.${i + 1}`, time), true);
   }
   assert.equal(await consumeWithStore(store, '203.0.113.99', time), false);

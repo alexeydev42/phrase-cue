@@ -9,7 +9,7 @@ import {
   savePhraseTranslation,
   removePhrase,
 } from '../../features/phrase/phraseThunks'
-import { translatePhrase } from '../../features/phrase/translatePhrase'
+import { translatePhrase, TranslationLimitError } from '../../features/phrase/translatePhrase'
 import { selectLearningLimit } from '../../features/settings/settingsSlice'
 import { ConfirmationDialog } from '../../components/ConfirmationDialog/ConfirmationDialog'
 
@@ -26,7 +26,10 @@ export const LibraryPage = () => {
   const [expandedPhraseId, setExpandedPhraseId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<PhraseStatus>('new')
   const [translatingPhraseId, setTranslatingPhraseId] = useState<string | null>(null)
-  const [translationErrorPhraseId, setTranslationErrorPhraseId] = useState<string | null>(null)
+  const [translationError, setTranslationError] = useState<{
+    phraseId: string
+    kind: 'limit' | 'generic'
+  } | null>(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [phraseToDeleteId, setPhraseToDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -44,13 +47,16 @@ export const LibraryPage = () => {
 
   const handleTranslatePhrase = async (phrase: Phrase) => {
     setTranslatingPhraseId(phrase.id)
-    setTranslationErrorPhraseId(null)
+    setTranslationError(null)
 
     try {
       const russianText = await translatePhrase(phrase.englishText)
       await dispatch(savePhraseTranslation(phrase.id, russianText))
-    } catch {
-      setTranslationErrorPhraseId(phrase.id)
+    } catch (error) {
+      setTranslationError({
+        phraseId: phrase.id,
+        kind: error instanceof TranslationLimitError ? 'limit' : 'generic',
+      })
     } finally {
       setTranslatingPhraseId(null)
     }
@@ -142,7 +148,9 @@ export const LibraryPage = () => {
                   (phrase.status === 'new' && Boolean(phrase.russianText?.trim())))
               }
               isTranslating={translatingPhraseId === phrase.id}
-              hasTranslationError={translationErrorPhraseId === phrase.id}
+              translationError={
+                translationError?.phraseId === phrase.id ? translationError.kind : null
+              }
             />
           ))}
         </div>

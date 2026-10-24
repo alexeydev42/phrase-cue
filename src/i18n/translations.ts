@@ -36,6 +36,8 @@ const en = {
 
     noShowsYet: 'No shows yet',
     noShowsYetHint: 'Add a show and import subtitles to get started.',
+    translationNotice:
+      'Automatic translations are limited to keep running costs under control. If the limit is reached, you can save a phrase without translation and translate it later.',
     addShow: 'Add show',
 
     loadEarlier: 'Show earlier cues',
@@ -61,6 +63,8 @@ const en = {
     translationLabel: 'Translation',
     translating: 'Translating…',
     translationFailed: 'Translation failed',
+    translationLimitReached:
+      'Translation limit reached. You can save the phrase without translation and translate it later.',
     saveFailed: 'Could not save the phrase. Please try again.',
     saving: 'Saving…',
 
@@ -109,6 +113,7 @@ const en = {
     deletePhraseTitle: 'Delete phrase?',
     deletePhraseBody: 'This phrase will be permanently removed from the Library.',
     deleteFailed: 'Could not delete the phrase. Please try again.',
+    translationLimitReached: 'Translation limit reached. Please try translating this phrase later.',
   },
 
   study: {
@@ -282,6 +287,8 @@ const ru: typeof en = {
 
     noShowsYet: 'Сериалов пока нет',
     noShowsYetHint: 'Добавьте сериал и импортируйте субтитры, чтобы начать.',
+    translationNotice:
+      'Количество автоматических переводов ограничено, чтобы контролировать расходы на работу приложения. Если лимит исчерпан, вы можете сохранить фразу без перевода и перевести её позже.',
     addShow: 'Добавить сериал',
 
     loadEarlier: 'Показать предыдущие реплики',
@@ -307,6 +314,8 @@ const ru: typeof en = {
     translationLabel: 'Перевод',
     translating: 'Переводим…',
     translationFailed: 'Не удалось перевести',
+    translationLimitReached:
+      'Лимит переводов достигнут. Вы можете сохранить фразу без перевода и перевести её позже.',
     saveFailed: 'Не удалось сохранить фразу. Попробуйте ещё раз.',
     saving: 'Сохраняем…',
 
@@ -355,6 +364,7 @@ const ru: typeof en = {
     deletePhraseTitle: 'Удалить фразу?',
     deletePhraseBody: 'Фраза будет безвозвратно удалена из библиотеки.',
     deleteFailed: 'Не удалось удалить фразу. Попробуйте ещё раз.',
+    translationLimitReached: 'Лимит переводов достигнут. Попробуйте перевести эту фразу позже.',
   },
 
   study: {

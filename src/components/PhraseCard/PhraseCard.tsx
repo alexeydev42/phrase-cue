@@ -15,7 +15,7 @@ interface PhraseCardProps {
   onDelete: () => void
   isPrimaryActionDisabled: boolean
   isTranslating: boolean
-  hasTranslationError: boolean
+  translationError: 'limit' | 'generic' | null
 }
 
 export const PhraseCard = ({
@@ -26,7 +26,7 @@ export const PhraseCard = ({
   onDelete,
   isPrimaryActionDisabled,
   isTranslating,
-  hasTranslationError,
+  translationError,
 }: PhraseCardProps) => {
   const t = useTranslation()
   const contentId = useId()
@@ -84,27 +84,32 @@ export const PhraseCard = ({
       </div>
 
       {isExpanded && (
-        <div className={styles.actions}>
-          <Button
-            variant='primary'
-            className={styles.actionButton}
-            onClick={onPrimaryAction}
-            disabled={isPrimaryActionDisabled || isTranslating}
-            loading={isTranslating}
-            loadingLabel={t.selectPhrase.translating}
-          >
-            {primaryActionLabel}
-          </Button>
-          {hasTranslationError && (
+        <>
+          <div className={styles.actions}>
+            <Button
+              variant='primary'
+              className={styles.actionButton}
+              onClick={onPrimaryAction}
+              disabled={isPrimaryActionDisabled || isTranslating}
+              loading={isTranslating}
+              loadingLabel={t.selectPhrase.translating}
+            >
+              {primaryActionLabel}
+            </Button>
+
+            <Button variant='secondary' className={styles.actionButton} onClick={onDelete}>
+              {t.common.delete}
+            </Button>
+          </div>
+
+          {translationError !== null && (
             <p className={styles.actionError} role='alert'>
-              {t.selectPhrase.translationFailed}
+              {translationError === 'limit'
+                ? t.library.translationLimitReached
+                : t.selectPhrase.translationFailed}
             </p>
           )}
-
-          <Button variant='secondary' className={styles.actionButton} onClick={onDelete}>
-            {t.common.delete}
-          </Button>
-        </div>
+        </>
       )}
     </article>
   )

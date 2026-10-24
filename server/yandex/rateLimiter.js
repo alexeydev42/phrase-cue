@@ -5,7 +5,7 @@ const { getYdbStore } = require('./ydbStore.js');
 const TEN_MINUTES_MS = 10 * 60 * 1000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MAX_REQUESTS_PER_IP = 5;
-const MAX_REQUESTS_PER_DAY = 40;
+const MAX_REQUESTS_PER_DAY = 100;
 
 // Two fixed windows: ten minutes per IP, and one UTC day for all users.
 const getSlots = (ip, nowMs) => {
