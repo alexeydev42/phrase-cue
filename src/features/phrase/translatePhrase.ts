@@ -1,4 +1,5 @@
 class NonRetryableTranslationError extends Error {}
+export class TranslationLimitError extends NonRetryableTranslationError {}
 
 const REQUEST_TIMEOUT_MS = 12_000
 
@@ -14,6 +15,10 @@ const requestTranslation = async (url: string, text: string): Promise<string> =>
 
   if (!response.ok) {
     const message = `Translation request failed: ${response.status}`
+
+    if (response.status === 429) {
+      throw new TranslationLimitError(message)
+    }
 
     if (response.status < 500 && response.status !== 408) {
       throw new NonRetryableTranslationError(message)

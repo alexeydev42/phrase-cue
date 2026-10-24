@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { BackLink } from '../../components/BackLink/BackLink'
 import { Button } from '../../components/Button/Button'
 import { normalizePhraseDraft } from '../../features/phrase/normalizePhraseDraft'
-import { translatePhrase } from '../../features/phrase/translatePhrase'
+import { translatePhrase, TranslationLimitError } from '../../features/phrase/translatePhrase'
 import { selectActiveEpisode, selectShows } from '../../features/source/sourceSlice'
 import { savePhrase } from '../../features/phrase/phraseThunks'
 import { formatTimecode } from '../../features/source/timecode'
@@ -30,7 +30,7 @@ export const SelectPhrasePage = () => {
   const [draftOverride, setDraftOverride] = useState<string | null>(null)
   const [translation, setTranslation] = useState<string | null>(null)
   const [isTranslating, setIsTranslating] = useState(false)
-  const [translationError, setTranslationError] = useState(false)
+  const [translationError, setTranslationError] = useState<'limit' | 'generic' | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState(false)
 
@@ -39,7 +39,7 @@ export const SelectPhrasePage = () => {
   const characterCount = normalizedDraft.length
   const isOverLimit = characterCount > 300
   const canTranslate = characterCount > 0 && !isOverLimit
-  const isReviewing = isTranslating || translation !== null || translationError
+  const isReviewing = isTranslating || translation !== null || translationError !== null
 
   const startIndex = initialIndex - selection.before
   const endIndex = initialIndex + selection.after
@@ -94,13 +94,13 @@ export const SelectPhrasePage = () => {
 
     setIsTranslating(true)
     setTranslation(null)
-    setTranslationError(false)
+    setTranslationError(null)
 
     try {
       const result = await translatePhrase(normalizedDraft)
       setTranslation(result)
-    } catch {
-      setTranslationError(true)
+    } catch (error) {
+      setTranslationError(error instanceof TranslationLimitError ? 'limit' : 'generic')
     } finally {
       setIsTranslating(false)
     }
@@ -218,9 +218,11 @@ export const SelectPhrasePage = () => {
 
                   {isTranslating ? (
                     <p className={styles.translatingText}>{t.selectPhrase.translating}</p>
-                  ) : translationError ? (
+                  ) : translationError !== null ? (
                     <p className={styles.translationError} role='alert'>
-                      {t.selectPhrase.translationFailed}
+                      {translationError === 'limit'
+                        ? t.selectPhrase.translationLimitReached
+                        : t.selectPhrase.translationFailed}
                     </p>
                   ) : (
                     <p className={styles.translationText}>{translation}</p>
@@ -239,7 +241,7 @@ export const SelectPhrasePage = () => {
                       {t.common.save}
                     </Button>
                   )}
-                  {translationError && (
+                  {translationError !== null && (
                     <Button
                       variant='primary'
                       fullWidth

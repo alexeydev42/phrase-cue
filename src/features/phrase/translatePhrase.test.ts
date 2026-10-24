@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { translatePhrase } from './translatePhrase'
+import { translatePhrase, TranslationLimitError } from './translatePhrase'
 
 const yandexUrl = 'https://functions.yandexcloud.net/test-function'
 const vercelUrl = 'https://phrase-cue-api.vercel.app/api/translate'
@@ -118,5 +118,18 @@ describe('translatePhrase', () => {
 
     await expect(translatePhrase('Hello!')).rejects.toThrow('not configured')
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('reports rate limit errors without using fallback', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        Response.json({ error: 'Translation rate limit exceeded' }, { status: 429 }),
+      )
+
+    vi.stubGlobal('fetch', fetchMock)
+
+    await expect(translatePhrase('Hello!')).rejects.toBeInstanceOf(TranslationLimitError)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 })
