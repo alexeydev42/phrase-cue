@@ -1,0 +1,35 @@
+.footer {
+  display: none;
+}
+
+.link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: var(--space-4);
+  border-radius: 2px;
+}
+
+@media (width >= 1024px) {
+  .footer {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    width: 100%;
+    padding: var(--space-16) var(--layout-page-inline) var(--space-24);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-supporting);
+    line-height: var(--line-height-supporting);
+    text-align: center;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link:hover {
+    color: var(--color-accent-primary);
+  }
+}
