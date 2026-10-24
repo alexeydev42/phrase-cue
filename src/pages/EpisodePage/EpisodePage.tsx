@@ -319,6 +319,7 @@ export const EpisodePage = () => {
           {hasShows ? t.episode.chooseEpisode : t.episode.addShow}
         </Button>
       </div>
+      {!hasShows && <p className={styles.translationNotice}>{t.episode.translationNotice}</p>}
     </section>
   )
 }
