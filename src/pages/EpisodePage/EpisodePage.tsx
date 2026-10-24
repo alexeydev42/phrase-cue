@@ -297,28 +297,49 @@ export const EpisodePage = () => {
 
   const hasShows = shows.length > 0
 
+  const sampleSrtUrl = `${import.meta.env.BASE_URL}samples/PhraseCue.Demo.S01E01.srt`
+
   return (
     <section className={styles.page}>
       <div className={styles.head}>
         <h1 className={styles.title}>{t.navigation.episode}</h1>
         <p className={styles.subtitle}>
-          {hasShows ? t.episode.noActiveEpisode : t.episode.noShowsYet}
+          {hasShows ? t.episode.noActiveEpisode : t.episode.onboardingSubtitle}
         </p>
       </div>
 
       <div className={styles.emptyPanel}>
-        <p className={styles.emptyText}>
-          {hasShows ? t.episode.noActiveEpisodeHint : t.episode.noShowsYetHint}
-        </p>
+        {hasShows ? (
+          <>
+            <p className={styles.emptyText}>{t.episode.noActiveEpisodeHint}</p>
+            <Button variant='primary' fullWidth onClick={() => navigate('/episode/shows')}>
+              {t.episode.chooseEpisode}
+            </Button>
+          </>
+        ) : (
+          <>
+            <h2 className={styles.onboardingTitle}>{t.episode.onboardingTitle}</h2>
 
-        <Button
-          variant='primary'
-          fullWidth
-          onClick={() => navigate(hasShows ? '/episode/shows' : '/episode/shows/new')}
-        >
-          {hasShows ? t.episode.chooseEpisode : t.episode.addShow}
-        </Button>
+            <p className={styles.onboardingDescription}>{t.episode.onboardingDescription}</p>
+
+            <p className={styles.onboardingDescription}>{t.episode.onboardingStartHint}</p>
+
+            <Button variant='primary' fullWidth onClick={() => navigate('/episode/shows/new')}>
+              {t.episode.addShow}
+            </Button>
+
+            <div className={styles.sampleSection}>
+              <p className={styles.sampleHint}>{t.episode.onboardingSampleHint}</p>
+              <a className={styles.sampleLink} href={sampleSrtUrl} download>
+                {t.episode.downloadSampleSrt}
+              </a>
+            </div>
+
+            <p className={styles.storageNotice}>{t.episode.onboardingStorageNotice}</p>
+          </>
+        )}
       </div>
+
       {!hasShows && <p className={styles.translationNotice}>{t.episode.translationNotice}</p>}
     </section>
   )

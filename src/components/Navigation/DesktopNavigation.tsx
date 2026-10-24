@@ -1,10 +1,12 @@
 import { NavLink, useLocation } from 'react-router'
+import { useTranslation } from '../../i18n/useTranslation'
 import clsx from 'clsx'
 
 import styles from './DesktopNavigation.module.css'
 
 export const DesktopNavigation = () => {
   const { pathname } = useLocation()
+  const t = useTranslation()
 
   return (
     <nav className={styles.navigation}>
@@ -15,25 +17,25 @@ export const DesktopNavigation = () => {
           clsx(styles.link, (isActive || pathname.startsWith('/episode/')) && styles.linkActive)
         }
       >
-        Episode
+        {t.navigation.episode}
       </NavLink>
       <NavLink
         to='/library'
         className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
       >
-        Library
+        {t.navigation.library}
       </NavLink>
       <NavLink
         to='/study'
         className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
       >
-        Study
+        {t.navigation.study}
       </NavLink>
       <NavLink
         to='/settings'
         className={({ isActive }) => clsx(styles.link, isActive && styles.linkActive)}
       >
-        Settings
+        {t.navigation.settings}
       </NavLink>
     </nav>
   )

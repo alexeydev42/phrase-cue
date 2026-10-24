@@ -6,6 +6,7 @@ import { SettingsPage } from './pages/SettingsPage/SettingsPage'
 import { AppShell } from './layouts/AppShell/AppShell'
 import { SelectPhrasePage } from './pages/SelectPhrasePage/SelectPhrasePage'
 import { ThemeSync } from './features/settings/ThemeSync'
+import { LanguageSync } from './features/settings/LanguageSync'
 import { SourceShell } from './layouts/SourceShell/SourceShell'
 import { ShowsPage } from './pages/ShowsPage/ShowsPage'
 import { AddShowPage } from './pages/AddShowPage/AddShowPage'
@@ -21,6 +22,7 @@ export const App = () => {
     <>
       <EpisodeReturnProvider>
         <ThemeSync />
+        <LanguageSync />
         <Routes>
           <Route path='/'>
             <Route element={<AppShell />}>
