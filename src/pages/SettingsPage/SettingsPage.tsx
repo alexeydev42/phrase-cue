@@ -389,6 +389,7 @@ export const SettingsPage = () => {
                 GitHub
               </a>
             </div>
+            <p className={styles.hint}>{t.settings.analyticsNotice}</p>
           </section>
         </div>
       </div>

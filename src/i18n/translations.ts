@@ -166,6 +166,8 @@ const en = {
     developedBy: 'Developed by',
     authorName: 'Alexey Surkov',
     portfolio: 'Portfolio',
+    analyticsNotice:
+      'Anonymous traffic statistics are collected with Cloudflare Web Analytics. No analytics cookies are used.',
   },
 
   source: {
@@ -424,6 +426,8 @@ const ru: typeof en = {
     developedBy: 'Разработал',
     authorName: 'Алексей Сурков',
     portfolio: 'Портфолио',
+    analyticsNotice:
+      'Анонимная статистика посещений собирается с помощью Cloudflare Web Analytics. Аналитические куки не используются.',
   },
 
   source: {
