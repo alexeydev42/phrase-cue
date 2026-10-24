@@ -273,6 +273,51 @@
   line-height: var(--line-height-supporting);
 }
 
+.onboardingTitle {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-section-title);
+}
+
+.onboardingDescription,
+.sampleHint,
+.storageNotice {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
+.sampleSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-8);
+}
+
+.sampleLink {
+  color: var(--color-accent-primary);
+  font-size: var(--font-size-supporting);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sampleLink:hover {
+  color: var(--color-accent-hover);
+}
+
+.sampleLink:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-small);
+}
+
+.storageNotice {
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-border-default);
+}
+
 @media (width >= 1024px) {
   .page {
     flex: none;

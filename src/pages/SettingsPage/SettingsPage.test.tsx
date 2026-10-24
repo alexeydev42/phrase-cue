@@ -14,6 +14,7 @@ import { ThemeSync } from '../../features/settings/ThemeSync'
 
 import { createBackup } from '../../features/backup/backup'
 import { replaceBackupData } from '../../features/backup/backupStorage'
+import { version } from '../../../package.json'
 
 vi.mock('../../features/settings/settingsStorage', () => ({
   saveLearningLimit: vi.fn(),
@@ -96,7 +97,7 @@ describe('SettingsPage', () => {
 
     expect(screen.getByRole('heading', { name: 'About PhraseCue' })).toBeTruthy()
     expect(screen.getByText('Developed by Alexey Surkov')).toBeTruthy()
-    expect(screen.getByText('v1.2.0')).toBeTruthy()
+    expect(screen.getByText(`v${version}`)).toBeTruthy()
 
     const portfolio = screen.getByRole('link', { name: 'Portfolio' })
     const github = screen.getByRole('link', { name: 'GitHub' })
