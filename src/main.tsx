@@ -17,6 +17,7 @@ import { hydratePhrases } from './features/phrase/phraseSlice'
 import { hydrateLearningLimit } from './features/settings/settingsThunks'
 import { setLanguage, setTheme } from './features/settings/settingsSlice'
 import { loadLanguage, loadTheme } from './features/settings/settingsPreferencesStorage'
+import { initCloudflareAnalytics } from './utils/cloudflareAnalytics'
 
 import './styles/global.css'
 
@@ -62,3 +63,5 @@ const startApp = async () => {
 }
 
 startApp()
+
+initCloudflareAnalytics()
