@@ -1,0 +1,19 @@
+.shell {
+  min-height: 100svh;
+}
+
+.main {
+  min-width: 0;
+}
+
+@media (width >= 1024px) {
+  .shell {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-32);
+  }
+
+  .main {
+    flex: 1;
+  }
+}

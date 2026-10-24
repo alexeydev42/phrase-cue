@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { version } from '../../../package.json'
 import { ConfirmationDialog } from '../../components/ConfirmationDialog/ConfirmationDialog'
 import { parseBackupJson, type PhraseCueBackup } from '../../features/backup/backup'
 import { exportBackup, restoreBackup } from '../../features/backup/backupThunks'
@@ -359,6 +360,35 @@ export const SettingsPage = () => {
           <section className={styles.storedLocallyPanel}>
             <h2 className={styles.panelTitle}>{t.settings.storedLocally}</h2>
             <p className={styles.hint}>{t.settings.storedLocallyHint}</p>
+          </section>
+
+          <section className={styles.aboutPanel}>
+            <div className={styles.aboutHeader}>
+              <h2 className={styles.panelTitle}>{t.settings.aboutTitle}</h2>
+              <span className={styles.aboutVersion}>v{version}</span>
+            </div>
+            <p className={styles.hint}>{t.settings.aboutDescription}</p>
+            <p className={styles.aboutAuthor}>
+              {t.settings.developedBy} {t.settings.authorName}
+            </p>
+            <div className={styles.aboutLinks}>
+              <a
+                className={styles.aboutLink}
+                href='https://alexeydev42.com/'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                {t.settings.portfolio}
+              </a>
+              <a
+                className={styles.aboutLink}
+                href='https://github.com/alexeydev42'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                GitHub
+              </a>
+            </div>
           </section>
         </div>
       </div>

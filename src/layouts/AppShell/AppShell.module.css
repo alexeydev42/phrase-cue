@@ -11,11 +11,14 @@
 
 @media (width >= 1024px) {
   .shell {
+    display: flex;
+    flex-direction: column;
     padding-top: var(--space-32);
   }
 
   .main {
     display: block;
+    flex: 1;
     min-height: 0;
     padding-bottom: 0;
   }

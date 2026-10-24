@@ -91,6 +91,31 @@ describe('SettingsPage', () => {
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeTruthy()
   })
 
+  it('shows the author, version and external links', () => {
+    renderSettings()
+
+    expect(screen.getByRole('heading', { name: 'About PhraseCue' })).toBeTruthy()
+    expect(screen.getByText('Developed by Alexey Surkov')).toBeTruthy()
+    expect(screen.getByText('v1.2.0')).toBeTruthy()
+
+    const portfolio = screen.getByRole('link', { name: 'Portfolio' })
+    const github = screen.getByRole('link', { name: 'GitHub' })
+
+    expect(portfolio.getAttribute('href')).toBe('https://alexeydev42.com/')
+    expect(github.getAttribute('href')).toBe('https://github.com/alexeydev42')
+    expect(portfolio.getAttribute('target')).toBe('_blank')
+    expect(github.getAttribute('target')).toBe('_blank')
+  })
+
+  it('translates author details into Russian', () => {
+    renderSettings()
+    fireEvent.click(screen.getByRole('button', { name: 'Русский' }))
+
+    expect(screen.getByRole('heading', { name: 'О приложении' })).toBeTruthy()
+    expect(screen.getByText('Разработал Алексей Сурков')).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Портфолио' })).toBeTruthy()
+  })
+
   it('switches the interface language to Russian', () => {
     const { store } = renderSettings()
     expect(screen.getByRole('heading', { name: 'Settings' })).toBeTruthy()
