@@ -29,6 +29,14 @@ const en = {
 
     nearbyCues: 'Nearby subtitle cues',
     nearbyCuesHint: 'Three cues before the specified time, the nearest cue, and three after.',
+    orSearchByText: 'or search by text',
+    textSearchLabel: 'Search subtitles by text',
+    textSearchPlaceholder: 'Enter a word or phrase',
+    textResultsCount: 'Matching lines: {count}',
+    textResultsHint: 'Select a matching line to translate or save it.',
+    noTextMatches: 'No matching lines',
+    noTextMatchesHint: 'Try another word or part of a phrase.',
+    loadMoreMatches: 'Show more matches',
 
     noActiveEpisode: 'No active episode',
     noActiveEpisodeHint: 'Choose an episode to start finding phrases.',
@@ -296,6 +304,14 @@ const ru: typeof en = {
 
     nearbyCues: 'Реплики рядом с таймкодом',
     nearbyCuesHint: 'Три реплики до указанного времени, ближайшая к нему и три после.',
+    orSearchByText: 'или поиск по тексту',
+    textSearchLabel: 'Поиск по тексту субтитров',
+    textSearchPlaceholder: 'Введите слово или часть фразы',
+    textResultsCount: 'Найдено реплик: {count}',
+    textResultsHint: 'Выберите реплику для перевода или сохранения.',
+    noTextMatches: 'Совпадений не найдено',
+    noTextMatchesHint: 'Попробуйте другое слово или часть фразы.',
+    loadMoreMatches: 'Показать ещё',
 
     noActiveEpisode: 'Нет активного эпизода',
     noActiveEpisodeHint: 'Выберите эпизод, чтобы искать фразы.',

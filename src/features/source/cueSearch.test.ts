@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Cue } from './sourceTypes'
-import { findNearestCueIndex, getCueWindow } from './cueSearch'
+import { searchCuesByText, findNearestCueIndex, getCueWindow } from './cueSearch'
 
 describe('findNearestCueIndex', () => {
   const cues: Cue[] = [
@@ -137,5 +137,87 @@ describe('getCueWindow', () => {
     const result = getCueWindow(cues, 5, NaN, Infinity)
 
     expect(result.map((cue) => cue.id)).toEqual(['cue-5'])
+  })
+})
+
+describe('searchCuesByText', () => {
+  const cues: Cue[] = [
+    {
+      id: 'cue-1',
+      startMs: 3000,
+      endMs: 7000,
+      text: "I'm really looking forward to it.",
+    },
+    {
+      id: 'cue-2',
+      startMs: 10000,
+      endMs: 13000,
+      text: 'We have something to look forward to.',
+    },
+    {
+      id: 'cue-3',
+      startMs: 17000,
+      endMs: 21000,
+      text: 'Nothing similar here.',
+    },
+    {
+      id: 'cue-4',
+      startMs: 25000,
+      endMs: 29000,
+      text: 'LOOK FORWARD to tomorrow.',
+    },
+  ]
+
+  it('finds cues containing the query', () => {
+    const result = searchCuesByText(cues, 'look forward')
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-2', 'cue-4'])
+  })
+
+  it('ignores letter case', () => {
+    const result = searchCuesByText(cues, 'LOOK FORWARD')
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-2', 'cue-4'])
+  })
+
+  it('matches partial text', () => {
+    const result = searchCuesByText(cues, 'forward')
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-1', 'cue-2', 'cue-4'])
+  })
+
+  it('ignores surrounding whitespace in the query', () => {
+    const result = searchCuesByText(cues, '  look forward  ')
+
+    expect(result.map((cue) => cue.id)).toEqual(['cue-2', 'cue-4'])
+  })
+
+  it('returns an empty array for an empty or whitespace-only query', () => {
+    expect(searchCuesByText(cues, '')).toEqual([])
+    expect(searchCuesByText(cues, '   ')).toEqual([])
+  })
+
+  it('returns an empty array when nothing matches', () => {
+    expect(searchCuesByText(cues, 'good morning')).toEqual([])
+  })
+
+  it('returns an empty array for an episode without cues', () => {
+    expect(searchCuesByText([], 'forward')).toEqual([])
+  })
+
+  it('preserves the original cue order and data', () => {
+    const result = searchCuesByText(cues, 'forward')
+
+    expect(result).toEqual([cues[0], cues[1], cues[3]])
+    expect(result[0]).toBe(cues[0])
+    expect(result[0].startMs).toBe(3000)
+  })
+
+  it('does not modify the original cue array', () => {
+    const originalCues = [...cues]
+
+    searchCuesByText(cues, 'forward')
+
+    expect(cues).toEqual(originalCues)
   })
 })
