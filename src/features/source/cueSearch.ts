@@ -40,3 +40,9 @@ export const getCueWindow = (
   const end = Math.min(cues.length, centerIndex + normalizeCount(afterCount) + 1)
   return cues.slice(start, end)
 }
+
+export const searchCuesByText = (cues: Cue[], query: string): Cue[] => {
+  const searchedText = query.trim().toLowerCase()
+  if (searchedText.length === 0) return []
+  return cues.filter((cue) => cue.text.toLowerCase().includes(searchedText))
+}

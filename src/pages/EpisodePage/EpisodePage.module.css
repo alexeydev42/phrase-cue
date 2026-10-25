@@ -83,6 +83,40 @@
   line-height: var(--line-height-supporting);
 }
 
+.textSearch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  min-width: 0;
+}
+
+.searchDivider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+  white-space: nowrap;
+}
+
+.searchDivider::before,
+.searchDivider::after {
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border-default);
+  content: '';
+}
+
+.textSearch input[type='search']::-webkit-search-cancel-button {
+  filter: grayscale(1);
+  opacity: 0.8;
+}
+
+.textSearch input[type='search'] {
+  text-align: center;
+}
+
 .episodeContext {
   display: none;
 }
@@ -119,6 +153,33 @@
   display: none;
 }
 
+.noTextMatches {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: 160px;
+  padding: var(--space-24);
+  text-align: center;
+  background-color: var(--color-bg-surface-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+}
+
+.noTextMatchesTitle {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-section-title);
+}
+
+.noTextMatchesHint {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-supporting);
+  line-height: var(--line-height-supporting);
+}
+
 .cueList {
   display: flex;
   flex-direction: column;
@@ -143,6 +204,22 @@
   background-color: var(--color-bg-surface);
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-default);
+}
+
+.cueButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  width: 100%;
+  min-height: 42px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cueButton:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-small);
 }
 
 .cueTime {
@@ -175,42 +252,6 @@
 
 .cueNearest .cueText {
   font-weight: var(--font-weight-semibold);
-}
-
-.emptyPanel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  gap: var(--space-16);
-  min-height: 220px;
-  padding: var(--space-24) var(--space-16);
-  background-color: var(--color-bg-surface);
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-default);
-}
-
-.emptyText {
-  color: var(--color-text-primary);
-  font-size: var(--font-size-card-title);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-section-title);
-}
-
-.cueButton {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  width: 100%;
-  min-height: 42px;
-  text-align: left;
-  cursor: pointer;
-}
-
-.cueButton:focus-visible {
-  outline: 2px solid var(--color-focus-ring);
-  outline-offset: 3px;
-  border-radius: var(--radius-small);
 }
 
 .cueCard:hover {
@@ -266,6 +307,26 @@
   pointer-events: none;
 }
 
+.emptyPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--space-16);
+  min-height: 220px;
+  padding: var(--space-24) var(--space-16);
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-default);
+}
+
+.emptyText {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-card-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-section-title);
+}
+
 .translationNotice {
   max-width: 480px;
   color: var(--color-text-secondary);
@@ -316,6 +377,12 @@
 .storageNotice {
   padding-top: var(--space-16);
   border-top: 1px solid var(--color-border-default);
+}
+
+@media (width < 1024px) {
+  .episodeBodyTextSearch {
+    align-content: start;
+  }
 }
 
 @media (width >= 1024px) {

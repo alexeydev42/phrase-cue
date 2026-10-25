@@ -6,7 +6,7 @@ import { useTranslation } from '../../i18n/useTranslation'
 import { useAppSelector } from '../../app/hooks'
 import { selectActiveEpisode, selectShows } from '../../features/source/sourceSlice'
 import { selectCueWindow } from '../../features/source/cueSelectors'
-import { findNearestCueIndex } from '../../features/source/cueSearch'
+import { findNearestCueIndex, searchCuesByText } from '../../features/source/cueSearch'
 import { parseTimecode, formatTimecode } from '../../features/source/timecode'
 import { useEpisodeReturn } from '../../features/source/episodeReturnContext'
 import { Button } from '../../components/Button/Button'
@@ -15,6 +15,7 @@ import { Input } from '../../components/Input/Input'
 import styles from './EpisodePage.module.css'
 
 const LOAD_STEP = 5
+const TEXT_RESULT_STEP = 30
 
 export const EpisodePage = () => {
   const t = useTranslation()
@@ -41,6 +42,11 @@ export const EpisodePage = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
+    setSearchMode('timecode')
+    setTextQuery('')
+    setVisibleTextCount(TEXT_RESULT_STEP)
+    setTargetMs(null)
+
     if (value.includes(':') && parseTimecode(value) !== null) {
       setTimecodeInput(value)
       return
@@ -59,6 +65,13 @@ export const EpisodePage = () => {
   const [targetMs, setTargetMs] = useState<number | null>(returnState?.targetMs ?? null)
   const [beforeCount, setBeforeCount] = useState(returnState?.beforeCount ?? 3)
   const [afterCount, setAfterCount] = useState(returnState?.afterCount ?? 3)
+  const [searchMode, setSearchMode] = useState<'timecode' | 'text'>(
+    returnState?.searchMode ?? 'timecode',
+  )
+  const [textQuery, setTextQuery] = useState(returnState?.textQuery ?? '')
+  const [visibleTextCount, setVisibleTextCount] = useState(
+    returnState?.visibleTextCount ?? TEXT_RESULT_STEP,
+  )
 
   const show = shows.find((show) =>
     show.seasons.some((season) =>
@@ -79,7 +92,15 @@ export const EpisodePage = () => {
   const nearestEpisodeIndex =
     targetMs !== null ? findNearestCueIndex(activeEpisode?.cues ?? [], targetMs) : null
 
-  const hasSearch = targetMs !== null
+  const textMatches = searchCuesByText(activeEpisode?.cues ?? [], textQuery)
+
+  const hasTextSearch = searchMode === 'text' && textQuery.trim().length > 0
+  const hasTimecodeSearch = searchMode === 'timecode' && targetMs !== null
+  const hasSearch = hasTextSearch || hasTimecodeSearch
+
+  const visibleCues = hasTextSearch ? textMatches.slice(0, visibleTextCount) : cueWindow
+
+  const hasMoreTextMatches = hasTextSearch && visibleTextCount < textMatches.length
 
   const hasEarlier = nearestEpisodeIndex !== null && nearestEpisodeIndex > beforeCount
 
@@ -131,9 +152,22 @@ export const EpisodePage = () => {
     }
 
     previousFirstCue.current = null
+    setSearchMode('timecode')
     setTargetMs(parsedTime)
     setBeforeCount(3)
     setAfterCount(3)
+  }
+
+  const handleTextChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTextQuery(event.target.value)
+    setTimecodeInput('')
+    setTargetMs(null)
+    setVisibleTextCount(TEXT_RESULT_STEP)
+    setSearchMode('text')
+  }
+
+  const loadMoreTextMatches = () => {
+    setVisibleTextCount((count) => count + TEXT_RESULT_STEP)
   }
 
   const loadEarlier = () => {
@@ -159,10 +193,13 @@ export const EpisodePage = () => {
 
     remember({
       episodeId: activeEpisode.id,
+      searchMode,
       timecodeInput,
       targetMs,
       beforeCount,
       afterCount,
+      textQuery,
+      visibleTextCount,
       pageScrollY: window.scrollY,
     })
 
@@ -188,7 +225,7 @@ export const EpisodePage = () => {
           <p className={styles.subtitle}>{episodeLabel}</p>
         </div>
 
-        <div className={styles.episodeBody}>
+        <div className={clsx(styles.episodeBody, hasTextSearch && styles.episodeBodyTextSearch)}>
           <div className={styles.controls}>
             <div className={styles.searchIntro}>
               <h2 className={styles.panelTitle}>{t.episode.findPhrase}</h2>
@@ -223,6 +260,21 @@ export const EpisodePage = () => {
               <p className={styles.mobileHint}>{t.episode.enterApproximateTimecode}</p>
             )}
 
+            <div className={styles.textSearch}>
+              <div className={styles.searchDivider}>
+                <span>{t.episode.orSearchByText}</span>
+              </div>
+
+              <Input
+                type='search'
+                aria-label={t.episode.textSearchLabel}
+                placeholder={t.episode.textSearchPlaceholder}
+                autoComplete='off'
+                value={textQuery}
+                onChange={handleTextChange}
+              />
+            </div>
+
             <div className={styles.episodeContext}>
               <p className={styles.contextLabel}>{t.episode.currentEpisode}</p>
               <p className={styles.contextShow}>{show.title}</p>
@@ -240,46 +292,67 @@ export const EpisodePage = () => {
           <div className={clsx(styles.results, !hasSearch && styles.resultsIdle)}>
             <div className={styles.resultsHeader}>
               <h2 className={styles.panelTitle}>
-                {hasSearch ? t.episode.nearbyCues : t.episode.searchResults}
+                {hasTextSearch
+                  ? t.episode.textResultsCount.replace('{count}', String(textMatches.length))
+                  : hasTimecodeSearch
+                    ? t.episode.nearbyCues
+                    : t.episode.searchResults}
               </h2>
 
               <p className={styles.panelDescription}>
-                {hasSearch ? t.episode.nearbyCuesHint : t.episode.searchResultsHint}
+                {hasTextSearch
+                  ? t.episode.textResultsHint
+                  : hasTimecodeSearch
+                    ? t.episode.nearbyCuesHint
+                    : t.episode.searchResultsHint}
               </p>
             </div>
 
             {hasSearch ? (
               <>
-                {hasEarlier && (
+                {hasTimecodeSearch && hasEarlier && (
                   <button type='button' className={styles.loadMore} onClick={loadEarlier}>
                     {t.episode.loadEarlier}
                   </button>
                 )}
 
-                <ul ref={listRef} className={styles.cueList}>
-                  {cueWindow.map((cue, index) => (
-                    <li
-                      className={clsx(
-                        styles.cueCard,
-                        index === nearestCueIndex && styles.cueNearest,
-                      )}
-                      key={cue.id}
-                    >
-                      <button
-                        type='button'
-                        className={styles.cueButton}
-                        onClick={() => handleSelectCue(cue.id)}
+                {visibleCues.length > 0 ? (
+                  <ul ref={hasTimecodeSearch ? listRef : undefined} className={styles.cueList}>
+                    {visibleCues.map((cue, index) => (
+                      <li
+                        className={clsx(
+                          styles.cueCard,
+                          hasTimecodeSearch && index === nearestCueIndex && styles.cueNearest,
+                        )}
+                        key={cue.id}
                       >
-                        <span className={styles.cueTime}>{formatTimecode(cue.startMs)}</span>
-                        <span className={styles.cueText}>{cue.text}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                        <button
+                          type='button'
+                          className={styles.cueButton}
+                          onClick={() => handleSelectCue(cue.id)}
+                        >
+                          <span className={styles.cueTime}>{formatTimecode(cue.startMs)}</span>
+                          <span className={styles.cueText}>{cue.text}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className={styles.noTextMatches} role='status'>
+                    <p className={styles.noTextMatchesTitle}>{t.episode.noTextMatches}</p>
+                    <p className={styles.noTextMatchesHint}>{t.episode.noTextMatchesHint}</p>
+                  </div>
+                )}
 
-                {hasLater && (
+                {hasTimecodeSearch && hasLater && (
                   <button type='button' className={styles.loadMore} onClick={loadLater}>
                     {t.episode.loadLater}
+                  </button>
+                )}
+
+                {hasMoreTextMatches && (
+                  <button type='button' className={styles.loadMore} onClick={loadMoreTextMatches}>
+                    {t.episode.loadMoreMatches}
                   </button>
                 )}
               </>

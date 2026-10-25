@@ -2,10 +2,13 @@ import { createContext, useContext } from 'react'
 
 export interface EpisodeReturnState {
   episodeId: string
+  searchMode: 'timecode' | 'text'
   timecodeInput: string
   targetMs: number | null
   beforeCount: number
   afterCount: number
+  textQuery: string
+  visibleTextCount: number
   pageScrollY: number
 }
 
