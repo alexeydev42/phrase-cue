@@ -4,7 +4,7 @@ A small web app I built to save and learn English phrases from TV series.
 
 I'm learning English and often watch shows with English subtitles. Sometimes I want to find a particular line, check its Russian translation and remember it for later. That's how the idea for PhraseCue came about.
 
-The app lets me find a subtitle line by an approximate timecode, save it and return to it when studying.
+The app lets me find subtitle lines by approximate timecode or text search, save phrases and return to them when studying.
 
 **[Live demo](https://alexeydev42.com/phrase-cue/)**
 
@@ -38,7 +38,7 @@ The app lets me find a subtitle line by an approximate timecode, save it and ret
 
 - Import English subtitles from `.srt` files.
 - Organize subtitles by show, season and episode.
-- Find subtitle lines using an approximate timecode.
+- Find subtitle lines using an approximate timecode or text search.
 - Combine nearby lines and edit the text before saving.
 - Translate phrases into Russian or save them without translation.
 - Organize saved phrases into New, Learning and Learned.
@@ -48,7 +48,7 @@ The app lets me find a subtitle line by an approximate timecode, save it and ret
 
 ## How it works
 
-I usually use PhraseCue while watching an episode. I pause the video, switch to the app and enter the approximate timecode. PhraseCue shows the nearby subtitle lines, so I can choose the one I need.
+I usually use PhraseCue while watching an episode. I pause the video and switch to the app. I can enter an approximate timecode to see nearby subtitle lines, or search by a word or phrase to find matching lines in the current episode.
 
 Before saving, I can adjust the text and request a translation.
 
