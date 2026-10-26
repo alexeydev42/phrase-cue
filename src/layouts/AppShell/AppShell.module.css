@@ -9,6 +9,24 @@
   padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px));
 }
 
+@media (width < 1024px) {
+  .shell::after {
+    position: fixed;
+    z-index: 18;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: calc(100px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(to bottom, transparent, var(--color-bg-base) 60%);
+    pointer-events: none;
+    content: '';
+  }
+
+  .shellEpisode::after {
+    height: calc(160px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media (width >= 1024px) {
   .shell {
     display: flex;
