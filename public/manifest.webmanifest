@@ -1,0 +1,23 @@
+{
+  "id": "/phrase-cue/",
+  "name": "PhraseCue",
+  "short_name": "PhraseCue",
+  "description": "Learn English phrases from TV series subtitles",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7fa",
+  "theme_color": "#f5f7fa",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
