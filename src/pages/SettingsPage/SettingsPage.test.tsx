@@ -46,6 +46,13 @@ const renderSettings = () => {
   return { store, ...view }
 }
 
+const addThemeColorMeta = () => {
+  const meta = document.createElement('meta')
+  meta.name = 'theme-color'
+  document.head.append(meta)
+  return meta
+}
+
 const selectBackupFile = (container: HTMLElement, content: string) => {
   const input = container.querySelector('input[type="file"]')
 
@@ -69,6 +76,16 @@ const selectBackupFile = (container: HTMLElement, content: string) => {
 beforeEach(() => {
   localStorage.clear()
 
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    })),
+  )
+
   mockedReplaceBackup.mockReset()
   mockedReplaceBackup.mockResolvedValue(undefined)
 
@@ -84,6 +101,8 @@ beforeEach(() => {
 afterEach(() => {
   cleanup()
   delete document.documentElement.dataset.theme
+  vi.unstubAllGlobals()
+  document.querySelector('meta[name="theme-color"]')?.remove()
 })
 
 describe('SettingsPage', () => {
@@ -149,6 +168,47 @@ describe('SettingsPage', () => {
     expect(localStorage.getItem('phrase-cue-theme')).toBe('system')
     expect(screen.getByRole('button', { name: 'System', pressed: true })).toBeTruthy()
     expect(document.documentElement.dataset.theme).toBe('system')
+  })
+
+  it('updates the browser theme color when switching themes', () => {
+    const meta = addThemeColorMeta()
+    renderSettings()
+
+    expect(meta.content).toBe('#f5f7fa')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dark' }))
+    expect(meta.content).toBe('#17212b')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Light' }))
+    expect(meta.content).toBe('#f5f7fa')
+  })
+
+  it('updates the browser theme color when system preference changes', () => {
+    const meta = addThemeColorMeta()
+
+    let onChange: (() => void) | undefined
+
+    const mediaQuery = {
+      matches: false,
+      media: '(prefers-color-scheme: dark)',
+      addEventListener: vi.fn((_event: string, listener: () => void) => {
+        onChange = listener
+      }),
+      removeEventListener: vi.fn(),
+    }
+
+    vi.stubGlobal(
+      'matchMedia',
+      vi.fn(() => mediaQuery),
+    )
+
+    renderSettings()
+    expect(meta.content).toBe('#f5f7fa')
+
+    mediaQuery.matches = true
+    onChange?.()
+
+    expect(meta.content).toBe('#17212b')
   })
 })
 
