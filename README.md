@@ -66,6 +66,14 @@ Translation works through a serverless API rather than directly from the browser
 
 The interface is mobile-first because I mainly wanted to use the app on my phone while watching shows.
 
+## Lessons learned
+
+One of the hardest parts of building PhraseCue was keeping Redux state consistent with data stored in IndexedDB. I learned to treat the database as the persistent source of truth and think carefully about when data should be loaded, updated and saved, especially during navigation and page reloads.
+
+I also ran into an IndexedDB migration issue. After increasing the database version, I made further changes to the upgrade logic, but they weren't applied until I increased the version again. This taught me to be more careful when planning database schema changes.
+
+My initial backup implementation only included saved phrases. I later realized that imported shows and subtitles also represented a significant amount of user effort, so I expanded the backup to include them. This was a useful lesson in reconsidering technical decisions from the user's perspective.
+
 ## Tech stack
 
 - React 19, TypeScript
